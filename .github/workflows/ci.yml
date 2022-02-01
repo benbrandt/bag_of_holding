@@ -53,7 +53,7 @@ jobs:
 
       - run: ./grcov . -s . --binary-path ./target/debug/ -t lcov --branch --ignore-not-existing --llvm --ignore "/*" -o lcov.info
 
-      - run: curl -L https://github.com/Kogia-sima/rust-covfix/releases/latest/download/rust-covfix-linux-x86_64.tar.xz | tar jxf -
+      - run: curl -L https://github.com/Kogia-sima/rust-covfix/releases/latest/download/rust-covfix-linux-x86_64.tar.xz | tar Jxf -
 
       - run: ./rust-covfix -o lcov.info lcov.info
 
