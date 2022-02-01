@@ -49,7 +49,7 @@ jobs:
           RUSTFLAGS: "-Zinstrument-coverage"
           RUSTDOCFLAGS: "-Zinstrument-coverage -Zunstable-options --persist-doctests target/debug/doctestbins"
 
-      - run: curl -L https://github.com/mozilla/grcov/releases/download/v0.8.2/grcov-linux-x86_64.tar.bz2 | tar jxf -
+      - run: curl -L https://github.com/mozilla/grcov/releases/download/v0.8.6/grcov-v0.8.6-x86_64-unknown-linux-gnu.tar.gz | tar zxf -
 
       - run: ./grcov . -s . --binary-path ./target/debug/ -t lcov --branch --ignore-not-existing --llvm --ignore "/*" -o lcov.info
 
