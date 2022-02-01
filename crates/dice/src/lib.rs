@@ -27,16 +27,14 @@ impl Die {
         }
     }
 
-    /// Given a RNG, and a number of dice to roll, roll the dice and return the result
-    pub fn roll(&self, rng: &mut impl Rng, num: u32) -> Roll {
-        let die_rolls = (1..=num)
-            .map(|_| rng.gen_range(1..=self.sides()))
-            .collect_vec();
+    /// Roll the die and return the result
+    pub fn roll(&self, rng: &mut impl Rng) -> u32 {
+        rng.gen_range(1..self.sides())
+    }
 
-        Roll {
-            total: die_rolls.iter().sum(),
-            die_rolls,
-        }
+    /// Roll a number of a given dice and return the results
+    pub fn roll_multiple(&self, rng: &mut impl Rng, amount: usize) -> Vec<u32> {
+        (1..=amount).map(|_| self.roll(rng)).collect_vec()
     }
 }
 
@@ -49,12 +47,18 @@ mod tests {
     #[test]
     fn roll_d4() {
         let mut rng = Pcg64::from_entropy();
+        let roll = Die::D4.roll(&mut rng);
+        assert!((1..=4).contains(&roll));
+    }
+
+    #[test]
+    fn roll_multiple_d4() {
+        let mut rng = Pcg64::from_entropy();
         // Roll a normal range of dice
         for i in 1..=12 {
-            let roll = Die::D4.roll(&mut rng, i);
-            assert_eq!(roll.die_rolls.len(), i as usize);
-            assert!(roll.die_rolls.iter().all(|d| (1..=4).contains(d)));
-            assert!((i..=4 * i).contains(&roll.total));
+            let rolls = Die::D4.roll_multiple(&mut rng, i);
+            assert_eq!(rolls.len(), i as usize);
+            assert!(rolls.iter().all(|d| (1..=4).contains(d)));
         }
     }
 }
