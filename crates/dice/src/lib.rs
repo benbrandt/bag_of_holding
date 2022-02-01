@@ -5,8 +5,11 @@
 
 use itertools::Itertools;
 use rand::Rng;
+use serde::{Deserialize, Serialize};
 
 /// Available dice types for rolling
+#[derive(Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
 pub enum Die {
     D4,
 }
