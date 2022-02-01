@@ -16,6 +16,8 @@ jobs:
   test:
     name: Test Suite
     runs-on: ubuntu-latest
+    env:
+      RUSTC_BOOTSTRAP: 1
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
@@ -24,9 +26,8 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           components: llvm-tools-preview
-          override: true
           profile: minimal
-          toolchain: nightly
+          toolchain: stable
 
       - uses: Swatinem/rust-cache@v1
 
