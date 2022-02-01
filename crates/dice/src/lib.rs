@@ -6,14 +6,6 @@
 use itertools::Itertools;
 use rand::Rng;
 
-/// Result of a di(c)e roll
-pub struct Roll {
-    /// Individual rolls for each die rolled
-    pub die_rolls: Vec<u32>,
-    /// Sum of all die rolls
-    pub total: u32,
-}
-
 /// Available dice types for rolling
 pub enum Die {
     D4,
