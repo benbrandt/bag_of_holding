@@ -1,3 +1,37 @@
-fn main() {
-    println!("Hello, world!");
+use std::{env, net::SocketAddr};
+
+use axum::Server;
+use bag_of_holding::app;
+use clap::Parser;
+
+/// Command line arguments
+#[derive(Debug, Parser)]
+#[clap(author, version, about, long_about = None)]
+struct Config {
+    /// The port to listen on
+    #[clap(long, short, default_value = "3000")]
+    port: u16,
+}
+
+/// Basic wrapper around `app()` to configure running in a server environment
+#[tokio::main]
+async fn main() {
+    // Set the RUST_LOG, if it hasn't been explicitly defined
+    if env::var_os("RUST_LOG").is_none() {
+        env::set_var("RUST_LOG", "bag_of_holding=debug,tower_http=debug")
+    }
+
+    // Setup tracing
+    tracing_subscriber::fmt::init();
+
+    // Parse command line arguments
+    let config = Config::parse();
+
+    // Run our service
+    let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
+    tracing::info!("Listening on {}", addr);
+    Server::bind(&addr)
+        .serve(app().into_make_service())
+        .await
+        .expect("server error");
 }
