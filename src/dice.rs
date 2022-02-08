@@ -1,13 +1,7 @@
-use std::sync::Arc;
-
-use axum::{
-    extract::{Extension, Path},
-    routing::post,
-    Json, Router,
-};
+use axum::{extract::Path, routing::post, Json, Router};
 use dice::Die;
-
-use crate::State;
+use rand::SeedableRng;
+use rand_pcg::Pcg64;
 
 /// Routes related to dice
 pub(crate) fn dice_routes() -> Router {
@@ -15,7 +9,7 @@ pub(crate) fn dice_routes() -> Router {
 }
 
 /// Roll a given type and amount of dice
-async fn roll(Extension(state): Extension<Arc<State>>, Path(die): Path<Die>) -> Json<u32> {
-    let mut rng = state.rng.lock();
-    Json(die.roll(&mut *rng))
+async fn roll(Path(die): Path<Die>) -> Json<u32> {
+    let mut rng = Pcg64::from_entropy();
+    Json(die.roll(&mut rng))
 }
