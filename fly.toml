@@ -2,7 +2,7 @@
 
 app = "bag-of-holding"
 
-kill_signal = "SIGINT"
+kill_signal = "SIGTERM"
 kill_timeout = 5
 processes = []
 
