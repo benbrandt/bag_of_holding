@@ -9,7 +9,7 @@ use clap::Parser;
 #[clap(author, version, about, long_about = None)]
 struct Config {
     /// The port to listen on
-    #[clap(long, short, default_value = "3000")]
+    #[clap(long, short, default_value = "5000")]
     port: u16,
 }
 
