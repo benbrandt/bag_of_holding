@@ -43,13 +43,13 @@ jobs:
       - name: Execute tests
         uses: actions-rs/cargo@v1
         with:
-            command: test
-            args: --workspace --all-features --no-fail-fast
+          command: test
+          args: --workspace --all-features --no-fail-fast
         env:
           RUSTFLAGS: "-Zinstrument-coverage"
           RUSTDOCFLAGS: "-Zinstrument-coverage -Zunstable-options --persist-doctests target/debug/doctestbins"
 
-      - run: curl -L https://github.com/mozilla/grcov/releases/download/v0.8.6/grcov-v0.8.6-x86_64-unknown-linux-gnu.tar.gz | tar zxf -
+      - run: curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -
 
       - run: ./grcov . -s . --binary-path ./target/debug/ -t lcov --branch --ignore-not-existing --llvm --ignore "/*" -o lcov.info
 
