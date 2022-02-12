@@ -46,7 +46,7 @@ impl Die {
     /// assert!((1..=20).contains(&roll));
     /// ```
     pub fn roll(&self, rng: &mut impl Rng) -> u32 {
-        rng.gen_range(1..self.sides())
+        rng.gen_range(1..=self.sides())
     }
 
     /// Roll a number of a given dice and return the results
