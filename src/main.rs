@@ -1,6 +1,7 @@
-use std::{env, net::SocketAddr};
+use std::{env, net::SocketAddr, os::unix::prelude::OsStrExt};
 
 use axum::Server;
+use axum_server::tls_rustls::RustlsConfig;
 use bag_of_holding::app;
 use clap::Parser;
 
@@ -26,11 +27,18 @@ async fn main() {
 
     // Parse command line arguments
     let config = Config::parse();
+    let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
+
+    let tls_config = RustlsConfig::from_pem(
+        env::var_os("SSL_CERT").unwrap().as_bytes().to_vec(),
+        env::var_os("SSL_KEY").unwrap().as_bytes().to_vec(),
+    )
+    .await
+    .unwrap();
 
     // Run our service
-    let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
     tracing::info!("Listening on {}", addr);
-    Server::bind(&addr)
+    axum_server::bind_rustls(addr, tls_config)
         .serve(app().into_make_service())
         .await
         .expect("server error");
