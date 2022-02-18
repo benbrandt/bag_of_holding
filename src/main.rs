@@ -18,7 +18,7 @@ struct Config {
 async fn main() {
     // Set the RUST_LOG, if it hasn't been explicitly defined
     if env::var_os("RUST_LOG").is_none() {
-        env::set_var("RUST_LOG", "bag_of_holding=debug,tower_http=debug")
+        env::set_var("RUST_LOG", "debug");
     }
 
     // Setup tracing
