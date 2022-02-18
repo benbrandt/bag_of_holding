@@ -6,11 +6,12 @@
 use itertools::Itertools;
 use rand::Rng;
 use serde::{Deserialize, Serialize};
-use strum::EnumIter;
+use strum::{Display, EnumIter};
 
 /// Available dice types for rolling
-#[derive(Deserialize, EnumIter, Serialize)]
+#[derive(Clone, Copy, Deserialize, Display, EnumIter, Eq, Hash, PartialEq, Serialize)]
 #[serde(rename_all = "lowercase")]
+#[strum(serialize_all = "lowercase")]
 pub enum Die {
     D4,
     D6,

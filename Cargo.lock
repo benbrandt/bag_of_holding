@@ -137,6 +137,7 @@ dependencies = [
  "rand_pcg",
  "serde",
  "serde_json",
+ "strum",
  "tokio",
  "tower",
  "tower-http",
