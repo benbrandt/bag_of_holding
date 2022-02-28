@@ -47,7 +47,14 @@ impl Die {
     /// assert!((1..=20).contains(&roll));
     /// ```
     pub fn roll(&self, rng: &mut impl Rng) -> u32 {
-        rng.gen_range(1..=self.sides())
+        let roll = rng.gen_range(1..=self.sides());
+
+        metrics::increment_counter!(
+            "dice_roll_total",
+            &[("die", self.to_string()), ("roll", roll.to_string())]
+        );
+
+        roll
     }
 
     /// Roll a number of a given dice and return the results

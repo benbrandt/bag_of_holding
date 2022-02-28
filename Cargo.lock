@@ -337,6 +337,7 @@ name = "dice"
 version = "0.1.0"
 dependencies = [
  "itertools",
+ "metrics",
  "rand",
  "rand_pcg",
  "serde",
