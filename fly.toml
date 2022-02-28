@@ -13,6 +13,10 @@ RUST_LOG = "info"
 allowed_public_ports = []
 auto_rollback = true
 
+[metrics]
+port = 9000
+path = "/metrics"
+
 [[services]]
 http_checks = []
 internal_port = 5000

@@ -1,7 +1,13 @@
 use std::{sync::Arc, time::Duration};
 
-use axum::{error_handling::HandleErrorLayer, response::IntoResponse, BoxError, Router};
-use hyper::{header, StatusCode};
+use axum::{
+    error_handling::HandleErrorLayer,
+    extract::MatchedPath,
+    http::{header, Request, StatusCode},
+    middleware::{self, Next},
+    response::IntoResponse,
+    BoxError, Router,
+};
 use tower::ServiceBuilder;
 use tower_http::{trace::TraceLayer, ServiceBuilderExt};
 
@@ -31,7 +37,10 @@ pub fn app() -> Router {
         // Compress responses
         .compression();
 
-    Router::new().nest("/dice", dice_routes()).layer(middleware)
+    Router::new()
+        .nest("/dice", dice_routes())
+        .layer(middleware)
+        .route_layer(middleware::from_fn(track_metrics))
 }
 
 /// Handle errors propagated from middleware
@@ -47,4 +56,26 @@ async fn handle_errors(err: BoxError) -> impl IntoResponse {
             format!("Unhandled internal error: {}", err),
         )
     }
+}
+
+/// Track path-related metrics
+async fn track_metrics<B>(req: Request<B>, next: Next<B>) -> impl IntoResponse {
+    let path = if let Some(matched_path) = req.extensions().get::<MatchedPath>() {
+        matched_path.as_str().to_owned()
+    } else {
+        req.uri().path().to_owned()
+    };
+    let method = req.method().clone();
+    let response = next.run(req).await;
+    let status = response.status().as_u16().to_string();
+
+    let labels = [
+        ("method", method.to_string()),
+        ("path", path),
+        ("status", status),
+    ];
+
+    metrics::increment_counter!("app_http_requests_total", &labels);
+
+    response
 }
