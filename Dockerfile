@@ -18,4 +18,5 @@ FROM gcr.io/distroless/cc as runtime
 WORKDIR /app
 COPY --from=builder /app/target/release/bag_of_holding ./
 EXPOSE 5000
+EXPOSE 9000
 CMD ["./bag_of_holding"]
