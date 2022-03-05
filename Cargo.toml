@@ -6,8 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-axum = { version = "0.4.6", features = ["headers", "http2", "multipart", "ws"] }
-clap = { version = "3.1.3", features = ["derive"] }
+axum = { version = "0.4.8", features = ["headers", "http2", "multipart", "ws"] }
+clap = { version = "3.1.5", features = ["derive"] }
 dice = { path = "./crates/dice" }
 hyper = { version = "0.14.17", features = ["full"] }
 metrics = "0.18.0"
