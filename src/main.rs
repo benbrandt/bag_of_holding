@@ -4,6 +4,7 @@ use axum::Server;
 use bag_of_holding::app;
 use clap::Parser;
 use metrics_exporter_prometheus::PrometheusBuilder;
+use tracing_subscriber::{prelude::__tracing_subscriber_SubscriberExt, util::SubscriberInitExt};
 
 /// Command line arguments
 #[derive(Debug, Parser)]
@@ -22,8 +23,22 @@ async fn main() {
         env::set_var("RUST_LOG", "debug");
     }
 
+    // Sentry
+    let _guard = sentry::init((
+        "https://c21aaae10ee74c71aa81a04f03203f59@o251876.ingest.sentry.io/6243981",
+        sentry::ClientOptions {
+            release: sentry::release_name!(),
+            traces_sample_rate: 1.0,
+            ..Default::default()
+        },
+    ));
+
     // Setup tracing
-    tracing_subscriber::fmt::init();
+    tracing_subscriber::registry()
+        .with(tracing_subscriber::filter::EnvFilter::from_default_env())
+        .with(tracing_subscriber::fmt::layer())
+        .with(sentry::integrations::tracing::layer())
+        .init();
 
     // Parse command line arguments
     let config = Config::parse();

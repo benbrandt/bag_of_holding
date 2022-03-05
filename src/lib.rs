@@ -8,6 +8,7 @@ use axum::{
     response::IntoResponse,
     BoxError, Router,
 };
+use sentry_tower::{NewSentryLayer, SentryHttpLayer};
 use tower::ServiceBuilder;
 use tower_http::{trace::TraceLayer, ServiceBuilderExt};
 
@@ -30,6 +31,9 @@ pub fn app() -> Router {
         .sensitive_request_headers(sensitive_headers.clone())
         // `TraceLayer` adds high level tracing and logging
         .layer(TraceLayer::new_for_http())
+        // Sentry setup
+        .layer(NewSentryLayer::new_from_top())
+        .layer(SentryHttpLayer::with_transaction())
         // Recall after tracing
         .sensitive_response_headers(sensitive_headers)
         // Set a timeout
@@ -66,6 +70,12 @@ async fn track_metrics<B>(req: Request<B>, next: Next<B>) -> impl IntoResponse {
         req.uri().path().to_owned()
     };
     let method = req.method().clone();
+
+    // Update sentry scope
+    sentry::configure_scope(|scope| {
+        scope.set_transaction(Some(&path));
+    });
+
     let response = next.run(req).await;
     let status = response.status().as_u16().to_string();
 
