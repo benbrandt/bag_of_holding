@@ -38,3 +38,6 @@ tracing-subscriber = { version = "0.3.9", features = ["env-filter"] }
 
 [workspace]
 members = ["crates/*"]
+
+[profile.release]
+lto = "thin"
