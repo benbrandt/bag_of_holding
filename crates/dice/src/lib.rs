@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter};
 
 /// Available dice types for rolling
-#[derive(Clone, Copy, Deserialize, Display, EnumIter, Eq, Hash, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Display, EnumIter, Eq, Hash, PartialEq, Serialize)]
 #[serde(rename_all = "lowercase")]
 #[strum(serialize_all = "lowercase")]
 pub enum Die {
@@ -24,6 +24,7 @@ pub enum Die {
 
 impl Die {
     /// Number of sides for a given die
+    #[tracing::instrument]
     pub fn sides(&self) -> u32 {
         match self {
             Self::D4 => 4,
@@ -46,6 +47,7 @@ impl Die {
     ///
     /// assert!((1..=20).contains(&roll));
     /// ```
+    #[tracing::instrument(skip(rng))]
     pub fn roll(&self, rng: &mut impl Rng) -> u32 {
         let roll = rng.gen_range(1..=self.sides());
 
@@ -68,6 +70,7 @@ impl Die {
     /// assert_eq!(rolls.len(), 2);
     /// assert!(rolls.iter().all(|roll| (1..=20).contains(roll)));
     /// ```
+    #[tracing::instrument(skip(rng))]
     pub fn roll_multiple(&self, rng: &mut impl Rng, amount: usize) -> Vec<u32> {
         (1..=amount).map(|_| self.roll(rng)).collect_vec()
     }

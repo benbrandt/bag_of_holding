@@ -16,7 +16,8 @@ use self::dice::dice_routes;
 
 mod dice;
 
-/// Top-level app. To be consumed by main.rs and tests
+/// Top-level app. To be consumed by main.rs and
+#[tracing::instrument]
 pub fn app() -> Router {
     // Mark the `Authorization` and `Cookie` headers as sensitive so it doesn't show in logs
     let sensitive_headers: Arc<[_]> = vec![header::AUTHORIZATION, header::COOKIE].into();
@@ -48,6 +49,7 @@ pub fn app() -> Router {
 }
 
 /// Handle errors propagated from middleware
+#[tracing::instrument]
 async fn handle_errors(err: BoxError) -> impl IntoResponse {
     if err.is::<tower::timeout::error::Elapsed>() {
         (
@@ -62,7 +64,8 @@ async fn handle_errors(err: BoxError) -> impl IntoResponse {
     }
 }
 
-/// Track path-related metrics
+/// Track path-related m
+#[tracing::instrument(skip_all)]
 async fn track_metrics<B>(req: Request<B>, next: Next<B>) -> impl IntoResponse {
     let path = if let Some(matched_path) = req.extensions().get::<MatchedPath>() {
         matched_path.as_str().to_owned()

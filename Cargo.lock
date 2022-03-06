@@ -402,6 +402,7 @@ dependencies = [
  "rand_pcg",
  "serde",
  "strum",
+ "tracing",
 ]
 
 [[package]]

@@ -4,7 +4,10 @@ use axum::Server;
 use bag_of_holding::app;
 use clap::Parser;
 use metrics_exporter_prometheus::PrometheusBuilder;
-use tracing_subscriber::{prelude::__tracing_subscriber_SubscriberExt, util::SubscriberInitExt};
+use tracing::info;
+use tracing_subscriber::{
+    fmt, prelude::__tracing_subscriber_SubscriberExt, registry, util::SubscriberInitExt, EnvFilter,
+};
 
 /// Command line arguments
 #[derive(Debug, Parser)]
@@ -28,15 +31,15 @@ async fn main() {
         "https://c21aaae10ee74c71aa81a04f03203f59@o251876.ingest.sentry.io/6243981",
         sentry::ClientOptions {
             release: sentry::release_name!(),
-            traces_sample_rate: 1.0,
+            traces_sample_rate: 0.1,
             ..Default::default()
         },
     ));
 
     // Setup tracing
-    tracing_subscriber::registry()
-        .with(tracing_subscriber::filter::EnvFilter::from_default_env())
-        .with(tracing_subscriber::fmt::layer())
+    registry()
+        .with(EnvFilter::from_default_env())
+        .with(fmt::layer())
         .with(sentry::integrations::tracing::layer())
         .init();
 
@@ -50,7 +53,7 @@ async fn main() {
 
     // Run our service
     let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
-    tracing::info!("Listening on {}", addr);
+    info!("Listening on {}", addr);
     Server::bind(&addr)
         .serve(app().into_make_service())
         .await
