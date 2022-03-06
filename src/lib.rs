@@ -74,11 +74,6 @@ async fn track_metrics<B>(req: Request<B>, next: Next<B>) -> impl IntoResponse {
     };
     let method = req.method().clone();
 
-    // Update sentry scope
-    sentry::configure_scope(|scope| {
-        scope.set_transaction(Some(&path));
-    });
-
     let response = next.run(req).await;
     let status = response.status().as_u16().to_string();
 
