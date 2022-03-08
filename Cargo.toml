@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 axum = { version = "0.4.8", features = ["headers", "http2", "multipart", "ws"] }
-clap = { version = "3.1.5", features = ["derive"] }
+clap = { version = "3.1.6", features = ["derive"] }
 dice = { path = "./crates/dice" }
 hyper = { version = "0.14.17", features = ["full"] }
 metrics = "0.18.0"
