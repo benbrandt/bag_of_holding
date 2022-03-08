@@ -10,7 +10,7 @@ use axum::{
 };
 use sentry_tower::{NewSentryLayer, SentryHttpLayer};
 use tower::ServiceBuilder;
-use tower_http::{trace::TraceLayer, ServiceBuilderExt};
+use tower_http::{catch_panic::CatchPanicLayer, trace::TraceLayer, ServiceBuilderExt};
 
 use self::dice::dice_routes;
 
@@ -23,6 +23,8 @@ pub fn app() -> Router {
     let sensitive_headers: Arc<[_]> = vec![header::AUTHORIZATION, header::COOKIE].into();
 
     let middleware = ServiceBuilder::new()
+        // Turn panics into a 500
+        .layer(CatchPanicLayer::new())
         // Handle errors from middleware
         //
         // This middleware most be added above any fallible
