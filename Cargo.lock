@@ -189,6 +189,7 @@ dependencies = [
 name = "bag_of_holding"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "axum",
  "clap",
  "dice",
@@ -207,6 +208,7 @@ dependencies = [
  "tower",
  "tower-http",
  "tracing",
+ "tracing-log",
  "tracing-subscriber",
 ]
 

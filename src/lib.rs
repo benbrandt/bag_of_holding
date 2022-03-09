@@ -2,9 +2,8 @@ use std::{sync::Arc, time::Duration};
 
 use axum::{
     error_handling::HandleErrorLayer,
-    extract::MatchedPath,
-    http::{header, Request, StatusCode},
-    middleware::{self, Next},
+    http::{header, StatusCode},
+    middleware::{self},
     response::IntoResponse,
     BoxError, Router,
 };
@@ -12,9 +11,10 @@ use sentry_tower::{NewSentryLayer, SentryHttpLayer};
 use tower::ServiceBuilder;
 use tower_http::{catch_panic::CatchPanicLayer, trace::TraceLayer, ServiceBuilderExt};
 
-use self::dice::dice_routes;
+use self::{dice::dice_routes, metrics::track_metrics};
 
 mod dice;
+pub mod metrics;
 
 /// Top-level app. To be consumed by main.rs and
 #[tracing::instrument]
@@ -64,28 +64,4 @@ async fn handle_errors(err: BoxError) -> impl IntoResponse {
             format!("Unhandled internal error: {}", err),
         )
     }
-}
-
-/// Track path-related m
-#[tracing::instrument(skip_all)]
-async fn track_metrics<B>(req: Request<B>, next: Next<B>) -> impl IntoResponse {
-    let path = if let Some(matched_path) = req.extensions().get::<MatchedPath>() {
-        matched_path.as_str().to_owned()
-    } else {
-        req.uri().path().to_owned()
-    };
-    let method = req.method().clone();
-
-    let response = next.run(req).await;
-    let status = response.status().as_u16().to_string();
-
-    let labels = [
-        ("method", method.to_string()),
-        ("path", path),
-        ("status", status),
-    ];
-
-    metrics::increment_counter!("app_http_requests_total", &labels);
-
-    response
 }

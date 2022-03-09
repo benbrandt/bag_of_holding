@@ -1,13 +1,9 @@
 use std::{env, net::SocketAddr};
 
 use axum::Server;
-use bag_of_holding::app;
+use bag_of_holding::{app, metrics::init_tracing_and_metrics};
 use clap::Parser;
-use metrics_exporter_prometheus::PrometheusBuilder;
 use tracing::info;
-use tracing_subscriber::{
-    fmt, prelude::__tracing_subscriber_SubscriberExt, registry, util::SubscriberInitExt, EnvFilter,
-};
 
 /// Command line arguments
 #[derive(Debug, Parser)]
@@ -37,19 +33,10 @@ async fn main() {
     ));
 
     // Setup tracing
-    registry()
-        .with(EnvFilter::from_default_env())
-        .with(fmt::layer())
-        .with(sentry::integrations::tracing::layer())
-        .init();
+    init_tracing_and_metrics().expect("Failed to initialize metrics");
 
     // Parse command line arguments
     let config = Config::parse();
-
-    // Metrics setup. Listening on port 9000
-    PrometheusBuilder::new()
-        .install()
-        .expect("failed to install metrics recorder");
 
     // Run our service
     let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
