@@ -1,20 +1,36 @@
-use std::{sync::Arc, time::Duration};
+use std::{net::SocketAddr, sync::Arc, time::Duration};
 
 use axum::{
     error_handling::HandleErrorLayer,
     http::{header, StatusCode},
-    middleware::{self},
+    middleware,
     response::IntoResponse,
-    BoxError, Router,
+    BoxError, Router, Server,
 };
+use clap::Parser;
 use sentry_tower::{NewSentryLayer, SentryHttpLayer};
 use tower::ServiceBuilder;
 use tower_http::{catch_panic::CatchPanicLayer, trace::TraceLayer, ServiceBuilderExt};
+use tracing::info;
+
+use crate::metrics::init_tracing_and_metrics;
 
 use self::{dice::dice_routes, metrics::track_metrics};
 
 mod dice;
-pub mod metrics;
+mod metrics;
+
+/// Command line arguments
+#[derive(Debug, Parser)]
+#[clap(author, version, about, long_about = None)]
+pub struct Config {
+    /// The port to listen on for the app
+    #[clap(long, short, default_value = "5000")]
+    port: u16,
+    /// The port to listen on for metrics
+    #[clap(long, short, default_value = "9000")]
+    metrics_port: u16,
+}
 
 /// Top-level app. To be consumed by main.rs and
 #[tracing::instrument]
@@ -64,4 +80,18 @@ async fn handle_errors(err: BoxError) -> impl IntoResponse {
             format!("Unhandled internal error: {}", err),
         )
     }
+}
+
+/// Start the entire app
+pub async fn start_app(config: Config) {
+    // Setup tracing
+    init_tracing_and_metrics(config.metrics_port).expect("Failed to initialize metrics");
+
+    // Run our service
+    let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
+    info!("Listening on {}", addr);
+    Server::bind(&addr)
+        .serve(app().into_make_service())
+        .await
+        .expect("server error");
 }

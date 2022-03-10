@@ -1,20 +1,9 @@
-use std::{env, net::SocketAddr};
+use std::env;
 
-use axum::Server;
-use bag_of_holding::{app, metrics::init_tracing_and_metrics};
-use clap::Parser;
-use tracing::info;
+use bag_of_holding::{start_app, Config};
+use clap::StructOpt;
 
-/// Command line arguments
-#[derive(Debug, Parser)]
-#[clap(author, version, about, long_about = None)]
-struct Config {
-    /// The port to listen on
-    #[clap(long, short, default_value = "5000")]
-    port: u16,
-}
-
-/// Basic wrapper around `app()` to configure running in a server environment
+/// Basic wrapper around `start_app()` to configure running in a server environment
 #[tokio::main]
 async fn main() {
     // Set the RUST_LOG, if it hasn't been explicitly defined
@@ -22,7 +11,7 @@ async fn main() {
         env::set_var("RUST_LOG", "debug");
     }
 
-    // Sentry
+    // Start Sentry
     let _guard = sentry::init((
         "https://c21aaae10ee74c71aa81a04f03203f59@o251876.ingest.sentry.io/6243981",
         sentry::ClientOptions {
@@ -32,17 +21,6 @@ async fn main() {
         },
     ));
 
-    // Setup tracing
-    init_tracing_and_metrics().expect("Failed to initialize metrics");
-
-    // Parse command line arguments
-    let config = Config::parse();
-
-    // Run our service
-    let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
-    info!("Listening on {}", addr);
-    Server::bind(&addr)
-        .serve(app().into_make_service())
-        .await
-        .expect("server error");
+    // Parse command line arguments and start app
+    start_app(Config::parse()).await;
 }

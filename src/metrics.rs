@@ -2,11 +2,12 @@
 //!
 //! Metrics-related setup and initialization code
 
+use std::net::SocketAddr;
+
 use axum::{extract::MatchedPath, http::Request, middleware::Next, response::IntoResponse};
 use metrics::KeyName;
 use metrics_exporter_prometheus::PrometheusBuilder;
 use strum::IntoStaticStr;
-use tracing_log::LogTracer;
 use tracing_subscriber::{
     fmt, prelude::__tracing_subscriber_SubscriberExt, registry, util::SubscriberInitExt, EnvFilter,
 };
@@ -49,10 +50,7 @@ pub(crate) async fn track_metrics<B>(req: Request<B>, next: Next<B>) -> impl Int
 }
 
 /// Initialize all metrics configuration and subscribers for the app
-pub fn init_tracing_and_metrics() -> anyhow::Result<()> {
-    // Capture logs as traces
-    LogTracer::init()?;
-
+pub(crate) fn init_tracing_and_metrics(metrics_port: u16) -> anyhow::Result<()> {
     // Setup tracing
     registry()
         .with(EnvFilter::from_default_env())
@@ -60,8 +58,10 @@ pub fn init_tracing_and_metrics() -> anyhow::Result<()> {
         .with(sentry::integrations::tracing::layer())
         .init();
 
-    // Metrics setup. Listening on port 9000
-    PrometheusBuilder::new().install()?;
+    // Metrics setup. Listening on separate port than the app
+    PrometheusBuilder::new()
+        .with_http_listener(SocketAddr::from(([0, 0, 0, 0], metrics_port)))
+        .install()?;
 
     Ok(())
 }
