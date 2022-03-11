@@ -11,7 +11,7 @@ axum = { version = "0.4.8", features = ["headers", "http2", "multipart", "ws"] }
 clap = { version = "3.1.6", features = ["derive"] }
 dice = { path = "./crates/dice" }
 hyper = { version = "0.14.17", features = ["full"] }
-metrics = "0.18.0"
+metrics = "0.18.1"
 metrics-exporter-prometheus = "0.9.0"
 mime = "0.3.16"
 rand = "0.8.5"
