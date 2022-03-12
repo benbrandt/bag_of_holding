@@ -17,6 +17,7 @@ mod dice;
 mod metrics;
 
 /// Top-level app. To be consumed by main.rs and
+#[tracing::instrument]
 fn app() -> Router {
     // Mark the `Authorization` and `Cookie` headers as sensitive so it doesn't show in logs
     let sensitive_headers: Arc<[_]> = vec![header::AUTHORIZATION, header::COOKIE].into();
@@ -66,9 +67,8 @@ async fn handle_errors(err: BoxError) -> impl IntoResponse {
 }
 
 /// Start the entire app
-pub async fn start_app(listener: TcpListener, metrics_port: u16) {
-    metrics::init(metrics_port);
-
+#[tracing::instrument]
+pub async fn start_app(listener: TcpListener) {
     // Run our service
     Server::from_tcp(listener)
         .expect("failed on tcp listener")

@@ -1,11 +1,8 @@
 //! # Metrics
 //!
-//! Metrics-related setup and initialization code
-
-use std::net::SocketAddr;
+//! Metrics-related tracking code
 
 use axum::{extract::MatchedPath, http::Request, middleware::Next, response::IntoResponse};
-use metrics_exporter_prometheus::PrometheusBuilder;
 
 /// Track path-related metrics
 #[tracing::instrument(skip_all)]
@@ -28,13 +25,4 @@ pub async fn track_requests<B>(req: Request<B>, next: Next<B>) -> impl IntoRespo
     metrics::increment_counter!("app_http_requests_total", &labels);
 
     response
-}
-
-#[tracing::instrument]
-pub fn init(metrics_port: u16) {
-    // Metrics setup. Listening on separate port than the app
-    PrometheusBuilder::new()
-        .with_http_listener(SocketAddr::from(([0, 0, 0, 0], metrics_port)))
-        .install()
-        .expect("failed to start metrics endpoint");
 }

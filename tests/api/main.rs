@@ -25,7 +25,7 @@ impl TestServer {
         let addr = listener.local_addr().unwrap();
 
         let _handle = tokio::spawn(async move {
-            start_app(listener, 0).await;
+            start_app(listener).await;
         });
 
         let client = Client::new();
