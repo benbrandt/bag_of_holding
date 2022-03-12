@@ -1,10 +1,18 @@
 #![warn(clippy::pedantic)]
 
-use std::env;
+use std::{
+    env,
+    net::{SocketAddr, TcpListener},
+};
 
 use bag_of_holding::start_app;
 use clap::Parser;
+use metrics_exporter_prometheus::PrometheusBuilder;
 use sentry::{release_name, ClientOptions};
+use tracing::info;
+use tracing_subscriber::{
+    fmt, prelude::__tracing_subscriber_SubscriberExt, registry, util::SubscriberInitExt, EnvFilter,
+};
 
 /// Command line arguments
 #[derive(Debug, Parser)]
@@ -36,7 +44,26 @@ async fn main() {
         },
     ));
 
+    // Setup tracing
+    registry()
+        .with(EnvFilter::from_default_env())
+        .with(fmt::layer())
+        .with(sentry::integrations::tracing::layer())
+        .init();
+
     // Parse command line arguments and start app
     let config = Config::parse();
-    start_app(config.port, config.metrics_port).await;
+
+    // Metrics setup. Listening on separate port than the app
+    PrometheusBuilder::new()
+        .with_http_listener(SocketAddr::from(([0, 0, 0, 0], config.metrics_port)))
+        .install()
+        .expect("failed to start metrics endpoint");
+
+    let listener = TcpListener::bind(SocketAddr::from(([0, 0, 0, 0], config.port))).unwrap();
+    info!(
+        "Listening on {}",
+        listener.local_addr().expect("can't get local addr")
+    );
+    start_app(listener).await;
 }

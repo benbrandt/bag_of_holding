@@ -1,6 +1,6 @@
 #![warn(clippy::pedantic)]
 
-use std::{net::SocketAddr, sync::Arc, time::Duration};
+use std::{net::TcpListener, sync::Arc, time::Duration};
 
 use axum::{
     error_handling::HandleErrorLayer,
@@ -12,9 +12,6 @@ use axum::{
 use sentry_tower::{NewSentryLayer, SentryHttpLayer};
 use tower::ServiceBuilder;
 use tower_http::{catch_panic::CatchPanicLayer, trace::TraceLayer, ServiceBuilderExt};
-use tracing::info;
-
-use crate::metrics::intialize;
 
 use self::{dice::dice_routes, metrics::track_metrics};
 
@@ -23,7 +20,7 @@ mod metrics;
 
 /// Top-level app. To be consumed by main.rs and
 #[tracing::instrument]
-pub fn app() -> Router {
+fn app() -> Router {
     // Mark the `Authorization` and `Cookie` headers as sensitive so it doesn't show in logs
     let sensitive_headers: Arc<[_]> = vec![header::AUTHORIZATION, header::COOKIE].into();
 
@@ -72,14 +69,10 @@ async fn handle_errors(err: BoxError) -> impl IntoResponse {
 }
 
 /// Start the entire app
-pub async fn start_app(port: u16, metrics_port: u16) {
-    // Setup tracing
-    intialize(metrics_port).expect("Failed to initialize metrics");
-
+pub async fn start_app(listener: TcpListener) {
     // Run our service
-    let addr = SocketAddr::from(([0, 0, 0, 0], port));
-    info!("Listening on {}", addr);
-    Server::bind(&addr)
+    Server::from_tcp(listener)
+        .expect("failed on tcp listener")
         .serve(app().into_make_service())
         .await
         .expect("server error");
