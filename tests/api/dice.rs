@@ -44,7 +44,7 @@ async fn roll_multiple_die_rolls() {
 
         // And they are within the bounds
         for roll in rolls {
-            assert!((1..=die.sides() as u64).contains(&roll.as_u64().unwrap()));
+            assert!((1..=die.into()).contains(&(roll.as_u64().unwrap() as u32)));
         }
     }
 }

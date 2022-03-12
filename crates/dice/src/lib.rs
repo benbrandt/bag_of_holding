@@ -23,20 +23,6 @@ pub enum Die {
 }
 
 impl Die {
-    /// Number of sides for a given die
-    #[tracing::instrument]
-    pub fn sides(&self) -> u32 {
-        match self {
-            Self::D4 => 4,
-            Self::D6 => 6,
-            Self::D8 => 8,
-            Self::D10 => 10,
-            Self::D12 => 12,
-            Self::D20 => 20,
-            Self::D100 => 100,
-        }
-    }
-
     /// Roll the die and return the result
     ///
     /// ```
@@ -49,7 +35,7 @@ impl Die {
     /// ```
     #[tracing::instrument(skip(rng))]
     pub fn roll(&self, rng: &mut impl Rng) -> u32 {
-        let roll = rng.gen_range(1..=self.sides());
+        let roll = rng.gen_range(1u32..=self.into());
 
         metrics::increment_counter!(
             "dice_roll_total",
@@ -73,5 +59,29 @@ impl Die {
     #[tracing::instrument(skip(rng))]
     pub fn roll_multiple(&self, rng: &mut impl Rng, amount: usize) -> Vec<u32> {
         (1..=amount).map(|_| self.roll(rng)).collect_vec()
+    }
+}
+
+impl From<Die> for u32 {
+    /// Number of sides for a given die
+    #[tracing::instrument]
+    fn from(die: Die) -> Self {
+        match die {
+            Die::D4 => 4,
+            Die::D6 => 6,
+            Die::D8 => 8,
+            Die::D10 => 10,
+            Die::D12 => 12,
+            Die::D20 => 20,
+            Die::D100 => 100,
+        }
+    }
+}
+
+impl From<&Die> for u32 {
+    /// Number of sides for a given die
+    #[tracing::instrument]
+    fn from(die: &Die) -> Self {
+        u32::from(*die)
     }
 }
