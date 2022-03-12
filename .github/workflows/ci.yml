@@ -34,7 +34,7 @@ jobs:
         uses: taiki-e/install-action@cargo-llvm-cov
 
       - name: Run tests and generate code coverage
-        run: cargo llvm-cov --all-features --workspace --tests --doctests --lcov --output-path lcov.info
+        run: cargo llvm-cov --all-features --workspace --doctests --lcov --output-path lcov.info
 
       - name: Upload to codecov.io
         if: github.ref == 'refs/heads/main'
