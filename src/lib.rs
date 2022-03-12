@@ -1,3 +1,5 @@
+#![warn(clippy::pedantic)]
+
 use std::{net::SocketAddr, sync::Arc, time::Duration};
 
 use axum::{
@@ -7,30 +9,17 @@ use axum::{
     response::IntoResponse,
     BoxError, Router, Server,
 };
-use clap::Parser;
 use sentry_tower::{NewSentryLayer, SentryHttpLayer};
 use tower::ServiceBuilder;
 use tower_http::{catch_panic::CatchPanicLayer, trace::TraceLayer, ServiceBuilderExt};
 use tracing::info;
 
-use crate::metrics::init_tracing_and_metrics;
+use crate::metrics::intialize;
 
 use self::{dice::dice_routes, metrics::track_metrics};
 
 mod dice;
 mod metrics;
-
-/// Command line arguments
-#[derive(Debug, Parser)]
-#[clap(author, version, about, long_about = None)]
-pub struct Config {
-    /// The port to listen on for the app
-    #[clap(long, short, default_value = "5000")]
-    port: u16,
-    /// The port to listen on for metrics
-    #[clap(long, short, default_value = "9000")]
-    metrics_port: u16,
-}
 
 /// Top-level app. To be consumed by main.rs and
 #[tracing::instrument]
@@ -83,12 +72,12 @@ async fn handle_errors(err: BoxError) -> impl IntoResponse {
 }
 
 /// Start the entire app
-pub async fn start_app(config: Config) {
+pub async fn start_app(port: u16, metrics_port: u16) {
     // Setup tracing
-    init_tracing_and_metrics(config.metrics_port).expect("Failed to initialize metrics");
+    intialize(metrics_port).expect("Failed to initialize metrics");
 
     // Run our service
-    let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
+    let addr = SocketAddr::from(([0, 0, 0, 0], port));
     info!("Listening on {}", addr);
     Server::bind(&addr)
         .serve(app().into_make_service())

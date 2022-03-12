@@ -7,7 +7,7 @@ use rand_pcg::Pcg64;
 
 /// Routes related to dice
 #[tracing::instrument]
-pub(crate) fn dice_routes() -> Router {
+pub fn dice_routes() -> Router {
     Router::new()
         .route("/:die/roll/", post(roll))
         .route("/roll/", post(roll_multiple))
@@ -24,9 +24,10 @@ async fn roll(Path(die): Path<Die>) -> Json<u32> {
 #[tracing::instrument]
 async fn roll_multiple(Json(payload): Json<HashMap<Die, usize>>) -> Json<HashMap<Die, Vec<u32>>> {
     let mut rng = Pcg64::from_entropy();
-    Json(HashMap::from_iter(
+    Json(
         payload
             .into_iter()
-            .map(|(die, num)| (die, die.roll_multiple(&mut rng, num))),
-    ))
+            .map(|(die, num)| (die, die.roll_multiple(&mut rng, num)))
+            .collect::<HashMap<_, _>>(),
+    )
 }

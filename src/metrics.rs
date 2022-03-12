@@ -27,12 +27,11 @@ impl From<MetricName> for KeyName {
 
 /// Track path-related metrics
 #[tracing::instrument(skip_all)]
-pub(crate) async fn track_metrics<B>(req: Request<B>, next: Next<B>) -> impl IntoResponse {
-    let path = if let Some(matched_path) = req.extensions().get::<MatchedPath>() {
-        matched_path.as_str().to_owned()
-    } else {
-        req.uri().path().to_owned()
-    };
+pub async fn track_metrics<B>(req: Request<B>, next: Next<B>) -> impl IntoResponse {
+    let path = req.extensions().get::<MatchedPath>().map_or_else(
+        || req.uri().path().to_owned(),
+        |matched_path| matched_path.as_str().to_owned(),
+    );
     let method = req.method().clone();
 
     let response = next.run(req).await;
@@ -50,7 +49,7 @@ pub(crate) async fn track_metrics<B>(req: Request<B>, next: Next<B>) -> impl Int
 }
 
 /// Initialize all metrics configuration and subscribers for the app
-pub(crate) fn init_tracing_and_metrics(metrics_port: u16) -> anyhow::Result<()> {
+pub fn intialize(metrics_port: u16) -> anyhow::Result<()> {
     // Setup tracing
     registry()
         .with(EnvFilter::from_default_env())

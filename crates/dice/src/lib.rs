@@ -2,6 +2,7 @@
 //!
 //! `dice` contains everything you need to roll some dice.
 //! Supports d4, d6, d8, d10, d12, d20, d100
+#![warn(clippy::pedantic, clippy::nursery)]
 
 use itertools::Itertools;
 use rand::Rng;
@@ -34,7 +35,7 @@ impl Die {
     /// assert!((1..=20).contains(&roll));
     /// ```
     #[tracing::instrument(skip(rng))]
-    pub fn roll(&self, rng: &mut impl Rng) -> u32 {
+    pub fn roll(self, rng: &mut impl Rng) -> u32 {
         let roll = rng.gen_range(1u32..=self.into());
 
         metrics::increment_counter!(
@@ -57,7 +58,7 @@ impl Die {
     /// assert!(rolls.iter().all(|roll| (1..=20).contains(roll)));
     /// ```
     #[tracing::instrument(skip(rng))]
-    pub fn roll_multiple(&self, rng: &mut impl Rng, amount: usize) -> Vec<u32> {
+    pub fn roll_multiple(self, rng: &mut impl Rng, amount: usize) -> Vec<u32> {
         (1..=amount).map(|_| self.roll(rng)).collect_vec()
     }
 }
@@ -75,13 +76,5 @@ impl From<Die> for u32 {
             Die::D20 => 20,
             Die::D100 => 100,
         }
-    }
-}
-
-impl From<&Die> for u32 {
-    /// Number of sides for a given die
-    #[tracing::instrument]
-    fn from(die: &Die) -> Self {
-        u32::from(*die)
     }
 }
