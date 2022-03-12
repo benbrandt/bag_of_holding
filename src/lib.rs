@@ -17,7 +17,6 @@ mod dice;
 mod metrics;
 
 /// Top-level app. To be consumed by main.rs and
-#[tracing::instrument]
 fn app() -> Router {
     // Mark the `Authorization` and `Cookie` headers as sensitive so it doesn't show in logs
     let sensitive_headers: Arc<[_]> = vec![header::AUTHORIZATION, header::COOKIE].into();

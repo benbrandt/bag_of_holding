@@ -8,9 +8,6 @@ use bag_of_holding::start_app;
 use hyper::{client::HttpConnector, Body, Client};
 use serde_json::Value;
 use tokio::task::JoinHandle;
-use tracing_subscriber::{
-    prelude::__tracing_subscriber_SubscriberExt, registry, util::SubscriberInitExt, EnvFilter,
-};
 
 mod dice;
 
@@ -23,9 +20,6 @@ struct TestServer {
 
 impl TestServer {
     async fn new() -> Self {
-        // Setup tracing
-        registry().with(EnvFilter::from_default_env()).init();
-
         // Grab a random port
         let listener = TcpListener::bind(SocketAddr::from(([0, 0, 0, 0], 0))).unwrap();
         let addr = listener.local_addr().unwrap();
