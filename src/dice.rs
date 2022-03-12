@@ -7,7 +7,7 @@ use rand_pcg::Pcg64;
 
 /// Routes related to dice
 #[tracing::instrument]
-pub fn dice_routes() -> Router {
+pub fn routes() -> Router {
     Router::new()
         .route("/:die/roll/", post(roll))
         .route("/roll/", post(roll_multiple))

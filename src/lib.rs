@@ -13,8 +13,6 @@ use sentry_tower::{NewSentryLayer, SentryHttpLayer};
 use tower::ServiceBuilder;
 use tower_http::{catch_panic::CatchPanicLayer, trace::TraceLayer, ServiceBuilderExt};
 
-use self::{dice::dice_routes, metrics::track_metrics};
-
 mod dice;
 mod metrics;
 
@@ -47,9 +45,9 @@ fn app() -> Router {
         .compression();
 
     Router::new()
-        .nest("/dice", dice_routes())
+        .nest("/dice", dice::routes())
         .layer(middleware)
-        .route_layer(middleware::from_fn(track_metrics))
+        .route_layer(middleware::from_fn(metrics::track_requests))
 }
 
 /// Handle errors propagated from middleware
@@ -69,7 +67,9 @@ async fn handle_errors(err: BoxError) -> impl IntoResponse {
 }
 
 /// Start the entire app
-pub async fn start_app(listener: TcpListener) {
+pub async fn start_app(listener: TcpListener, metrics_port: u16) {
+    metrics::init(metrics_port);
+
     // Run our service
     Server::from_tcp(listener)
         .expect("failed on tcp listener")

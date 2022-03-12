@@ -7,7 +7,6 @@ use std::{
 
 use bag_of_holding::start_app;
 use clap::Parser;
-use metrics_exporter_prometheus::PrometheusBuilder;
 use sentry::{release_name, ClientOptions};
 use tracing::info;
 use tracing_subscriber::{
@@ -54,16 +53,10 @@ async fn main() {
     // Parse command line arguments and start app
     let config = Config::parse();
 
-    // Metrics setup. Listening on separate port than the app
-    PrometheusBuilder::new()
-        .with_http_listener(SocketAddr::from(([0, 0, 0, 0], config.metrics_port)))
-        .install()
-        .expect("failed to start metrics endpoint");
-
     let listener = TcpListener::bind(SocketAddr::from(([0, 0, 0, 0], config.port))).unwrap();
     info!(
         "Listening on {}",
         listener.local_addr().expect("can't get local addr")
     );
-    start_app(listener).await;
+    start_app(listener, config.metrics_port).await;
 }
