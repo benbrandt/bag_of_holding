@@ -9,7 +9,7 @@ use axum::{
     response::IntoResponse,
     BoxError, Router, Server,
 };
-use sentry_tower::{NewSentryLayer, SentryHttpLayer};
+use sentry::integrations::tower::{NewSentryLayer, SentryHttpLayer};
 use tower::ServiceBuilder;
 use tower_http::{catch_panic::CatchPanicLayer, trace::TraceLayer, ServiceBuilderExt};
 
