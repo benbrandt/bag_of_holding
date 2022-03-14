@@ -22,6 +22,7 @@ fn app() -> Router {
     // Mark the `Authorization` and `Cookie` headers as sensitive so it doesn't show in logs
     let sensitive_headers: Arc<[_]> = vec![header::AUTHORIZATION, header::COOKIE].into();
 
+    // Middleware for entire service
     let middleware = ServiceBuilder::new()
         // Turn panics into a 500
         .layer(CatchPanicLayer::new())
@@ -36,7 +37,6 @@ fn app() -> Router {
         .layer(TraceLayer::new_for_http())
         // Sentry setup
         .layer(NewSentryLayer::new_from_top())
-        .layer(SentryHttpLayer::with_transaction())
         // Recall after tracing
         .sensitive_response_headers(sensitive_headers)
         // Set a timeout
@@ -44,10 +44,17 @@ fn app() -> Router {
         // Compress responses
         .compression();
 
+    // Middleware that should only run if the request matches a route
+    let route_middleware = ServiceBuilder::new()
+        // Add metrics tracking to endpoints
+        .layer(middleware::from_fn(metrics::track_requests))
+        // Start performance transactions for matched requests
+        .layer(SentryHttpLayer::with_transaction());
+
     Router::new()
         .nest("/dice", dice::routes())
         .layer(middleware)
-        .route_layer(middleware::from_fn(metrics::track_requests))
+        .route_layer(route_middleware)
 }
 
 /// Handle errors propagated from middleware
