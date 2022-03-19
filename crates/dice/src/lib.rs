@@ -65,7 +65,6 @@ impl Die {
 
 impl From<Die> for u32 {
     /// Number of sides for a given die
-    #[tracing::instrument]
     fn from(die: Die) -> Self {
         match die {
             Die::D4 => 4,

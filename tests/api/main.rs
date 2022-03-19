@@ -3,8 +3,11 @@ use std::{
     net::{SocketAddr, TcpListener},
 };
 
-use axum::http::{header, Method, Request, StatusCode};
-use bag_of_holding::start_app;
+use axum::{
+    http::{header, Method, Request, StatusCode},
+    Server,
+};
+use bag_of_holding::app;
 use hyper::{client::HttpConnector, Body, Client};
 use serde_json::Value;
 use tokio::task::JoinHandle;
@@ -25,7 +28,11 @@ impl TestServer {
         let addr = listener.local_addr().unwrap();
 
         let _handle = tokio::spawn(async move {
-            start_app(listener).await;
+            Server::from_tcp(listener)
+                .expect("failed on tcp listener")
+                .serve(app().into_make_service())
+                .await
+                .expect("server error");
         });
 
         let client = Client::new();

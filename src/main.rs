@@ -1,11 +1,9 @@
 #![warn(clippy::pedantic)]
 
-use std::{
-    env,
-    net::{SocketAddr, TcpListener},
-};
+use std::{env, net::SocketAddr, os::unix::prelude::OsStrExt};
 
-use bag_of_holding::start_app;
+use axum_server::tls_rustls::RustlsConfig;
+use bag_of_holding::app;
 use clap::Parser;
 use metrics_exporter_prometheus::PrometheusBuilder;
 use sentry::{release_name, ClientOptions};
@@ -54,16 +52,36 @@ async fn main() {
     // Parse command line arguments and start app
     let config = Config::parse();
 
+    // Get TLS config if available
+    let tls_config =
+        if let (Some(cert), Some(key)) = (env::var_os("SSL_CERT"), env::var_os("SSL_KEY")) {
+            Some(
+                RustlsConfig::from_pem(cert.as_bytes().to_vec(), key.as_bytes().to_vec())
+                    .await
+                    .expect("Failed to load TLS certs"),
+            )
+        } else {
+            None
+        };
+
     // Metrics setup. Listening on separate port than the app
     PrometheusBuilder::new()
         .with_http_listener(SocketAddr::from(([0, 0, 0, 0], config.metrics_port)))
         .install()
         .expect("failed to start metrics endpoint");
 
-    let listener = TcpListener::bind(SocketAddr::from(([0, 0, 0, 0], config.port))).unwrap();
-    info!(
-        "Listening on {}",
-        listener.local_addr().expect("can't get local addr")
-    );
-    start_app(listener).await;
+    let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
+    info!("Listening on {}", addr);
+
+    if let Some(config) = tls_config {
+        axum_server::bind_rustls(addr, config)
+            .serve(app().into_make_service())
+            .await
+            .expect("server error");
+    } else {
+        axum_server::bind(addr)
+            .serve(app().into_make_service())
+            .await
+            .expect("server error");
+    }
 }

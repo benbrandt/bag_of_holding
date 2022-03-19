@@ -1,13 +1,13 @@
 #![warn(clippy::pedantic)]
 
-use std::{net::TcpListener, sync::Arc, time::Duration};
+use std::{sync::Arc, time::Duration};
 
 use axum::{
     error_handling::HandleErrorLayer,
     http::{header, StatusCode},
     middleware,
     response::IntoResponse,
-    BoxError, Router, Server,
+    BoxError, Router,
 };
 use sentry::integrations::tower::{NewSentryLayer, SentryHttpLayer};
 use tower::ServiceBuilder;
@@ -17,8 +17,8 @@ mod dice;
 mod metrics;
 
 /// Top-level app. To be consumed by main.rs and
-#[tracing::instrument]
-fn app() -> Router {
+#[must_use]
+pub fn app() -> Router {
     // Mark the `Authorization` and `Cookie` headers as sensitive so it doesn't show in logs
     let sensitive_headers: Arc<[_]> = vec![header::AUTHORIZATION, header::COOKIE].into();
 
@@ -71,15 +71,4 @@ async fn handle_errors(err: BoxError) -> impl IntoResponse {
             format!("Unhandled internal error: {}", err),
         )
     }
-}
-
-/// Start the entire app
-#[tracing::instrument]
-pub async fn start_app(listener: TcpListener) {
-    // Run our service
-    Server::from_tcp(listener)
-        .expect("failed on tcp listener")
-        .serve(app().into_make_service())
-        .await
-        .expect("server error");
 }
