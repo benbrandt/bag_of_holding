@@ -16,7 +16,7 @@ fn roll() {
         let die_num: u32 = die.into();
         let dist = Uniform::new(1.0, die_num as f64).unwrap();
 
-        let rolls = (0..100)
+        let rolls = (0..die_num * 10)
             .into_iter()
             .map(|_| die.roll(&mut rng))
             .collect_vec();

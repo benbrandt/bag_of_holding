@@ -2,8 +2,13 @@ use std::collections::HashMap;
 
 use axum::http::Method;
 use dice::Die;
+use futures::future::try_join_all;
 use hyper::Body;
 use serde_json::json;
+use statrs::{
+    distribution::Uniform,
+    statistics::{Distribution, Statistics},
+};
 use strum::IntoEnumIterator;
 
 use crate::TestServer;
@@ -13,16 +18,24 @@ async fn die_roll() {
     let server = TestServer::new().await;
 
     for sides in [4, 6, 8, 10, 12, 20, 100] {
-        let resp = server
-            .request(
-                Method::POST,
-                &format!("/dice/d{sides}/roll/"),
-                Body::empty(),
-            )
-            .await
-            .unwrap();
+        let rolls = try_join_all((0..sides * 10).into_iter().map(|_| async {
+            server
+                .request(
+                    Method::POST,
+                    &format!("/dice/d{sides}/roll/"),
+                    Body::empty(),
+                )
+                .await
+        }))
+        .await
+        .unwrap();
 
-        assert!((1..=sides).contains(&resp.as_u64().unwrap()));
+        let dist = Uniform::new(1.0, sides as f64).unwrap();
+        assert!(rolls
+            .iter()
+            .all(|roll| (1..=sides).contains(&roll.as_u64().unwrap())));
+        let mean = rolls.into_iter().map(|r| r.as_f64().unwrap()).mean();
+        assert!((mean - dist.mean().unwrap()).abs() < dist.std_dev().unwrap());
     }
 }
 
