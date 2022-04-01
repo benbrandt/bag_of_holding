@@ -9,7 +9,7 @@ edition = "2021"
 anyhow = { version = "1.0.56", features = ["backtrace"] }
 axum = { version = "0.4.8", features = ["headers", "http2", "multipart", "ws"] }
 axum-server = { version = "0.3.3", features = ["tls-rustls"] }
-clap = { version = "3.1.6", features = ["derive"] }
+clap = { version = "3.1.7", features = ["derive"] }
 dice = { path = "./crates/dice" }
 futures = "0.3.21"
 hyper = { version = "0.14.18", features = ["full"] }
