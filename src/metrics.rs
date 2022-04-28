@@ -5,7 +5,6 @@
 use axum::{extract::MatchedPath, http::Request, middleware::Next, response::IntoResponse};
 
 /// Track path-related metrics
-#[tracing::instrument(skip_all)]
 pub async fn track_requests<B>(req: Request<B>, next: Next<B>) -> impl IntoResponse {
     let path = req.extensions().get::<MatchedPath>().map_or_else(
         || req.uri().path().to_owned(),

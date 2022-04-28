@@ -8,6 +8,13 @@ edition = "2021"
 [dependencies]
 anyhow = { version = "1.0.57", features = ["backtrace"] }
 axum = { version = "0.5.4", features = ["headers", "http2", "multipart", "ws"] }
+axum-extra = { version = "0.3.0", features = [
+    "cookie-private",
+    "cookie-signed",
+    "erased-json",
+    "spa",
+    "typed-routing",
+] }
 axum-server = { version = "0.4.0", features = ["tls-rustls"] }
 clap = { version = "3.1.12", features = ["derive"] }
 dice = { path = "./crates/dice" }

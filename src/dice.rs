@@ -1,28 +1,35 @@
 use std::collections::HashMap;
 
-use axum::{extract::Path, routing::post, Json, Router};
+use axum::{response::IntoResponse, routing::post, Json, Router};
+use axum_extra::routing::{RouterExt, TypedPath};
 use dice::Die;
 use rand::SeedableRng;
 use rand_pcg::Pcg64;
+use serde::Deserialize;
 
 /// Routes related to dice
-#[tracing::instrument]
 pub fn routes() -> Router {
     Router::new()
-        .route("/:die/roll/", post(roll))
+        .typed_post(roll)
         .route("/roll/", post(roll_multiple))
+}
+
+#[derive(Debug, Deserialize, TypedPath)]
+#[typed_path("/:die/roll/")]
+struct DieRoll {
+    die: Die,
 }
 
 /// Roll a given type and amount of dice
 #[tracing::instrument]
-async fn roll(Path(die): Path<Die>) -> Json<u32> {
+async fn roll(path: DieRoll) -> impl IntoResponse {
     let mut rng = Pcg64::from_entropy();
-    Json(die.roll(&mut rng))
+    Json(path.die.roll(&mut rng))
 }
 
 /// Roll multiple dice at once. Can specify a number of dice for each type of die
 #[tracing::instrument]
-async fn roll_multiple(Json(payload): Json<HashMap<Die, usize>>) -> Json<HashMap<Die, Vec<u32>>> {
+async fn roll_multiple(Json(payload): Json<HashMap<Die, usize>>) -> impl IntoResponse {
     let mut rng = Pcg64::from_entropy();
     Json(
         payload
