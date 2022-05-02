@@ -9,7 +9,7 @@ edition = "2021"
 itertools = "0.10.3"
 metrics = "0.18.1"
 rand = "0.8.5"
-serde = { version = "1.0.136", features = ["derive"] }
+serde = { version = "1.0.137", features = ["derive"] }
 strum = { version = "0.24.0", features = ["derive"] }
 tracing = "0.1.34"
 
