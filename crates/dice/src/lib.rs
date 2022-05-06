@@ -2,7 +2,12 @@
 //!
 //! `dice` contains everything you need to roll some dice.
 //! Supports d4, d6, d8, d10, d12, d20, d100
-#![warn(clippy::pedantic, clippy::nursery)]
+#![warn(
+    clippy::pedantic,
+    missing_debug_implementations,
+    missing_docs,
+    rust_2018_idioms
+)]
 
 use itertools::Itertools;
 use rand::Rng;
@@ -14,12 +19,19 @@ use strum::{Display, EnumIter};
 #[serde(rename_all = "lowercase")]
 #[strum(serialize_all = "lowercase")]
 pub enum Die {
+    /// Four-sided die
     D4,
+    /// Six-sided die
     D6,
+    /// Eight-sided die
     D8,
+    /// Ten-sided die
     D10,
+    /// Twelve-sided die
     D12,
+    /// Twenty-sided die
     D20,
+    /// Equivalent of rolling two d10s for a d100 table.
     D100,
 }
 
@@ -64,6 +76,21 @@ impl Die {
 }
 
 impl From<Die> for u32 {
+    /// Number of sides for a given die
+    fn from(die: Die) -> Self {
+        match die {
+            Die::D4 => 4,
+            Die::D6 => 6,
+            Die::D8 => 8,
+            Die::D10 => 10,
+            Die::D12 => 12,
+            Die::D20 => 20,
+            Die::D100 => 100,
+        }
+    }
+}
+
+impl From<Die> for u64 {
     /// Number of sides for a given die
     fn from(die: Die) -> Self {
         match die {

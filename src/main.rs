@@ -1,4 +1,11 @@
-#![warn(clippy::pedantic)]
+//! Instantiates and runs the `bag_of_holding` crate as a binary.
+
+#![warn(
+    clippy::pedantic,
+    missing_debug_implementations,
+    missing_docs,
+    rust_2018_idioms
+)]
 
 use std::{env, net::SocketAddr, os::unix::prelude::OsStrExt};
 

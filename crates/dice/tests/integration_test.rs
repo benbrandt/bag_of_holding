@@ -1,3 +1,5 @@
+#![warn(clippy::pedantic, rust_2018_idioms)]
+
 use dice::Die;
 use itertools::Itertools;
 use rand::SeedableRng;
@@ -14,7 +16,7 @@ fn roll() {
 
     for die in Die::iter() {
         let die_num: u32 = die.into();
-        let dist = Uniform::new(1.0, die_num as f64).unwrap();
+        let dist = Uniform::new(1.0, f64::from(die_num)).unwrap();
 
         let rolls = (0..die_num * 10)
             .into_iter()
@@ -22,7 +24,7 @@ fn roll() {
             .collect_vec();
 
         assert!(rolls.iter().all(|roll| (1..=die_num).contains(roll)));
-        let mean = rolls.iter().map(|&r| r as f64).mean();
+        let mean = rolls.iter().map(|&r| f64::from(r)).mean();
         assert!((mean - dist.mean().unwrap()).abs() < dist.std_dev().unwrap());
     }
 }

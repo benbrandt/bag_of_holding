@@ -1,3 +1,5 @@
+#![warn(clippy::pedantic, rust_2018_idioms)]
+
 use std::{
     error::Error,
     net::{SocketAddr, TcpListener},
@@ -27,7 +29,7 @@ impl TestServer {
         let listener = TcpListener::bind(SocketAddr::from(([0, 0, 0, 0], 0))).unwrap();
         let addr = listener.local_addr().unwrap();
 
-        let _handle = tokio::spawn(async move {
+        let handle = tokio::spawn(async move {
             Server::from_tcp(listener)
                 .expect("failed on tcp listener")
                 .serve(app().into_make_service())
@@ -40,7 +42,7 @@ impl TestServer {
         Self {
             addr,
             client,
-            _handle,
+            _handle: handle,
         }
     }
 

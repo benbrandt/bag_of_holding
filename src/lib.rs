@@ -1,4 +1,13 @@
-#![warn(clippy::pedantic)]
+//! # `bag_of_holding`
+//!
+//! Top-level app for running the bag of holding server.
+
+#![warn(
+    clippy::pedantic,
+    missing_debug_implementations,
+    missing_docs,
+    rust_2018_idioms
+)]
 
 use std::{sync::Arc, time::Duration};
 

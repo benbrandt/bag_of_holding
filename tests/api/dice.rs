@@ -17,7 +17,7 @@ use crate::TestServer;
 async fn die_roll() {
     let server = TestServer::new().await;
 
-    for sides in [4, 6, 8, 10, 12, 20, 100] {
+    for sides in [4u32, 6, 8, 10, 12, 20, 100] {
         let rolls = try_join_all((0..sides * 10).into_iter().map(|_| async {
             server
                 .request(
@@ -30,10 +30,10 @@ async fn die_roll() {
         .await
         .unwrap();
 
-        let dist = Uniform::new(1.0, sides as f64).unwrap();
+        let dist = Uniform::new(1.0, f64::from(sides)).unwrap();
         assert!(rolls
             .iter()
-            .all(|roll| (1..=sides).contains(&roll.as_u64().unwrap())));
+            .all(|roll| (1..=u64::from(sides)).contains(&(roll.as_u64().unwrap()))));
         let mean = rolls.into_iter().map(|r| r.as_f64().unwrap()).mean();
         assert!((mean - dist.mean().unwrap()).abs() < dist.std_dev().unwrap());
     }
@@ -44,7 +44,7 @@ async fn roll_multiple_die_rolls() {
     let server = TestServer::new().await;
 
     let items = Die::iter().enumerate().map(|(i, d)| (d, i));
-    let body: HashMap<Die, usize> = HashMap::from_iter(items.clone());
+    let body: HashMap<Die, usize> = items.clone().collect();
 
     let resp = server
         .request(
@@ -62,7 +62,7 @@ async fn roll_multiple_die_rolls() {
 
         // And they are within the bounds
         for roll in rolls {
-            assert!((1..=die.into()).contains(&(roll.as_u64().unwrap() as u32)));
+            assert!((1..=u64::from(die)).contains(&(roll.as_u64().unwrap())));
         }
     }
 }
