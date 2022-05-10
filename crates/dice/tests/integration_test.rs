@@ -15,17 +15,14 @@ fn roll() {
     let mut rng = Pcg64::from_entropy();
 
     for die in Die::iter() {
-        let die_num: u32 = die.into();
-        let dist = Uniform::new(1.0, f64::from(die_num)).unwrap();
+        let dist = Uniform::new(1.0, die.into()).unwrap();
 
-        let rolls = (0..die_num * 10)
+        let rolls = (0..u32::from(die) * 10)
             .into_iter()
             .map(|_| die.roll(&mut rng))
             .collect_vec();
 
-        assert!(rolls
-            .iter()
-            .all(|&roll| (1..=die_num).contains(&roll.into())));
+        assert!(rolls.iter().all(|roll| (1..=die.into()).contains(roll)));
         let mean = rolls.iter().map(|&r| f64::from(r)).mean();
         assert!((mean - dist.mean().unwrap()).abs() < dist.std_dev().unwrap());
     }

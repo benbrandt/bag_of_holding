@@ -73,62 +73,46 @@ impl Die {
     }
 }
 
-impl From<Die> for u8 {
-    /// Number of sides for a given die
-    fn from(die: Die) -> Self {
-        match die {
-            Die::D4 => 4,
-            Die::D6 => 6,
-            Die::D8 => 8,
-            Die::D10 => 10,
-            Die::D12 => 12,
-            Die::D20 => 20,
-            Die::D100 => 100,
-        }
+macro_rules! impl_int_from_die {
+    ($($int_type: ty),*) => {
+        $(
+            impl From<Die> for $int_type {
+                fn from(die: Die) -> $int_type {
+                    match die {
+                        Die::D4 => 4,
+                        Die::D6 => 6,
+                        Die::D8 => 8,
+                        Die::D10 => 10,
+                        Die::D12 => 12,
+                        Die::D20 => 20,
+                        Die::D100 => 100,
+                    }
+                }
+            }
+        )*
     }
 }
 
-impl From<Die> for u16 {
-    /// Number of sides for a given die
-    fn from(die: Die) -> Self {
-        match die {
-            Die::D4 => 4,
-            Die::D6 => 6,
-            Die::D8 => 8,
-            Die::D10 => 10,
-            Die::D12 => 12,
-            Die::D20 => 20,
-            Die::D100 => 100,
-        }
+impl_int_from_die!(u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize);
+
+macro_rules! impl_float_from_die {
+    ($($float_type: ty),*) => {
+        $(
+            impl From<Die> for $float_type {
+                fn from(die: Die) -> $float_type {
+                    match die {
+                        Die::D4 => 4.0,
+                        Die::D6 => 6.0,
+                        Die::D8 => 8.0,
+                        Die::D10 => 10.0,
+                        Die::D12 => 12.0,
+                        Die::D20 => 20.0,
+                        Die::D100 => 100.0,
+                    }
+                }
+            }
+        )*
     }
 }
 
-impl From<Die> for u32 {
-    /// Number of sides for a given die
-    fn from(die: Die) -> Self {
-        match die {
-            Die::D4 => 4,
-            Die::D6 => 6,
-            Die::D8 => 8,
-            Die::D10 => 10,
-            Die::D12 => 12,
-            Die::D20 => 20,
-            Die::D100 => 100,
-        }
-    }
-}
-
-impl From<Die> for u64 {
-    /// Number of sides for a given die
-    fn from(die: Die) -> Self {
-        match die {
-            Die::D4 => 4,
-            Die::D6 => 6,
-            Die::D8 => 8,
-            Die::D10 => 10,
-            Die::D12 => 12,
-            Die::D20 => 20,
-            Die::D100 => 100,
-        }
-    }
-}
+impl_float_from_die!(f32, f64);
