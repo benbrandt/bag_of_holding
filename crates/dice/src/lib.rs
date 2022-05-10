@@ -9,7 +9,6 @@
     rust_2018_idioms
 )]
 
-use itertools::Itertools;
 use rand::Rng;
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter};
@@ -66,12 +65,11 @@ impl Die {
     /// let mut rng = rand::thread_rng();
     /// let rolls = Die::D20.roll_multiple(&mut rng, 2);
     ///
-    /// assert_eq!(rolls.len(), 2);
-    /// assert!(rolls.iter().all(|roll| (1..=20).contains(roll)));
+    /// assert_eq!(rolls.count(), 2);
     /// ```
     #[tracing::instrument(skip(rng))]
-    pub fn roll_multiple(self, rng: &mut impl Rng, amount: usize) -> Vec<u8> {
-        (1..=amount).map(|_| self.roll(rng)).collect_vec()
+    pub fn roll_multiple(self, rng: &mut impl Rng, amount: usize) -> impl Iterator<Item = u8> + '_ {
+        (1..=amount).map(move |_| self.roll(rng))
     }
 }
 

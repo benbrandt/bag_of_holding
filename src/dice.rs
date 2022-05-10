@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use axum::{response::IntoResponse, routing::post, Json, Router};
 use axum_extra::routing::{RouterExt, TypedPath};
 use dice::Die;
+use itertools::Itertools;
 use rand::SeedableRng;
 use rand_pcg::Pcg64;
 use serde::Deserialize;
@@ -34,7 +35,7 @@ async fn roll_multiple(Json(payload): Json<HashMap<Die, usize>>) -> impl IntoRes
     Json(
         payload
             .into_iter()
-            .map(|(die, num)| (die, die.roll_multiple(&mut rng, num)))
+            .map(|(die, num)| (die, die.roll_multiple(&mut rng, num).collect_vec()))
             .collect::<HashMap<_, _>>(),
     )
 }

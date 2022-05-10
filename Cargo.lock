@@ -317,6 +317,7 @@ dependencies = [
  "dice",
  "futures",
  "hyper",
+ "itertools",
  "metrics",
  "metrics-exporter-prometheus",
  "mime",

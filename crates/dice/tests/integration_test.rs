@@ -37,7 +37,7 @@ fn roll_multiple() {
     for die in Die::iter() {
         // Roll a normal range of dice
         for i in 1..=12 {
-            let rolls = die.roll_multiple(&mut rng, i);
+            let rolls = die.roll_multiple(&mut rng, i).collect_vec();
             assert_eq!(rolls.len(), i as usize);
             assert!(rolls.iter().all(|d| (1..=die.into()).contains(d)));
         }

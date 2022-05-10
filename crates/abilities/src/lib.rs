@@ -85,7 +85,6 @@ impl AbilityScores {
                         a,
                         Die::D6
                             .roll_multiple(rng, 4)
-                            .into_iter()
                             .sorted()
                             .rev()
                             .take(3)
