@@ -14,6 +14,7 @@ use hyper::{client::HttpConnector, Body, Client};
 use serde_json::Value;
 use tokio::task::JoinHandle;
 
+mod abilities;
 mod dice;
 
 /// Use the entire server for tests

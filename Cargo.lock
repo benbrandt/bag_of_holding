@@ -309,6 +309,7 @@ dependencies = [
 name = "bag_of_holding"
 version = "0.1.0"
 dependencies = [
+ "abilities",
  "anyhow",
  "axum",
  "axum-extra",

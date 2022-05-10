@@ -12,11 +12,11 @@ use serde::Deserialize;
 pub fn routes() -> Router {
     Router::new()
         .typed_post(roll)
-        .route("/roll/", post(roll_multiple))
+        .route("/roll", post(roll_multiple))
 }
 
 #[derive(Debug, Deserialize, TypedPath)]
-#[typed_path("/:die/roll/")]
+#[typed_path("/:die/roll")]
 struct DieRoll {
     die: Die,
 }

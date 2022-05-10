@@ -22,6 +22,7 @@ use sentry::integrations::tower::{NewSentryLayer, SentryHttpLayer};
 use tower::ServiceBuilder;
 use tower_http::{catch_panic::CatchPanicLayer, trace::TraceLayer, ServiceBuilderExt};
 
+mod abilities;
 mod dice;
 mod metrics;
 
@@ -62,6 +63,7 @@ pub fn app() -> Router {
 
     Router::new()
         .nest("/dice", dice::routes())
+        .merge(abilities::routes())
         .layer(middleware)
         .route_layer(route_middleware)
 }

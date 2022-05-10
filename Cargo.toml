@@ -6,6 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+abilities = { path = "./crates/abilities" }
 anyhow = { version = "1.0.57", features = ["backtrace"] }
 axum = { version = "0.5.4", features = ["headers", "http2", "multipart", "ws"] }
 axum-extra = { version = "0.3.0", features = [

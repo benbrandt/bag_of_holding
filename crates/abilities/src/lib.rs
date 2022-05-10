@@ -38,21 +38,27 @@ use strum::{Display, EnumIter, IntoEnumIterator};
 )]
 pub enum Ability {
     /// Measuring physical power
+    #[serde(rename = "STR")]
     #[strum(serialize = "STR")]
     Strength,
     /// Measuring agility
+    #[serde(rename = "DEX")]
     #[strum(serialize = "DEX")]
     Dexterity,
     /// Measuring endurance
+    #[serde(rename = "CON")]
     #[strum(serialize = "CON")]
     Constitution,
     /// Measuring reasoning and memory
+    #[serde(rename = "INT")]
     #[strum(serialize = "INT")]
     Intelligence,
     /// Measuring perception and insight
+    #[serde(rename = "WIS")]
     #[strum(serialize = "WIS")]
     Wisdom,
     /// Measuring force of personality
+    #[serde(rename = "CHA")]
     #[strum(serialize = "CHA")]
     Charisma,
 }

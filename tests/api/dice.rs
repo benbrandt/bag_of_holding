@@ -20,11 +20,7 @@ async fn die_roll() {
     for sides in [4u32, 6, 8, 10, 12, 20, 100] {
         let rolls = try_join_all((0..sides * 10).into_iter().map(|_| async {
             server
-                .request(
-                    Method::POST,
-                    &format!("/dice/d{sides}/roll/"),
-                    Body::empty(),
-                )
+                .request(Method::POST, &format!("/dice/d{sides}/roll"), Body::empty())
                 .await
         }))
         .await
@@ -49,7 +45,7 @@ async fn roll_multiple_die_rolls() {
     let resp = server
         .request(
             Method::POST,
-            "/dice/roll/",
+            "/dice/roll",
             Body::from(serde_json::to_vec(&json!(&body)).unwrap()),
         )
         .await
