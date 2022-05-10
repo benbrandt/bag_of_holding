@@ -17,7 +17,7 @@ axum-extra = { version = "0.3.0", features = [
     "typed-routing",
 ] }
 axum-server = { version = "0.4.0", features = ["tls-rustls"] }
-clap = { version = "3.1.16", features = ["derive"] }
+clap = { version = "3.1.18", features = ["derive"] }
 dice = { path = "./crates/dice" }
 futures = "0.3.21"
 hyper = { version = "0.14.18", features = ["full"] }
