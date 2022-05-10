@@ -23,7 +23,9 @@ fn roll() {
             .map(|_| die.roll(&mut rng))
             .collect_vec();
 
-        assert!(rolls.iter().all(|roll| (1..=die_num).contains(roll)));
+        assert!(rolls
+            .iter()
+            .all(|&roll| (1..=die_num).contains(&roll.into())));
         let mean = rolls.iter().map(|&r| f64::from(r)).mean();
         assert!((mean - dist.mean().unwrap()).abs() < dist.std_dev().unwrap());
     }

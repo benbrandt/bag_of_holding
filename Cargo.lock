@@ -3,6 +3,21 @@
 version = 3
 
 [[package]]
+name = "abilities"
+version = "0.1.0"
+dependencies = [
+ "dice",
+ "itertools",
+ "metrics",
+ "rand",
+ "rand_pcg",
+ "serde",
+ "statrs",
+ "strum",
+ "tracing",
+]
+
+[[package]]
 name = "addr2line"
 version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
