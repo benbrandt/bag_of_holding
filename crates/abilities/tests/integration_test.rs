@@ -22,9 +22,19 @@ fn generate_ability_scores() {
 
     let scores = AbilityScores::gen(&mut rng);
 
-    let results = Ability::iter().map(|a| scores.score(&a)).collect_vec();
+    let results = Ability::iter().map(|a| scores.score(a)).collect_vec();
     // All scores are in valid range
     assert!(results.iter().all(|r| (3..=18).contains(r)));
     // Average is within expected range
     assert!((results.into_iter().map(f64::from).mean() - mean).abs() < std_dev);
+}
+
+#[test]
+fn modifiers() {
+    let mut rng = Pcg64::from_entropy();
+    let scores = AbilityScores::gen(&mut rng);
+
+    // All modifiers are in valid range
+    let results = Ability::iter().map(|a| scores.modifier(a)).collect_vec();
+    assert!(results.iter().all(|r| (-5..=5).contains(r)));
 }

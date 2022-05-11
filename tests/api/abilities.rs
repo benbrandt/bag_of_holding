@@ -24,5 +24,11 @@ async fn generate_ability_scores() {
         .as_object()
         .unwrap()
         .values()
-        .all(|v| (3..=18).contains(&v.as_u64().unwrap())));
+        .all(|v| (3..=18).contains(&v["score"].as_u64().unwrap())));
+
+    assert!(rolls
+        .as_object()
+        .unwrap()
+        .values()
+        .all(|v| (-5..=5).contains(&v["modifier"].as_i64().unwrap())));
 }
