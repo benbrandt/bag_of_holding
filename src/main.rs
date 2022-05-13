@@ -12,12 +12,7 @@ use std::{env, net::SocketAddr};
 use axum_server::tls_rustls::RustlsConfig;
 use bag_of_holding::app;
 use clap::Parser;
-use metrics_exporter_prometheus::PrometheusBuilder;
 use sentry::{release_name, ClientOptions};
-use tracing::info;
-use tracing_subscriber::{
-    fmt, prelude::__tracing_subscriber_SubscriberExt, registry, util::SubscriberInitExt, EnvFilter,
-};
 
 /// Command line arguments
 #[derive(Debug, Parser)]
@@ -26,9 +21,6 @@ pub struct Config {
     /// The port to listen on for the app
     #[clap(long, short, default_value = "5000")]
     port: u16,
-    /// The port to listen on for metrics
-    #[clap(long, short, default_value = "9000")]
-    metrics_port: u16,
     /// SSL Certificate value
     #[clap(env, long)]
     ssl_cert: Option<String>,
@@ -55,13 +47,6 @@ async fn main() {
         },
     ));
 
-    // Setup tracing
-    registry()
-        .with(EnvFilter::from_default_env())
-        .with(fmt::layer())
-        .with(sentry::integrations::tracing::layer())
-        .init();
-
     // Parse command line arguments and start app
     let config = Config::parse();
 
@@ -76,14 +61,7 @@ async fn main() {
         None
     };
 
-    // Metrics setup. Listening on separate port than the app
-    PrometheusBuilder::new()
-        .with_http_listener(SocketAddr::from(([0, 0, 0, 0], config.metrics_port)))
-        .install()
-        .expect("failed to start metrics endpoint");
-
     let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
-    info!("Listening on {}", addr);
 
     if let Some(config) = tls_config {
         axum_server::bind_rustls(addr, config)

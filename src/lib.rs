@@ -18,17 +18,42 @@ use axum::{
     response::IntoResponse,
     BoxError, Router,
 };
+use metrics_exporter_prometheus::PrometheusBuilder;
+use once_cell::sync::Lazy;
 use sentry::integrations::tower::{NewSentryLayer, SentryHttpLayer};
 use tower::ServiceBuilder;
 use tower_http::{catch_panic::CatchPanicLayer, trace::TraceLayer, ServiceBuilderExt};
+use tracing_subscriber::{
+    fmt, prelude::__tracing_subscriber_SubscriberExt, registry, util::SubscriberInitExt, EnvFilter,
+};
 
 mod abilities;
 mod dice;
 mod metrics;
 
+// Setup tracing
+static TRACING: Lazy<()> = Lazy::new(|| {
+    registry()
+        .with(EnvFilter::from_default_env())
+        .with(fmt::layer())
+        .with(sentry::integrations::tracing::layer())
+        .init();
+});
+
+// Metrics setup. Listening on separate port than the app
+static METRICS: Lazy<()> = Lazy::new(|| {
+    PrometheusBuilder::new()
+        .install()
+        .expect("failed to start metrics endpoint");
+});
+
 /// Top-level app. To be consumed by main.rs and
 #[must_use]
 pub fn app() -> Router {
+    // In once_cells so they work in test threads
+    Lazy::force(&TRACING);
+    Lazy::force(&METRICS);
+
     // Mark the `Authorization` and `Cookie` headers as sensitive so it doesn't show in logs
     let sensitive_headers: Arc<[_]> = vec![header::AUTHORIZATION, header::COOKIE].into();
 
