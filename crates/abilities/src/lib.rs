@@ -117,7 +117,19 @@ impl AbilityScores {
     pub fn gen(rng: &mut impl Rng) -> Self {
         Self(
             Ability::iter()
-                .map(|a| (a, AbilityScore::gen(rng)))
+                .map(|a| {
+                    let score = AbilityScore::gen(rng);
+
+                    metrics::increment_counter!(
+                        "abilities_score",
+                        &[
+                            ("ability", a.to_string()),
+                            ("score", score.score.to_string())
+                        ]
+                    );
+
+                    (a, score)
+                })
                 .collect(),
         )
     }
