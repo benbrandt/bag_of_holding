@@ -1,4 +1,9 @@
-#![warn(clippy::pedantic, rust_2018_idioms)]
+#![warn(
+    clippy::pedantic,
+    missing_debug_implementations,
+    missing_docs,
+    rust_2018_idioms
+)]
 
 use std::{
     error::Error,
