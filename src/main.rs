@@ -7,7 +7,7 @@
     rust_2018_idioms
 )]
 
-use std::{env, net::SocketAddr, os::unix::prelude::OsStrExt};
+use std::{env, net::SocketAddr};
 
 use axum_server::tls_rustls::RustlsConfig;
 use bag_of_holding::app;
@@ -29,6 +29,12 @@ pub struct Config {
     /// The port to listen on for metrics
     #[clap(long, short, default_value = "9000")]
     metrics_port: u16,
+    /// SSL Certificate value
+    #[clap(env, long)]
+    ssl_cert: Option<String>,
+    /// SSL Key value
+    #[clap(env, long)]
+    ssl_key: Option<String>,
 }
 
 /// Basic wrapper around `start_app()` to configure running in a server environment
@@ -60,16 +66,15 @@ async fn main() {
     let config = Config::parse();
 
     // Get TLS config if available
-    let tls_config =
-        if let (Some(cert), Some(key)) = (env::var_os("SSL_CERT"), env::var_os("SSL_KEY")) {
-            Some(
-                RustlsConfig::from_pem(cert.as_bytes().to_vec(), key.as_bytes().to_vec())
-                    .await
-                    .expect("Failed to load TLS certs"),
-            )
-        } else {
-            None
-        };
+    let tls_config = if let (Some(cert), Some(key)) = (config.ssl_cert, config.ssl_key) {
+        Some(
+            RustlsConfig::from_pem(cert.as_bytes().to_vec(), key.as_bytes().to_vec())
+                .await
+                .expect("Failed to load TLS certs"),
+        )
+    } else {
+        None
+    };
 
     // Metrics setup. Listening on separate port than the app
     PrometheusBuilder::new()

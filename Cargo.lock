@@ -322,6 +322,7 @@ dependencies = [
  "metrics",
  "metrics-exporter-prometheus",
  "mime",
+ "once_cell",
  "rand",
  "rand_pcg",
  "sentry",
