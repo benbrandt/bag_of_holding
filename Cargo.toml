@@ -9,7 +9,7 @@ edition = "2021"
 abilities = { path = "./crates/abilities" }
 anyhow = { version = "1.0.57", features = ["backtrace"] }
 axum = { version = "0.5.6", features = ["headers", "http2", "multipart", "ws"] }
-axum-extra = { version = "0.3.2", features = [
+axum-extra = { version = "0.3.3", features = [
     "cookie-private",
     "cookie-signed",
     "erased-json",
