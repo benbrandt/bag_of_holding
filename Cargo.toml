@@ -28,7 +28,7 @@ mime = "0.3.16"
 once_cell = "1.12.0"
 rand = "0.8.5"
 rand_pcg = "0.3.1"
-sentry = { version = "0.25.0", default-features = false, features = [
+sentry = { version = "0.26.0", default-features = false, features = [
     "anyhow",
     "backtrace",
     "contexts",
