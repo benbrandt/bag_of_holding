@@ -8,8 +8,8 @@ edition = "2021"
 [dependencies]
 abilities = { path = "./crates/abilities" }
 anyhow = { version = "1.0.57", features = ["backtrace"] }
-axum = { version = "0.5.5", features = ["headers", "http2", "multipart", "ws"] }
-axum-extra = { version = "0.3.1", features = [
+axum = { version = "0.5.6", features = ["headers", "http2", "multipart", "ws"] }
+axum-extra = { version = "0.3.3", features = [
     "cookie-private",
     "cookie-signed",
     "erased-json",
@@ -25,7 +25,7 @@ itertools = "0.10.3"
 metrics = "0.18.1"
 metrics-exporter-prometheus = "0.9.0"
 mime = "0.3.16"
-once_cell = "1.10.0"
+once_cell = "1.12.0"
 rand = "0.8.5"
 rand_pcg = "0.3.1"
 sentry = { version = "0.25.0", default-features = false, features = [
