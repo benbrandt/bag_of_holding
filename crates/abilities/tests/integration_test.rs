@@ -7,14 +7,12 @@
 
 use abilities::{Ability, AbilityScores};
 use itertools::{repeat_n, Itertools};
-use rand::SeedableRng;
-use rand_pcg::Pcg64;
 use statrs::statistics::Statistics;
 use strum::IntoEnumIterator;
 
 #[test]
 fn generate_ability_scores() {
-    let mut rng = Pcg64::from_entropy();
+    let mut rng = rand_utils::rng_from_entropy();
 
     // Generate all possible results of rolling 4d6 and keeping top 3
     let possibilities = repeat_n(1..=6, 4)
@@ -36,7 +34,7 @@ fn generate_ability_scores() {
 
 #[test]
 fn modifiers() {
-    let mut rng = Pcg64::from_entropy();
+    let mut rng = rand_utils::rng_from_entropy();
     let scores = AbilityScores::gen(&mut rng);
 
     // All modifiers are in valid range

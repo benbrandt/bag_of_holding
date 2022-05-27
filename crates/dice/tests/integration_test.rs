@@ -7,8 +7,6 @@
 
 use dice::Die;
 use itertools::Itertools;
-use rand::SeedableRng;
-use rand_pcg::Pcg64;
 use statrs::{
     distribution::Uniform,
     statistics::{Distribution, Statistics},
@@ -17,7 +15,7 @@ use strum::IntoEnumIterator;
 
 #[test]
 fn roll() {
-    let mut rng = Pcg64::from_entropy();
+    let mut rng = rand_utils::rng_from_entropy();
 
     for die in Die::iter() {
         let dist = Uniform::new(1.0, die.into()).unwrap();
@@ -35,7 +33,7 @@ fn roll() {
 
 #[test]
 fn roll_multiple() {
-    let mut rng = Pcg64::from_entropy();
+    let mut rng = rand_utils::rng_from_entropy();
     for die in Die::iter() {
         // Roll a normal range of dice
         for i in 1..=12 {

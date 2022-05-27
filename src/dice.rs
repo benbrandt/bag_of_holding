@@ -4,8 +4,6 @@ use axum::{response::IntoResponse, routing::post, Json, Router};
 use axum_extra::routing::{RouterExt, TypedPath};
 use dice::Die;
 use itertools::Itertools;
-use rand::SeedableRng;
-use rand_pcg::Pcg64;
 use serde::Deserialize;
 
 /// Routes related to dice
@@ -24,14 +22,14 @@ struct DieRoll {
 /// Roll a given type and amount of dice
 #[tracing::instrument]
 async fn roll(path: DieRoll) -> impl IntoResponse {
-    let mut rng = Pcg64::from_entropy();
+    let mut rng = rand_utils::rng_from_entropy();
     Json(path.die.roll(&mut rng))
 }
 
 /// Roll multiple dice at once. Can specify a number of dice for each type of die
 #[tracing::instrument]
 async fn roll_multiple(Json(payload): Json<HashMap<Die, usize>>) -> impl IntoResponse {
-    let mut rng = Pcg64::from_entropy();
+    let mut rng = rand_utils::rng_from_entropy();
     Json(
         payload
             .into_iter()

@@ -10,7 +10,7 @@ dependencies = [
  "itertools",
  "metrics",
  "rand",
- "rand_pcg",
+ "rand_utils",
  "serde",
  "statrs",
  "strum",
@@ -323,8 +323,7 @@ dependencies = [
  "metrics-exporter-prometheus",
  "mime",
  "once_cell",
- "rand",
- "rand_pcg",
+ "rand_utils",
  "sentry",
  "sentry-tower",
  "serde",
@@ -563,7 +562,7 @@ dependencies = [
  "itertools",
  "metrics",
  "rand",
- "rand_pcg",
+ "rand_utils",
  "serde",
  "statrs",
  "strum",
@@ -1578,6 +1577,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "59cad018caf63deb318e5a4586d99a24424a364f40f1e5778c29aca23f4fc73e"
 dependencies = [
  "rand_core",
+]
+
+[[package]]
+name = "rand_utils"
+version = "0.1.0"
+dependencies = [
+ "rand",
+ "rand_pcg",
+ "tracing",
 ]
 
 [[package]]
