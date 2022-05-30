@@ -1,3 +1,5 @@
+use std::fmt;
+
 use rand::{prelude::SliceRandom, Rng};
 use serde::Serialize;
 
@@ -14,6 +16,13 @@ pub struct Dwarf {
     pub clan_name: &'static str,
     /// Usual gender associated with the name.
     pub gender: Gender,
+}
+
+impl fmt::Display for Dwarf {
+    /// Formatted full name (for character sheet)
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{} {}", self.first_name, self.clan_name)
+    }
 }
 
 impl Name for Dwarf {

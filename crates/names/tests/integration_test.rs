@@ -13,4 +13,9 @@ fn dwarven_name() {
     let name = Dwarf::gen(&mut rng);
     assert!(!name.first_name.is_empty());
     assert!(!name.clan_name.is_empty());
+    // Formats full name
+    assert_eq!(
+        name.to_string(),
+        format!("{} {}", name.first_name, name.clan_name)
+    );
 }

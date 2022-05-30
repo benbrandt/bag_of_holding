@@ -8,6 +8,8 @@
     rust_2018_idioms
 )]
 
+use std::fmt;
+
 use rand::{prelude::IteratorRandom, Rng};
 use serde::Serialize;
 use strum::{Display, EnumIter, IntoEnumIterator};
@@ -19,7 +21,10 @@ pub use dwarf::Dwarf;
 /// Implements the ability to generate a name for a given race.
 /// Can contain whatever information is necessary for a given name
 /// (such as gender, ethnicity, child names, etc)
-pub trait Name {
+///
+/// Display impl should format the name in a format suitable for a character
+/// sheet.
+pub trait Name: fmt::Display + Serialize {
     /// Generate a name with a given rng
     fn gen(rng: &mut impl Rng) -> Self;
 }
