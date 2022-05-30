@@ -10,7 +10,11 @@
 
 use std::fmt;
 
-use rand::{prelude::IteratorRandom, Rng};
+use rand::{
+    distributions::Standard,
+    prelude::{Distribution, IteratorRandom},
+    Rng,
+};
 use serde::Serialize;
 use strum::{Display, EnumIter, IntoEnumIterator};
 
@@ -24,9 +28,10 @@ pub use dwarf::Dwarf;
 ///
 /// Display impl should format the name in a format suitable for a character
 /// sheet.
-pub trait Name: fmt::Display + Serialize {
-    /// Generate a name with a given rng
-    fn gen(rng: &mut impl Rng) -> Self;
+pub trait Name: fmt::Display + Serialize + Sized
+where
+    Standard: Distribution<Self>,
+{
 }
 
 /// Some races have names that are usually assigned to a gender.
@@ -40,11 +45,11 @@ pub enum Gender {
     Male,
 }
 
-impl Gender {
+impl Distribution<Gender> for Standard {
     /// Choose a random gender for choosing between name lists.
     #[tracing::instrument(skip(rng))]
-    fn gen(rng: &mut impl Rng) -> Self {
-        let gender = Self::iter().choose(rng).unwrap();
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Gender {
+        let gender = Gender::iter().choose(rng).unwrap();
 
         metrics::increment_counter!("names_gender", &[("gender", gender.to_string())]);
 

@@ -1,6 +1,10 @@
 use std::fmt;
 
-use rand::{prelude::SliceRandom, Rng};
+use rand::{
+    distributions::Standard,
+    prelude::{Distribution, SliceRandom},
+    Rng,
+};
 use serde::Serialize;
 
 use crate::{Gender, Name};
@@ -25,11 +29,11 @@ impl fmt::Display for Dwarf {
     }
 }
 
-impl Name for Dwarf {
+impl Distribution<Dwarf> for Standard {
     /// Generate a new dwarven name.
     #[tracing::instrument(skip(rng))]
-    fn gen(rng: &mut impl Rng) -> Self {
-        let gender = Gender::gen(rng);
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Dwarf {
+        let gender: Gender = rng.gen();
 
         let first_name = *match gender {
             Gender::Female => FEMALE,
@@ -45,13 +49,15 @@ impl Name for Dwarf {
             &[("first_name", first_name), ("clan_name", clan_name),]
         );
 
-        Self {
+        Dwarf {
             first_name,
             clan_name,
             gender,
         }
     }
 }
+
+impl Name for Dwarf {}
 
 const CLAN: &[&str] = &[
     "Arnskull",

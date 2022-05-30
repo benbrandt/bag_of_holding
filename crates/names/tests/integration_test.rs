@@ -5,12 +5,12 @@
     rust_2018_idioms
 )]
 
-use names::{Dwarf, Name};
+use names::Dwarf;
+use rand::Rng;
 
 #[test]
 fn dwarven_name() {
-    let mut rng = rand_utils::rng_from_entropy();
-    let name = Dwarf::gen(&mut rng);
+    let name: Dwarf = rand_utils::rng_from_entropy().gen();
     assert!(!name.first_name.is_empty());
     assert!(!name.clan_name.is_empty());
     // Formats full name
