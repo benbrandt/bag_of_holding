@@ -4,9 +4,14 @@
 //! Supports d4, d6, d8, d10, d12, d20, d100
 #![warn(
     clippy::pedantic,
+    future_incompatible,
     missing_debug_implementations,
     missing_docs,
-    rust_2018_idioms
+    nonstandard_style,
+    rust_2018_compatibility,
+    rust_2018_idioms,
+    rust_2021_compatibility,
+    unused
 )]
 
 use rand::Rng;
