@@ -46,7 +46,7 @@ impl Die {
     /// assert!((1..=20).contains(&roll));
     /// ```
     #[tracing::instrument(skip(rng))]
-    pub fn roll(self, rng: &mut impl Rng) -> u8 {
+    pub fn roll<R: Rng + ?Sized>(self, rng: &mut R) -> u8 {
         let roll = rng.gen_range(1u8..=self.into());
 
         metrics::increment_counter!(
@@ -68,7 +68,11 @@ impl Die {
     /// assert_eq!(rolls.count(), 2);
     /// ```
     #[tracing::instrument(skip(rng))]
-    pub fn roll_multiple(self, rng: &mut impl Rng, amount: usize) -> impl Iterator<Item = u8> + '_ {
+    pub fn roll_multiple<R: Rng + ?Sized>(
+        self,
+        rng: &mut R,
+        amount: usize,
+    ) -> impl Iterator<Item = u8> + '_ {
         (1..=amount).map(move |_| self.roll(rng))
     }
 }

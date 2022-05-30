@@ -7,13 +7,12 @@
 
 use abilities::{Ability, AbilityScores};
 use itertools::{repeat_n, Itertools};
+use rand::Rng;
 use statrs::statistics::Statistics;
 use strum::IntoEnumIterator;
 
 #[test]
 fn generate_ability_scores() {
-    let mut rng = rand_utils::rng_from_entropy();
-
     // Generate all possible results of rolling 4d6 and keeping top 3
     let possibilities = repeat_n(1..=6, 4)
         .multi_cartesian_product()
@@ -23,7 +22,7 @@ fn generate_ability_scores() {
     let mean = possibilities.iter().mean();
     let std_dev = possibilities.iter().std_dev();
 
-    let scores = AbilityScores::gen(&mut rng);
+    let scores: AbilityScores = rand_utils::rng_from_entropy().gen();
 
     let results = Ability::iter().map(|a| scores.score(a)).collect_vec();
     // All scores are in valid range
@@ -34,8 +33,7 @@ fn generate_ability_scores() {
 
 #[test]
 fn modifiers() {
-    let mut rng = rand_utils::rng_from_entropy();
-    let scores = AbilityScores::gen(&mut rng);
+    let scores: AbilityScores = rand_utils::rng_from_entropy().gen();
 
     // All modifiers are in valid range
     let results = Ability::iter().map(|a| scores.modifier(a)).collect_vec();

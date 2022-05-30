@@ -16,7 +16,7 @@ use std::collections::BTreeMap;
 
 use dice::Die;
 use itertools::Itertools;
-use rand::Rng;
+use rand::{distributions::Standard, prelude::Distribution, Rng};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
@@ -72,6 +72,10 @@ struct AbilityScore {
 
 impl AbilityScore {
     /// Construct a new ability score and modifier for a given score.
+    ///
+    /// # Panics
+    ///
+    /// Will only panic if we somehow generate an invalid value for D&D
     #[tracing::instrument]
     fn new(score: u8) -> Self {
         let i_score: i8 = score.try_into().unwrap();
@@ -81,16 +85,14 @@ impl AbilityScore {
             modifier: (i_score - i_score % 2 - 10) / 2,
         }
     }
+}
 
+impl Distribution<AbilityScore> for Standard {
     /// Generate base ability score for a character.
     /// The result of rolling 4d6 and taking the top 3 dice.
-    ///
-    /// # Panics
-    ///
-    /// Will only panic if we somehow generate an invalid value for D&D
     #[tracing::instrument(skip(rng))]
-    fn gen(rng: &mut impl Rng) -> Self {
-        Self::new(Die::D6.roll_multiple(rng, 4).sorted().rev().take(3).sum())
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> AbilityScore {
+        AbilityScore::new(Die::D6.roll_multiple(rng, 4).sorted().rev().take(3).sum())
     }
 }
 
@@ -100,40 +102,6 @@ impl AbilityScore {
 pub struct AbilityScores(BTreeMap<Ability, AbilityScore>);
 
 impl AbilityScores {
-    /// Generate base ability scores for a character.
-    /// Each ability is the result of rolling 4d6 and taking the top 3.
-    ///
-    /// ```
-    /// use abilities::AbilityScores;
-    ///
-    /// let mut rng = rand::thread_rng();
-    /// let scores = AbilityScores::gen(&mut rng);
-    /// ```
-    ///
-    /// # Panics
-    ///
-    /// Will only panic if we somehow generate an invalid value for D&D
-    #[tracing::instrument(skip(rng))]
-    pub fn gen(rng: &mut impl Rng) -> Self {
-        Self(
-            Ability::iter()
-                .map(|a| {
-                    let score = AbilityScore::gen(rng);
-
-                    metrics::increment_counter!(
-                        "abilities_score",
-                        &[
-                            ("ability", a.to_string()),
-                            ("score", score.score.to_string())
-                        ]
-                    );
-
-                    (a, score)
-                })
-                .collect(),
-        )
-    }
-
     /// Internal method to access a given ability score
     ///
     /// # Panics
@@ -150,9 +118,9 @@ impl AbilityScores {
     ///
     /// ```
     /// use abilities::{Ability, AbilityScores};
+    /// use rand::Rng;
     ///
-    /// let mut rng = rand::thread_rng();
-    /// let scores = AbilityScores::gen(&mut rng);
+    /// let scores: AbilityScores = rand::thread_rng().gen();
     /// let strength = scores.score(Ability::Strength);
     ///
     /// ```
@@ -166,9 +134,9 @@ impl AbilityScores {
     ///
     /// ```
     /// use abilities::{Ability, AbilityScores};
+    /// use rand::Rng;
     ///
-    /// let mut rng = rand::thread_rng();
-    /// let scores = AbilityScores::gen(&mut rng);
+    /// let scores: AbilityScores = rand::thread_rng().gen();
     /// let strength_mod = scores.modifier(Ability::Strength);
     ///
     /// ```
@@ -176,6 +144,38 @@ impl AbilityScores {
     #[tracing::instrument]
     pub fn modifier(&self, ability: Ability) -> i8 {
         self.ability_score(ability).modifier
+    }
+}
+
+impl Distribution<AbilityScores> for Standard {
+    /// Generate base ability scores for a character.
+    /// Each ability is the result of rolling 4d6 and taking the top 3.
+    ///
+    /// ```
+    /// use abilities::AbilityScores;
+    /// use rand::Rng;
+    ///
+    /// let scores: AbilityScores = rand::thread_rng().gen();
+    /// ```
+    #[tracing::instrument(skip(rng))]
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> AbilityScores {
+        AbilityScores(
+            Ability::iter()
+                .map(|a| {
+                    let score: AbilityScore = rng.gen();
+
+                    metrics::increment_counter!(
+                        "abilities_score",
+                        &[
+                            ("ability", a.to_string()),
+                            ("score", score.score.to_string())
+                        ]
+                    );
+
+                    (a, score)
+                })
+                .collect(),
+        )
     }
 }
 
