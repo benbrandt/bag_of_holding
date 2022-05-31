@@ -8,7 +8,7 @@ version = "0.1.0"
 dependencies = [
  "dice",
  "itertools",
- "metrics 0.19.0",
+ "metrics",
  "rand",
  "rand_utils",
  "serde",
@@ -319,7 +319,7 @@ dependencies = [
  "futures",
  "hyper",
  "itertools",
- "metrics 0.19.0",
+ "metrics",
  "metrics-exporter-prometheus",
  "mime",
  "once_cell",
@@ -560,7 +560,7 @@ name = "dice"
 version = "0.1.0"
 dependencies = [
  "itertools",
- "metrics 0.19.0",
+ "metrics",
  "rand",
  "rand_utils",
  "serde",
@@ -1100,16 +1100,6 @@ dependencies = [
 
 [[package]]
 name = "metrics"
-version = "0.18.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2e52eb6380b6d2a10eb3434aec0885374490f5b82c8aaf5cd487a183c98be834"
-dependencies = [
- "ahash",
- "metrics-macros",
-]
-
-[[package]]
-name = "metrics"
 version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "142c53885123b68d94108295a09d4afe1a1388ed95b54d5dacd9a454753030f2"
@@ -1120,14 +1110,14 @@ dependencies = [
 
 [[package]]
 name = "metrics-exporter-prometheus"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8b93b470b04c005178058e18ac8bb2eb3fda562cf87af5ea05ba8d44190d458c"
+checksum = "953cbbb6f9ba4b9304f4df79b98cdc9d14071ed93065a9fca11c00c5d9181b66"
 dependencies = [
  "hyper",
  "indexmap",
  "ipnet",
- "metrics 0.18.1",
+ "metrics",
  "metrics-util",
  "parking_lot 0.11.2",
  "quanta",
@@ -1149,15 +1139,15 @@ dependencies = [
 
 [[package]]
 name = "metrics-util"
-version = "0.12.1"
+version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "65a9e83b833e1d2e07010a386b197c13aa199bbd0fca5cf69bfa147972db890a"
+checksum = "fd1f4b69bef1e2b392b2d4a12902f2af90bb438ba4a66aa222d1023fa6561b50"
 dependencies = [
  "atomic-shim",
  "crossbeam-epoch",
  "crossbeam-utils",
  "hashbrown",
- "metrics 0.18.1",
+ "metrics",
  "num_cpus",
  "parking_lot 0.11.2",
  "quanta",
@@ -1258,7 +1248,7 @@ dependencies = [
 name = "names"
 version = "0.1.0"
 dependencies = [
- "metrics 0.19.0",
+ "metrics",
  "rand",
  "rand_utils",
  "serde",
