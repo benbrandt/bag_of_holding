@@ -15,17 +15,11 @@
 
 use std::fmt;
 
-use rand::{
-    distributions::Standard,
-    prelude::{Distribution, IteratorRandom},
-    Rng,
-};
-use serde::Serialize;
-use strum::{Display, EnumIter, IntoEnumIterator};
+use dwarf::Dwarf;
+use rand::{distributions::Standard, prelude::Distribution, Rng};
+use strum::{Display, EnumIter};
 
 mod dwarf;
-
-pub use dwarf::Dwarf;
 
 /// Implements the ability to generate a name for a given race.
 /// Can contain whatever information is necessary for a given name
@@ -33,31 +27,31 @@ pub use dwarf::Dwarf;
 ///
 /// Display impl should format the name in a format suitable for a character
 /// sheet.
-pub trait Name: fmt::Display + Serialize + Sized
+pub trait NameGenerator: fmt::Display + Sized
 where
     Standard: Distribution<Self>,
 {
 }
 
-/// Some races have names that are usually assigned to a gender.
-/// This is only used to randomly decide which list to choose, and surface
-/// the relation. Doesn't decide the gender of the character though.
-#[derive(Debug, Display, EnumIter, Serialize)]
-pub enum Gender {
-    /// Used to choose a name that is generally for a female.
-    Female,
-    /// Used to choose a name that is generally for a male.
-    Male,
+/// Available race options to choose names from
+#[derive(Debug, Display, EnumIter)]
+pub enum Name {
+    /// Names for dwarven characters
+    Dwarf,
 }
 
-impl Distribution<Gender> for Standard {
-    /// Choose a random gender for choosing between name lists.
-    #[tracing::instrument(skip(rng))]
-    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Gender {
-        let gender = Gender::iter().choose(rng).unwrap();
-
-        metrics::increment_counter!("names_gender", &[("gender", gender.to_string())]);
-
-        gender
+impl Name {
+    /// Generate a new name for the given race
+    ///
+    /// ```
+    /// use names::Name;
+    /// use rand::Rng;
+    ///
+    /// let name = Name::Dwarf.gen(&mut rand::thread_rng());
+    /// ```
+    pub fn gen(&self, rng: &mut impl Rng) -> impl NameGenerator {
+        match self {
+            Self::Dwarf => rng.gen::<Dwarf>(),
+        }
     }
 }

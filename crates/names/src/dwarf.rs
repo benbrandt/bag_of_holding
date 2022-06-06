@@ -5,21 +5,18 @@ use rand::{
     prelude::{Distribution, SliceRandom},
     Rng,
 };
-use serde::Serialize;
 
-use crate::{Gender, Name};
+use crate::NameGenerator;
 
 /// A dwarf’s name belongs to the clan, not to the individual. A dwarf who
 /// misuses or brings shame to a clan name is stripped of the name and
 /// forbidden by law to use any dwarven name in its place.
-#[derive(Debug, Serialize)]
+#[derive(Debug)]
 pub struct Dwarf {
     /// Granted by a clan elder, in accordance with tradition.
-    pub first_name: &'static str,
+    first_name: &'static str,
     /// Clan the dwarf is a part of.
-    pub clan_name: &'static str,
-    /// Usual gender associated with the name.
-    pub gender: Gender,
+    clan_name: &'static str,
 }
 
 impl fmt::Display for Dwarf {
@@ -33,31 +30,31 @@ impl Distribution<Dwarf> for Standard {
     /// Generate a new dwarven name.
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Dwarf {
-        let gender: Gender = rng.gen();
-
-        let first_name = *match gender {
-            Gender::Female => FEMALE,
-            Gender::Male => MALE,
-        }
-        .choose(rng)
-        .unwrap();
-
-        let clan_name = *CLAN.choose(rng).unwrap();
-
-        metrics::increment_counter!(
-            "names_dwarf",
-            &[("first_name", first_name), ("clan_name", clan_name),]
-        );
-
         Dwarf {
-            first_name,
-            clan_name,
-            gender,
+            first_name: *[FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
+            clan_name: *CLAN.choose(rng).unwrap(),
         }
     }
 }
 
-impl Name for Dwarf {}
+impl NameGenerator for Dwarf {}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn name() {
+        let name: Dwarf = rand_utils::rng_from_entropy().gen();
+        assert!(!name.first_name.is_empty());
+        assert!(!name.clan_name.is_empty());
+        // Formats full name
+        assert_eq!(
+            name.to_string(),
+            format!("{} {}", name.first_name, name.clan_name)
+        );
+    }
+}
 
 const CLAN: &[&str] = &[
     "Arnskull",

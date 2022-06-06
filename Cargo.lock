@@ -1249,10 +1249,8 @@ dependencies = [
 name = "names"
 version = "0.1.0"
 dependencies = [
- "metrics",
  "rand",
  "rand_utils",
- "serde",
  "strum",
  "tracing",
 ]
