@@ -26,6 +26,7 @@ use tokio::task::JoinHandle;
 
 mod abilities;
 mod dice;
+mod names;
 
 /// Use the entire server for tests
 struct TestServer {

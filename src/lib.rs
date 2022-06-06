@@ -35,6 +35,7 @@ use tracing_subscriber::{
 mod abilities;
 mod dice;
 mod metrics;
+mod names;
 
 // Setup tracing
 static TRACING: Lazy<()> = Lazy::new(|| {
@@ -94,6 +95,7 @@ pub fn app() -> Router {
     Router::new()
         .nest("/dice", dice::routes())
         .merge(abilities::routes())
+        .merge(names::routes())
         .layer(middleware)
         .route_layer(route_middleware)
 }

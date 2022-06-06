@@ -322,6 +322,7 @@ dependencies = [
  "metrics",
  "metrics-exporter-prometheus",
  "mime",
+ "names",
  "once_cell",
  "rand",
  "rand_utils",
@@ -1249,8 +1250,10 @@ dependencies = [
 name = "names"
 version = "0.1.0"
 dependencies = [
+ "metrics",
  "rand",
  "rand_utils",
+ "serde",
  "strum",
  "tracing",
 ]
