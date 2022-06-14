@@ -43,14 +43,11 @@ async fn main() {
     }
 
     // Start Sentry
-    let _guard = sentry::init((
-        "https://c21aaae10ee74c71aa81a04f03203f59@o251876.ingest.sentry.io/6243981",
-        ClientOptions {
-            release: release_name!(),
-            traces_sample_rate: 0.1,
-            ..ClientOptions::default()
-        },
-    ));
+    let _guard = sentry::init(ClientOptions {
+        release: release_name!(),
+        traces_sample_rate: 0.1,
+        ..ClientOptions::default()
+    });
 
     // Parse command line arguments and start app
     let config = Config::parse();
