@@ -314,6 +314,7 @@ dependencies = [
  "anyhow",
  "axum",
  "axum-extra",
+ "axum-macros",
  "axum-server",
  "clap",
  "dice",

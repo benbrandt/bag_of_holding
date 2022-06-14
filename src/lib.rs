@@ -16,18 +16,12 @@
 
 use std::{sync::Arc, time::Duration};
 
-use axum::{
-    error_handling::HandleErrorLayer,
-    http::{header, StatusCode},
-    middleware,
-    response::IntoResponse,
-    BoxError, Router,
-};
+use axum::{http::header, middleware, Router};
 use metrics_exporter_prometheus::PrometheusBuilder;
 use once_cell::sync::Lazy;
 use sentry::integrations::tower::{NewSentryLayer, SentryHttpLayer};
 use tower::ServiceBuilder;
-use tower_http::{catch_panic::CatchPanicLayer, trace::TraceLayer, ServiceBuilderExt};
+use tower_http::{timeout::TimeoutLayer, ServiceBuilderExt};
 use tracing_subscriber::{
     fmt, prelude::__tracing_subscriber_SubscriberExt, registry, util::SubscriberInitExt, EnvFilter,
 };
@@ -65,25 +59,20 @@ pub fn app() -> Router {
 
     // Middleware for entire service
     let middleware = ServiceBuilder::new()
-        // Turn panics into a 500
-        .layer(CatchPanicLayer::new())
-        // Handle errors from middleware
-        //
-        // This middleware most be added above any fallible
-        // ones if you're using `ServiceBuilder`, due to how ordering works
-        .layer(HandleErrorLayer::new(handle_errors))
-        // Call before tracing
+        // Strip sensitive request headers
         .sensitive_request_headers(sensitive_headers.clone())
         // `TraceLayer` adds high level tracing and logging
-        .layer(TraceLayer::new_for_http())
+        .trace_for_http()
         // Sentry setup
         .layer(NewSentryLayer::new_from_top())
-        // Recall after tracing
-        .sensitive_response_headers(sensitive_headers)
         // Set a timeout
-        .timeout(Duration::from_secs(10))
+        .layer(TimeoutLayer::new(Duration::from_secs(10)))
+        // Turn panics into a 500
+        .catch_panic()
         // Compress responses
-        .compression();
+        .compression()
+        // Strip sensitive response headers
+        .sensitive_response_headers(sensitive_headers);
 
     // Middleware that should only run if the request matches a route
     let route_middleware = ServiceBuilder::new()
@@ -98,20 +87,4 @@ pub fn app() -> Router {
         .merge(names::routes())
         .layer(middleware)
         .route_layer(route_middleware)
-}
-
-/// Handle errors propagated from middleware
-#[tracing::instrument]
-async fn handle_errors(err: BoxError) -> impl IntoResponse {
-    if err.is::<tower::timeout::error::Elapsed>() {
-        (
-            StatusCode::REQUEST_TIMEOUT,
-            "Request took too long".to_string(),
-        )
-    } else {
-        (
-            StatusCode::INTERNAL_SERVER_ERROR,
-            format!("Unhandled internal error: {}", err),
-        )
-    }
 }

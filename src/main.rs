@@ -24,13 +24,13 @@ use sentry::{release_name, ClientOptions};
 #[clap(author, version, about, long_about = None)]
 pub struct Config {
     /// The port to listen on for the app
-    #[clap(long, short, default_value = "5000")]
+    #[clap(value_parser, long, short, default_value = "5000")]
     port: u16,
     /// SSL Certificate value
-    #[clap(env, long)]
+    #[clap(value_parser, env, long)]
     ssl_cert: Option<String>,
     /// SSL Key value
-    #[clap(env, long)]
+    #[clap(value_parser, env, long)]
     ssl_key: Option<String>,
 }
 
