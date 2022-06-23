@@ -29,5 +29,5 @@ struct NameGenerator {
 #[tracing::instrument]
 async fn create(path: NameGenerator) -> impl IntoResponse {
     let mut rng = rand_utils::rng_from_entropy();
-    Json(path.name.gen(&mut rng).to_string())
+    Json(path.name.gen(&mut rng))
 }

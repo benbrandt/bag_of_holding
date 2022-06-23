@@ -15,11 +15,13 @@
 
 use std::fmt;
 
+use dragonborn::Dragonborn;
 use dwarf::Dwarf;
 use rand::{distributions::Standard, prelude::Distribution, Rng};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter};
 
+mod dragonborn;
 mod dwarf;
 
 /// Implements the ability to generate a name for a given race.
@@ -39,6 +41,8 @@ where
 #[serde(rename_all = "kebab-case")]
 #[strum(serialize_all = "kebab-case")]
 pub enum Name {
+    /// Names for dragonborn characters
+    Dragonborn,
     /// Names for dwarven characters
     Dwarf,
 }
@@ -52,11 +56,13 @@ impl Name {
     ///
     /// let name = Name::Dwarf.gen(&mut rand::thread_rng());
     /// ```
-    pub fn gen(&self, rng: &mut impl Rng) -> impl NameGenerator {
+    #[tracing::instrument(skip(rng))]
+    pub fn gen(&self, rng: &mut impl Rng) -> String {
         metrics::increment_counter!("names", &[("generator", self.to_string())]);
 
         match self {
-            Self::Dwarf => rng.gen::<Dwarf>(),
+            Self::Dragonborn => rng.gen::<Dragonborn>().to_string(),
+            Self::Dwarf => rng.gen::<Dwarf>().to_string(),
         }
     }
 }

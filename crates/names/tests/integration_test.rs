@@ -11,9 +11,12 @@
 )]
 
 use names::Name;
+use strum::IntoEnumIterator;
 
 #[test]
-fn name() {
-    let name = Name::Dwarf.gen(&mut rand_utils::rng_from_entropy());
-    assert!(!name.to_string().is_empty());
+fn can_generate_all_names() {
+    let mut rng = rand_utils::rng_from_entropy();
+    for name in Name::iter() {
+        assert!(!name.gen(&mut rng).is_empty());
+    }
 }
