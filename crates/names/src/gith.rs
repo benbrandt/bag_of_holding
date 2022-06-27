@@ -89,7 +89,7 @@ mod test {
     }
 }
 
-pub const GITHYANKI_FEMALE: &[&str] = &[
+const GITHYANKI_FEMALE: &[&str] = &[
     "Aaryl",
     "B'noor",
     "Fenelzi'ir",
@@ -102,7 +102,7 @@ pub const GITHYANKI_FEMALE: &[&str] = &[
     "Zar'ryth",
 ];
 
-pub const GITHYANKI_MALE: &[&str] = &[
+const GITHYANKI_MALE: &[&str] = &[
     "Elirdain",
     "Gaath",
     "Ja'adoc",
@@ -116,9 +116,9 @@ pub const GITHYANKI_MALE: &[&str] = &[
     "Xamodas",
 ];
 
-pub const GITHZERAI_FEMALE: &[&str] = &[
+const GITHZERAI_FEMALE: &[&str] = &[
     "Adaka", "Izera", "Adeya", "Janara", "Ella", "Loraya", "Ezhelya", "Uweya", "Immilzin", "Vithka",
 ];
-pub const GITHZERAI_MALE: &[&str] = &[
+const GITHZERAI_MALE: &[&str] = &[
     "Dak", "Kalla", "Duurth", "Muurg", "Ferzth", "Nurm", "Greth", "Shrakk", "Hurm", "Xorm",
 ];

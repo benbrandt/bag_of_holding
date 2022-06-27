@@ -24,12 +24,14 @@ use crate::{
     dwarf::Dwarf,
     elf::Elf,
     gith::{Githyanki, Githzerai},
+    gnome::Gnome,
 };
 
 mod dragonborn;
 mod dwarf;
 mod elf;
 mod gith;
+mod gnome;
 
 /// Implements the ability to generate a name for a given race.
 /// Can contain whatever information is necessary for a given name
@@ -58,6 +60,8 @@ pub enum Name {
     Githyanki,
     /// Names for Githzerai characters
     Githzerai,
+    /// Names for Gnome characters
+    Gnome,
 }
 
 impl Name {
@@ -79,6 +83,7 @@ impl Name {
             Self::Elf => rng.gen::<Elf>().to_string(),
             Self::Githyanki => rng.gen::<Githyanki>().to_string(),
             Self::Githzerai => rng.gen::<Githzerai>().to_string(),
+            Self::Gnome => rng.gen::<Gnome>().to_string(),
         }
     }
 }

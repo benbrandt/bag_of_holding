@@ -77,12 +77,12 @@ mod test {
     }
 }
 
-pub const CHILD: &[&str] = &[
+const CHILD: &[&str] = &[
     "Ara", "Bryn", "Del", "Eryn", "Faen", "Innil", "Lael", "Mella", "Naill", "Naeris", "Phann",
     "Rael", "Rinn", "Sai", "Syllin", "Thia", "Vall",
 ];
 
-pub const FAMILY: &[&str] = &[
+const FAMILY: &[&str] = &[
     "Amakiir (Gemflower)",
     "Amastacia (Starflower)",
     "Edermath",
@@ -105,7 +105,7 @@ pub const FAMILY: &[&str] = &[
     "Xiloscient (Goldpetal)",
 ];
 
-pub const FEMALE: &[&str] = &[
+const FEMALE: &[&str] = &[
     "Adrie",
     "Aedyn",
     "Althaea",
@@ -148,7 +148,7 @@ pub const FEMALE: &[&str] = &[
     "Xanaphia",
 ];
 
-pub const MALE: &[&str] = &[
+const MALE: &[&str] = &[
     "Adran",
     "Aelar",
     "Araithe",
