@@ -15,16 +15,21 @@
 
 use std::fmt;
 
-use dragonborn::Dragonborn;
-use dwarf::Dwarf;
-use elf::Elf;
 use rand::{distributions::Standard, prelude::Distribution, Rng};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter};
 
+use crate::{
+    dragonborn::Dragonborn,
+    dwarf::Dwarf,
+    elf::Elf,
+    gith::{Githyanki, Githzerai},
+};
+
 mod dragonborn;
 mod dwarf;
 mod elf;
+mod gith;
 
 /// Implements the ability to generate a name for a given race.
 /// Can contain whatever information is necessary for a given name
@@ -49,6 +54,10 @@ pub enum Name {
     Dwarf,
     /// Names for characters of races that use Elven names
     Elf,
+    /// Names for Githzyanki characters
+    Githyanki,
+    /// Names for Githzerai characters
+    Githzerai,
 }
 
 impl Name {
@@ -68,6 +77,8 @@ impl Name {
             Self::Dragonborn => rng.gen::<Dragonborn>().to_string(),
             Self::Dwarf => rng.gen::<Dwarf>().to_string(),
             Self::Elf => rng.gen::<Elf>().to_string(),
+            Self::Githyanki => rng.gen::<Githyanki>().to_string(),
+            Self::Githzerai => rng.gen::<Githzerai>().to_string(),
         }
     }
 }
