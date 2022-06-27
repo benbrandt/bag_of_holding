@@ -20,16 +20,19 @@ use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter};
 
 use crate::{
-    dragonborn::Dragonborn, dwarf::Dwarf, elf::Elf, githyanki::Githyanki, githzerai::Githzerai,
-    gnome::Gnome,
+    bugbear::Bugbear, dragonborn::Dragonborn, dwarf::Dwarf, elf::Elf, githyanki::Githyanki,
+    githzerai::Githzerai, gnome::Gnome, goblin::Goblin, hobgoblin::Hobgoblin,
 };
 
+mod bugbear;
 mod dragonborn;
 mod dwarf;
 mod elf;
 mod githyanki;
 mod githzerai;
 mod gnome;
+mod goblin;
+mod hobgoblin;
 
 /// Implements the ability to generate a name for a given race.
 /// Can contain whatever information is necessary for a given name
@@ -48,9 +51,11 @@ where
 #[serde(rename_all = "kebab-case")]
 #[strum(serialize_all = "kebab-case")]
 pub enum Name {
-    /// Names for dragonborn characters
+    /// Names for Bugbear characters
+    Bugbear,
+    /// Names for Dragonborn characters
     Dragonborn,
-    /// Names for dwarven characters
+    /// Names for Dwarven characters
     Dwarf,
     /// Names for characters of races that use Elven names
     Elf,
@@ -60,6 +65,10 @@ pub enum Name {
     Githzerai,
     /// Names for Gnome characters
     Gnome,
+    /// Names for Goblin characters
+    Goblin,
+    /// Names for Hobgoblin characters
+    Hobgoblin,
 }
 
 impl Name {
@@ -76,12 +85,15 @@ impl Name {
         metrics::increment_counter!("names", &[("generator", self.to_string())]);
 
         match self {
+            Self::Bugbear => rng.gen::<Bugbear>().to_string(),
             Self::Dragonborn => rng.gen::<Dragonborn>().to_string(),
             Self::Dwarf => rng.gen::<Dwarf>().to_string(),
             Self::Elf => rng.gen::<Elf>().to_string(),
             Self::Githyanki => rng.gen::<Githyanki>().to_string(),
             Self::Githzerai => rng.gen::<Githzerai>().to_string(),
             Self::Gnome => rng.gen::<Gnome>().to_string(),
+            Self::Goblin => rng.gen::<Goblin>().to_string(),
+            Self::Hobgoblin => rng.gen::<Hobgoblin>().to_string(),
         }
     }
 }
