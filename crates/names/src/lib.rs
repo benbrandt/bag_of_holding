@@ -20,17 +20,15 @@ use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter};
 
 use crate::{
-    dragonborn::Dragonborn,
-    dwarf::Dwarf,
-    elf::Elf,
-    gith::{Githyanki, Githzerai},
+    dragonborn::Dragonborn, dwarf::Dwarf, elf::Elf, githyanki::Githyanki, githzerai::Githzerai,
     gnome::Gnome,
 };
 
 mod dragonborn;
 mod dwarf;
 mod elf;
-mod gith;
+mod githyanki;
+mod githzerai;
 mod gnome;
 
 /// Implements the ability to generate a name for a given race.
