@@ -17,12 +17,14 @@ use std::fmt;
 
 use dragonborn::Dragonborn;
 use dwarf::Dwarf;
+use elf::Elf;
 use rand::{distributions::Standard, prelude::Distribution, Rng};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter};
 
 mod dragonborn;
 mod dwarf;
+mod elf;
 
 /// Implements the ability to generate a name for a given race.
 /// Can contain whatever information is necessary for a given name
@@ -45,6 +47,8 @@ pub enum Name {
     Dragonborn,
     /// Names for dwarven characters
     Dwarf,
+    /// Names for characters of races that use Elven names
+    Elf,
 }
 
 impl Name {
@@ -63,6 +67,7 @@ impl Name {
         match self {
             Self::Dragonborn => rng.gen::<Dragonborn>().to_string(),
             Self::Dwarf => rng.gen::<Dwarf>().to_string(),
+            Self::Elf => rng.gen::<Elf>().to_string(),
         }
     }
 }
