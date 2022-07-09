@@ -21,7 +21,8 @@ use strum::{Display, EnumIter};
 
 use crate::{
     bugbear::Bugbear, dragonborn::Dragonborn, duergar::Duergar, dwarf::Dwarf, elf::Elf,
-    githyanki::Githyanki, githzerai::Githzerai, gnome::Gnome, goblin::Goblin, hobgoblin::Hobgoblin,
+    githyanki::Githyanki, githzerai::Githzerai, gnome::Gnome, goblin::Goblin, goliath::Goliath,
+    hobgoblin::Hobgoblin,
 };
 
 mod bugbear;
@@ -33,6 +34,7 @@ mod githyanki;
 mod githzerai;
 mod gnome;
 mod goblin;
+mod goliath;
 mod hobgoblin;
 
 /// Implements the ability to generate a name for a given race.
@@ -70,6 +72,8 @@ pub enum Name {
     Gnome,
     /// Names for Goblin characters
     Goblin,
+    /// Names fo Goliath characters
+    Goliath,
     /// Names for Hobgoblin characters
     Hobgoblin,
 }
@@ -97,6 +101,7 @@ impl Name {
             Self::Githzerai => rng.gen::<Githzerai>().to_string(),
             Self::Gnome => rng.gen::<Gnome>().to_string(),
             Self::Goblin => rng.gen::<Goblin>().to_string(),
+            Self::Goliath => rng.gen::<Goliath>().to_string(),
             Self::Hobgoblin => rng.gen::<Hobgoblin>().to_string(),
         }
     }
