@@ -20,12 +20,13 @@ use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter};
 
 use crate::{
-    bugbear::Bugbear, dragonborn::Dragonborn, dwarf::Dwarf, elf::Elf, githyanki::Githyanki,
-    githzerai::Githzerai, gnome::Gnome, goblin::Goblin, hobgoblin::Hobgoblin,
+    bugbear::Bugbear, dragonborn::Dragonborn, duergar::Duergar, dwarf::Dwarf, elf::Elf,
+    githyanki::Githyanki, githzerai::Githzerai, gnome::Gnome, goblin::Goblin, hobgoblin::Hobgoblin,
 };
 
 mod bugbear;
 mod dragonborn;
+mod duergar;
 mod dwarf;
 mod elf;
 mod githyanki;
@@ -55,6 +56,8 @@ pub enum Name {
     Bugbear,
     /// Names for Dragonborn characters
     Dragonborn,
+    /// Names for Duergar characters
+    Duergar,
     /// Names for Dwarven characters
     Dwarf,
     /// Names for characters of races that use Elven names
@@ -87,6 +90,7 @@ impl Name {
         match self {
             Self::Bugbear => rng.gen::<Bugbear>().to_string(),
             Self::Dragonborn => rng.gen::<Dragonborn>().to_string(),
+            Self::Duergar => rng.gen::<Duergar>().to_string(),
             Self::Dwarf => rng.gen::<Dwarf>().to_string(),
             Self::Elf => rng.gen::<Elf>().to_string(),
             Self::Githyanki => rng.gen::<Githyanki>().to_string(),

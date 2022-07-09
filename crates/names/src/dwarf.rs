@@ -14,7 +14,7 @@ use crate::NameGenerator;
 #[derive(Debug)]
 pub struct Dwarf {
     /// Granted by a clan elder, in accordance with tradition.
-    first_name: &'static str,
+    pub(crate) first_name: &'static str,
     /// Clan the dwarf is a part of.
     clan_name: &'static str,
 }
