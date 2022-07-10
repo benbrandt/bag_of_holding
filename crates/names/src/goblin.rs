@@ -8,8 +8,8 @@ use rand::{
 
 use crate::NameGenerator;
 
-#[derive(Debug)]
 /// Goblins only have a single name
+#[derive(Debug)]
 pub struct Goblin {
     /// Name of the character
     name: &'static str,

@@ -22,7 +22,7 @@ use strum::{Display, EnumIter};
 use crate::{
     bugbear::Bugbear, dragonborn::Dragonborn, duergar::Duergar, dwarf::Dwarf, elf::Elf,
     githyanki::Githyanki, githzerai::Githzerai, gnome::Gnome, goblin::Goblin, goliath::Goliath,
-    halfling::Halfling, hobgoblin::Hobgoblin,
+    halfling::Halfling, hobgoblin::Hobgoblin, kenku::Kenku,
 };
 
 mod bugbear;
@@ -37,6 +37,7 @@ mod goblin;
 mod goliath;
 mod halfling;
 mod hobgoblin;
+mod kenku;
 
 /// Implements the ability to generate a name for a given race.
 /// Can contain whatever information is necessary for a given name
@@ -79,6 +80,8 @@ pub enum Name {
     Halfling,
     /// Names for Hobgoblin characters
     Hobgoblin,
+    /// Names for Kenku characters
+    Kenku,
 }
 
 impl Name {
@@ -107,6 +110,7 @@ impl Name {
             Self::Goliath => rng.gen::<Goliath>().to_string(),
             Self::Halfling => rng.gen::<Halfling>().to_string(),
             Self::Hobgoblin => rng.gen::<Hobgoblin>().to_string(),
+            Self::Kenku => rng.gen::<Kenku>().to_string(),
         }
     }
 }

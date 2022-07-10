@@ -8,7 +8,6 @@ use rand::{
 
 use crate::NameGenerator;
 
-#[derive(Debug)]
 /// Gnomes love names, and most have half a dozen or so. A gnome’s mother,
 /// father, clan elder, aunts, and uncles each give the gnome a name, and
 /// various nicknames from just about everyone else might or might not stick
@@ -17,6 +16,7 @@ use crate::NameGenerator;
 /// with humans and others who are “stuffy” about names, a gnome learns to use
 /// no more than three names: a personal name, a clan name, and a nickname,
 /// choosing the one in each category that’s the most fun to say.
+#[derive(Debug)]
 pub struct Gnome {
     /// Similar to a "first name"
     personal_name: &'static str,

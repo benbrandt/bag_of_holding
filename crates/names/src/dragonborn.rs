@@ -8,11 +8,11 @@ use rand::{
 
 use crate::NameGenerator;
 
-#[derive(Debug)]
 /// Dragonborn have personal names given at birth, but they put their clan
 /// names first as a mark of honor. A childhood name or nickname is often used
 /// among clutchmates as a descriptive term or a term of endearment. The name
 /// might recall an event or center on a habit.
+#[derive(Debug)]
 pub struct Dragonborn {
     /// Personal name given at birth
     first_name: &'static str,

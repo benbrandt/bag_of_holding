@@ -8,8 +8,8 @@ use rand::{
 
 use crate::NameGenerator;
 
-#[derive(Debug)]
 /// Bugbears only have a single name
+#[derive(Debug)]
 pub struct Bugbear {
     /// Name of the character
     name: &'static str,

@@ -8,8 +8,8 @@ use rand::{
 
 use crate::NameGenerator;
 
-#[derive(Debug)]
 /// Githzerai only have a single name
+#[derive(Debug)]
 pub struct Githzerai {
     /// Name of the character
     name: &'static str,

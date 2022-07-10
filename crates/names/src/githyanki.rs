@@ -8,8 +8,8 @@ use rand::{
 
 use crate::NameGenerator;
 
-#[derive(Debug)]
 /// Githyanki only have a single name
+#[derive(Debug)]
 pub struct Githyanki {
     /// Name of the character
     name: &'static str,

@@ -8,8 +8,8 @@ use rand::{
 
 use crate::NameGenerator;
 
-#[derive(Debug)]
 // Hobgoblins only have a single name
+#[derive(Debug)]
 pub struct Hobgoblin {
     /// Name of the character
     name: &'static str,

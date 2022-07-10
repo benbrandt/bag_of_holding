@@ -8,7 +8,6 @@ use rand::{
 
 use crate::NameGenerator;
 
-#[derive(Debug)]
 /// Elves are considered children until they declare themselves adults, some
 /// time after the hundredth birthday, and before this period they are called
 /// by child names.
@@ -22,6 +21,7 @@ use crate::NameGenerator;
 /// combination of other Elvish words. Some elves traveling among humans
 /// translate their family names into Common, but others retain the Elvish
 /// version.
+#[derive(Debug)]
 pub struct Elf {
     /// Childhood name
     child_name: &'static str,
