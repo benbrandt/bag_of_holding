@@ -43,7 +43,7 @@ impl fmt::Display for Kenku {
 }
 
 impl Distribution<Kenku> for Standard {
-    /// Generate a new Bugbear name.
+    /// Generate a new Kenku name.
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Kenku {
         Kenku {
