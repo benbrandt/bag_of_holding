@@ -23,7 +23,7 @@ use crate::{
     bugbear::Bugbear, dragonborn::Dragonborn, duergar::Duergar, dwarf::Dwarf, elf::Elf,
     githyanki::Githyanki, githzerai::Githzerai, gnome::Gnome, goblin::Goblin, goliath::Goliath,
     halfling::Halfling, hobgoblin::Hobgoblin, kenku::Kenku, kobold::Kobold, lizardfolk::Lizardfolk,
-    orc::Orc, tabaxi::Tabaxi,
+    orc::Orc, tabaxi::Tabaxi, triton::Triton,
 };
 
 mod bugbear;
@@ -43,6 +43,7 @@ mod kobold;
 mod lizardfolk;
 mod orc;
 mod tabaxi;
+mod triton;
 
 /// Implements the ability to generate a name for a given race.
 /// Can contain whatever information is necessary for a given name
@@ -95,6 +96,8 @@ pub enum Name {
     Orc,
     /// Names for Tabaxi characters
     Tabaxi,
+    /// Names for Triton characters
+    Triton,
 }
 
 impl Name {
@@ -128,6 +131,7 @@ impl Name {
             Self::Lizardfolk => rng.gen::<Lizardfolk>().to_string(),
             Self::Orc => rng.gen::<Orc>().to_string(),
             Self::Tabaxi => rng.gen::<Tabaxi>().to_string(),
+            Self::Triton => rng.gen::<Triton>().to_string(),
         }
     }
 }
