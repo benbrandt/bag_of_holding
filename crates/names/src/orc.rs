@@ -67,8 +67,8 @@ const EPITHET: &[&str] = &[
     "Skin Flayer",
     "Skull Cleaver",
     "Spine Snapper",
-    "The Brutal",
-    "The Filthy",
+    "the Brutal",
+    "the Filthy",
 ];
 
 const FEMALE: &[&str] = &[
