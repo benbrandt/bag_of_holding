@@ -23,7 +23,8 @@ use crate::{
     bugbear::Bugbear, dragonborn::Dragonborn, duergar::Duergar, dwarf::Dwarf, elf::Elf,
     githyanki::Githyanki, githzerai::Githzerai, gnome::Gnome, goblin::Goblin, goliath::Goliath,
     halfling::Halfling, hobgoblin::Hobgoblin, human::Human, kenku::Kenku, kobold::Kobold,
-    lizardfolk::Lizardfolk, orc::Orc, tabaxi::Tabaxi, triton::Triton, yuan_ti::YuanTi,
+    lizardfolk::Lizardfolk, orc::Orc, tabaxi::Tabaxi, tiefling::Tiefling, triton::Triton,
+    yuan_ti::YuanTi,
 };
 
 mod bugbear;
@@ -44,6 +45,7 @@ mod kobold;
 mod lizardfolk;
 mod orc;
 mod tabaxi;
+mod tiefling;
 mod triton;
 mod yuan_ti;
 
@@ -100,6 +102,8 @@ pub enum Name {
     Orc,
     /// Names for Tabaxi characters
     Tabaxi,
+    /// Names for Tiefling characters
+    Tiefling,
     /// Names for Triton characters
     Triton,
     /// Names for Yuan-ti characters
@@ -138,6 +142,7 @@ impl Name {
             Self::Lizardfolk => rng.gen::<Lizardfolk>().to_string(),
             Self::Orc => rng.gen::<Orc>().to_string(),
             Self::Tabaxi => rng.gen::<Tabaxi>().to_string(),
+            Self::Tiefling => rng.gen::<Tiefling>().to_string(),
             Self::Triton => rng.gen::<Triton>().to_string(),
             Self::YuanTi => rng.gen::<YuanTi>().to_string(),
         }

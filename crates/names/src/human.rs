@@ -17,9 +17,9 @@ use crate::NameGenerator;
 #[derive(Debug)]
 pub struct Human {
     /// Given name
-    first_name: &'static str,
+    pub(crate) first_name: &'static str,
     /// Family name
-    surname: Option<&'static str>,
+    pub(crate) surname: Option<&'static str>,
 }
 
 impl fmt::Display for Human {
