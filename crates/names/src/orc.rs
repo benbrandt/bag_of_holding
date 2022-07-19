@@ -13,9 +13,9 @@ use crate::NameGenerator;
 #[derive(Debug)]
 pub struct Orc {
     /// Given name
-    name: &'static str,
+    pub(crate) name: &'static str,
     /// Additional name given for noteworthy deeds
-    epithet: &'static str,
+    pub(crate) epithet: &'static str,
 }
 
 impl fmt::Display for Orc {
