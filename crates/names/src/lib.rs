@@ -22,8 +22,8 @@ use strum::{Display, EnumIter};
 use crate::{
     bugbear::Bugbear, dragonborn::Dragonborn, duergar::Duergar, dwarf::Dwarf, elf::Elf,
     githyanki::Githyanki, githzerai::Githzerai, gnome::Gnome, goblin::Goblin, goliath::Goliath,
-    halfling::Halfling, hobgoblin::Hobgoblin, kenku::Kenku, kobold::Kobold, lizardfolk::Lizardfolk,
-    orc::Orc, tabaxi::Tabaxi, triton::Triton, yuan_ti::YuanTi,
+    halfling::Halfling, hobgoblin::Hobgoblin, human::Human, kenku::Kenku, kobold::Kobold,
+    lizardfolk::Lizardfolk, orc::Orc, tabaxi::Tabaxi, triton::Triton, yuan_ti::YuanTi,
 };
 
 mod bugbear;
@@ -38,6 +38,7 @@ mod goblin;
 mod goliath;
 mod halfling;
 mod hobgoblin;
+mod human;
 mod kenku;
 mod kobold;
 mod lizardfolk;
@@ -87,6 +88,8 @@ pub enum Name {
     Halfling,
     /// Names for Hobgoblin characters
     Hobgoblin,
+    /// Names for Hobgoblin characters
+    Human,
     /// Names for Kenku characters
     Kenku,
     /// Names for Kobold characters
@@ -129,6 +132,7 @@ impl Name {
             Self::Goliath => rng.gen::<Goliath>().to_string(),
             Self::Halfling => rng.gen::<Halfling>().to_string(),
             Self::Hobgoblin => rng.gen::<Hobgoblin>().to_string(),
+            Self::Human => rng.gen::<Human>().to_string(),
             Self::Kenku => rng.gen::<Kenku>().to_string(),
             Self::Kobold => rng.gen::<Kobold>().to_string(),
             Self::Lizardfolk => rng.gen::<Lizardfolk>().to_string(),
