@@ -17,7 +17,7 @@ use crate::NameGenerator;
 /// the foliage.
 ///
 /// Lizardfolk make no distinction between male and female in their naming
-/// conventions...
+/// conventions.
 #[derive(Debug)]
 pub struct Lizardfolk {
     /// Name of the character
