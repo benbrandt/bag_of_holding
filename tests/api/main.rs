@@ -25,6 +25,7 @@ use serde_json::Value;
 use tokio::task::JoinHandle;
 
 mod abilities;
+mod characters;
 mod dice;
 mod names;
 

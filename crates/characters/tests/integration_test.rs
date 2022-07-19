@@ -11,7 +11,7 @@
 )]
 
 use abilities::Ability;
-use character::Character;
+use characters::Character;
 use rand::Rng;
 use strum::IntoEnumIterator;
 

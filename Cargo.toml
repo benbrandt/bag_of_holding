@@ -8,7 +8,12 @@ edition = "2021"
 [dependencies]
 abilities = { path = "./crates/abilities" }
 anyhow = { version = "1.0.58", features = ["backtrace"] }
-axum = { version = "0.5.13", features = ["headers", "http2", "multipart", "ws"] }
+axum = { version = "0.5.13", features = [
+    "headers",
+    "http2",
+    "multipart",
+    "ws",
+] }
 axum-extra = { version = "0.3.6", features = [
     "cookie-private",
     "cookie-signed",
@@ -18,6 +23,7 @@ axum-extra = { version = "0.3.6", features = [
 ] }
 axum-macros = "0.2.3"
 axum-server = { version = "0.4.0", features = ["tls-rustls"] }
+characters = { path = "./crates/characters" }
 clap = { version = "3.2.12", features = ["derive", "env"] }
 dice = { path = "./crates/dice" }
 futures = "0.3.21"

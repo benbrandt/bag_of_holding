@@ -16,9 +16,10 @@
 
 use abilities::AbilityScores;
 use rand::{distributions::Standard, prelude::Distribution, Rng};
+use serde::Serialize;
 
 /// Full character information.
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct Character {
     /// Ability scores of the character
     pub ability_scores: AbilityScores,

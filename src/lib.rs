@@ -27,6 +27,7 @@ use tracing_subscriber::{
 };
 
 mod abilities;
+mod characters;
 mod dice;
 mod metrics;
 mod names;
@@ -84,6 +85,7 @@ pub fn app() -> Router {
     Router::new()
         .nest("/dice", dice::routes())
         .merge(abilities::routes())
+        .merge(characters::routes())
         .merge(names::routes())
         .layer(middleware)
         .route_layer(route_middleware)
