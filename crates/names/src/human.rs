@@ -19,21 +19,37 @@ pub struct Human {
     /// Given name
     first_name: &'static str,
     /// Family name
-    surname: &'static str,
+    surname: Option<&'static str>,
 }
 
 impl fmt::Display for Human {
     /// Formatted full name (for character sheet)
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} {}", self.first_name, self.surname)
+        write!(f, "{}", self.first_name)?;
+        if let Some(surname) = self.surname {
+            write!(f, " {}", surname)?;
+        }
+        Ok(())
     }
 }
 
 impl Distribution<Human> for Standard {
-    /// Generate a new dwarven name.
+    /// Generate a new human name.
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Human {
-        rng.gen::<Ethnicity>().name(rng)
+        // 1/10 chance of having name come from multiple ethnicities
+        let amount = [(1, 9), (2, 1)].choose_weighted(rng, |i| i.1).unwrap().0;
+        let names = Ethnicity::iter()
+            .choose_multiple(rng, amount)
+            .into_iter()
+            .map(|e| e.name(rng))
+            .collect::<Vec<_>>();
+
+        // Choose between the generated options
+        Human {
+            first_name: names.iter().map(|n| n.first_name).choose(rng).unwrap(),
+            surname: names.iter().map(|n| n.surname).choose(rng).unwrap(),
+        }
     }
 }
 
@@ -99,7 +115,7 @@ impl Ethnicity {
                 .unwrap()
                 .choose(rng)
                 .unwrap(),
-            surname: *names.surname.choose(rng).unwrap(),
+            surname: names.surname.choose(rng).copied(),
         }
     }
 }
@@ -122,11 +138,13 @@ mod test {
         for ethnicity in Ethnicity::iter() {
             let name = ethnicity.name(&mut rng);
             assert!(!name.first_name.is_empty());
-            assert!(!name.surname.is_empty());
+            if let Some(surname) = name.surname {
+                assert!(!surname.is_empty());
+            }
             // Formats full name
             assert_eq!(
                 name.to_string(),
-                format!("{} {}", name.first_name, name.surname)
+                format!("{} {}", name.first_name, name.surname.unwrap_or_default()).trim()
             );
         }
     }
@@ -135,11 +153,13 @@ mod test {
     fn name() {
         let name: Human = rand_utils::rng_from_entropy().gen();
         assert!(!name.first_name.is_empty());
-        assert!(!name.surname.is_empty());
+        if let Some(surname) = name.surname {
+            assert!(!surname.is_empty());
+        }
         // Formats full name
         assert_eq!(
             name.to_string(),
-            format!("{} {}", name.first_name, name.surname)
+            format!("{} {}", name.first_name, name.surname.unwrap_or_default()).trim()
         );
     }
 }
