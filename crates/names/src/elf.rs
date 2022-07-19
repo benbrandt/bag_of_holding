@@ -26,9 +26,9 @@ pub struct Elf {
     /// Childhood name
     child_name: &'static str,
     /// Name chosen on declaration of adulthood
-    adult_name: &'static str,
+    pub(crate) adult_name: &'static str,
     /// Name of the family, typically a combination of other Elvish words
-    family_name: &'static str,
+    pub(crate) family_name: &'static str,
 }
 
 impl fmt::Display for Elf {

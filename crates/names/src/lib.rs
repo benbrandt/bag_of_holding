@@ -22,9 +22,9 @@ use strum::{Display, EnumIter};
 use crate::{
     bugbear::Bugbear, dragonborn::Dragonborn, duergar::Duergar, dwarf::Dwarf, elf::Elf,
     githyanki::Githyanki, githzerai::Githzerai, gnome::Gnome, goblin::Goblin, goliath::Goliath,
-    halfling::Halfling, hobgoblin::Hobgoblin, human::Human, kenku::Kenku, kobold::Kobold,
-    lizardfolk::Lizardfolk, orc::Orc, tabaxi::Tabaxi, tiefling::Tiefling, triton::Triton,
-    yuan_ti::YuanTi,
+    half_elf::HalfElf, halfling::Halfling, hobgoblin::Hobgoblin, human::Human, kenku::Kenku,
+    kobold::Kobold, lizardfolk::Lizardfolk, orc::Orc, tabaxi::Tabaxi, tiefling::Tiefling,
+    triton::Triton, yuan_ti::YuanTi,
 };
 
 mod bugbear;
@@ -37,6 +37,7 @@ mod githzerai;
 mod gnome;
 mod goblin;
 mod goliath;
+mod half_elf;
 mod halfling;
 mod hobgoblin;
 mod human;
@@ -86,6 +87,8 @@ pub enum Name {
     Goblin,
     /// Names for Goliath characters
     Goliath,
+    /// Names for Half-elf characters
+    HalfElf,
     /// Names for Halfling characters
     Halfling,
     /// Names for Hobgoblin characters
@@ -134,6 +137,7 @@ impl Name {
             Self::Gnome => rng.gen::<Gnome>().to_string(),
             Self::Goblin => rng.gen::<Goblin>().to_string(),
             Self::Goliath => rng.gen::<Goliath>().to_string(),
+            Self::HalfElf => rng.gen::<HalfElf>().to_string(),
             Self::Halfling => rng.gen::<Halfling>().to_string(),
             Self::Hobgoblin => rng.gen::<Hobgoblin>().to_string(),
             Self::Human => rng.gen::<Human>().to_string(),
