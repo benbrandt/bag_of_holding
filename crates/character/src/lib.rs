@@ -14,11 +14,22 @@
     unused
 )]
 
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
+use abilities::AbilityScores;
+use rand::{distributions::Standard, prelude::Distribution, Rng};
+
+/// Full character information.
+#[derive(Debug)]
+pub struct Character {
+    /// Ability scores of the character
+    pub ability_scores: AbilityScores,
+}
+
+impl Distribution<Character> for Standard {
+    /// Generate a fully random character.
+    #[tracing::instrument(skip(rng))]
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Character {
+        Character {
+            ability_scores: rng.gen::<AbilityScores>(),
+        }
     }
 }

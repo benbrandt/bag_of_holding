@@ -10,5 +10,16 @@
     unused
 )]
 
+use abilities::Ability;
+use character::Character;
+use rand::Rng;
+use strum::IntoEnumIterator;
+
 #[test]
-fn generate_character() {}
+fn generate_character() {
+    let character: Character = rand_utils::rng_from_entropy().gen();
+
+    for ability in Ability::iter() {
+        assert!(character.ability_scores.score(ability) > 0);
+    }
+}
