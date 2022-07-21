@@ -29,7 +29,7 @@ dice = { path = "./crates/dice" }
 futures = "0.3.21"
 hyper = { version = "0.14.20", features = ["full"] }
 itertools = "0.10.3"
-metrics = "0.19.0"
+metrics = "0.20.0"
 metrics-exporter-prometheus = "0.10.0"
 mime = "0.3.16"
 names = { path = "./crates/names" }
