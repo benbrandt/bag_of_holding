@@ -8,7 +8,7 @@ version = "0.1.0"
 dependencies = [
  "dice",
  "itertools",
- "metrics",
+ "metrics 0.20.0",
  "rand",
  "rand_utils",
  "serde",
@@ -323,7 +323,7 @@ dependencies = [
  "futures",
  "hyper",
  "itertools",
- "metrics",
+ "metrics 0.20.0",
  "metrics-exporter-prometheus",
  "mime",
  "names",
@@ -421,7 +421,7 @@ version = "0.1.0"
 dependencies = [
  "abilities",
  "itertools",
- "metrics",
+ "metrics 0.20.0",
  "rand",
  "rand_utils",
  "serde",
@@ -570,7 +570,7 @@ name = "dice"
 version = "0.1.0"
 dependencies = [
  "itertools",
- "metrics",
+ "metrics 0.20.0",
  "rand",
  "rand_utils",
  "serde",
@@ -1121,6 +1121,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "metrics"
+version = "0.20.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "94a70dc6c8179c4e889928dffb92336b821462c7b7613de91304fe80040fec12"
+dependencies = [
+ "ahash",
+ "metrics-macros",
+ "portable-atomic",
+]
+
+[[package]]
 name = "metrics-exporter-prometheus"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1129,7 +1140,7 @@ dependencies = [
  "hyper",
  "indexmap",
  "ipnet",
- "metrics",
+ "metrics 0.19.0",
  "metrics-util",
  "parking_lot 0.11.2",
  "quanta",
@@ -1159,7 +1170,7 @@ dependencies = [
  "crossbeam-epoch",
  "crossbeam-utils",
  "hashbrown 0.11.2",
- "metrics",
+ "metrics 0.19.0",
  "num_cpus",
  "parking_lot 0.11.2",
  "quanta",
@@ -1260,7 +1271,7 @@ dependencies = [
 name = "names"
 version = "0.1.0"
 dependencies = [
- "metrics",
+ "metrics 0.20.0",
  "rand",
  "rand_utils",
  "serde",
@@ -1467,6 +1478,12 @@ dependencies = [
  "opaque-debug",
  "universal-hash",
 ]
+
+[[package]]
+name = "portable-atomic"
+version = "0.3.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "763095e04dcbeb889b2ab35296ecb18a20fe16b4e9877ce64aab73d8fd05a8c3"
 
 [[package]]
 name = "ppv-lite86"
