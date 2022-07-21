@@ -10,7 +10,7 @@ dice = { path = "../dice" }
 itertools = "0.10.3"
 metrics = "0.20.0"
 rand = "0.8.5"
-serde = { version = "1.0.139", features = ["derive"] }
+serde = { version = "1.0.140", features = ["derive"] }
 strum = { version = "0.24.1", features = ["derive"] }
 tracing = "0.1.35"
 
