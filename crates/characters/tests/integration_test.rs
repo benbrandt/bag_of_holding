@@ -16,10 +16,17 @@ use rand::Rng;
 use strum::IntoEnumIterator;
 
 #[test]
-fn generate_character() {
-    let character: Character = rand_utils::rng_from_entropy().gen();
+fn generate_ability_scores() {
+    let character = Character::new().ability_scores(&mut rand_utils::rng_from_entropy());
 
     for ability in Ability::iter() {
-        assert!(character.ability_scores.score(ability) > 0);
+        assert!(character.ability_scores.as_ref().unwrap().score(ability) > 0);
     }
+}
+
+#[test]
+fn generate_full_character() {
+    let character: Character = rand_utils::rng_from_entropy().gen();
+
+    assert!(character.ability_scores.is_some());
 }
