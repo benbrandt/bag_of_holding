@@ -1,7 +1,6 @@
-//! # Characters
+//! # Races
 //!
-//! Crate to generate entire characters. Assembles together all of the other
-//! crates together into a final character sheet.
+//! Crate to generate races for character players.
 #![warn(
     clippy::pedantic,
     future_incompatible,
@@ -24,6 +23,7 @@ use rand::{
     Rng,
 };
 use serde::{Deserialize, Serialize};
+use sources::{Book, Sources};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
 use crate::dragonborn::Dragonborn;
@@ -33,7 +33,7 @@ mod dragonborn;
 /// Implements the ability to generate a race option, with all the necessary
 /// decisions made for features of that race.
 #[enum_dispatch]
-pub trait RaceGenerator: fmt::Display + Sized
+pub trait RaceGenerator: fmt::Display + Sized + Sources
 where
     Standard: Distribution<Self>,
 {
@@ -86,6 +86,14 @@ pub enum Race {
     /// wars, and still others find themselves adrift, with no clear calling
     /// in life.
     Dragonborn(Dragonborn),
+}
+
+impl Sources for Race {
+    fn sources(&self) -> &[Book] {
+        match self {
+            Self::Dragonborn(d) => d.sources(),
+        }
+    }
 }
 
 impl fmt::Display for Race {

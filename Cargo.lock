@@ -1512,6 +1512,7 @@ dependencies = [
  "rand",
  "rand_utils",
  "serde",
+ "sources",
  "strum",
  "tracing",
 ]
@@ -1991,6 +1992,14 @@ checksum = "66d72b759436ae32898a2af0a14218dbf55efde3feeb170eb623637db85ee1e0"
 dependencies = [
  "libc",
  "winapi",
+]
+
+[[package]]
+name = "sources"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "strum",
 ]
 
 [[package]]

@@ -5,6 +5,7 @@ use rand::{
     distributions::Standard,
     prelude::{Distribution, IteratorRandom},
 };
+use sources::{Book, Sources};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
 use crate::RaceGenerator;
@@ -44,6 +45,12 @@ impl RaceGenerator for Dragonborn {
     #[tracing::instrument]
     fn name_generator(&self) -> Name {
         Name::Dragonborn
+    }
+}
+
+impl Sources for Dragonborn {
+    fn sources(&self) -> &[sources::Book] {
+        &[Book::Phb]
     }
 }
 

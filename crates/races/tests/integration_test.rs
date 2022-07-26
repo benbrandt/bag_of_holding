@@ -12,6 +12,7 @@
 
 use races::{Race, RaceGenerator, RaceOption};
 use rand::Rng;
+use sources::Sources;
 use strum::IntoEnumIterator;
 
 #[test]
@@ -31,5 +32,7 @@ fn can_generate_all_races() {
 
         let name = race.gen_name(&mut rng);
         assert!(!name.is_empty());
+
+        assert!(!race.sources().is_empty());
     }
 }
