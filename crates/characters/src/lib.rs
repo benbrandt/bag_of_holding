@@ -15,6 +15,7 @@
 )]
 
 use abilities::AbilityScores;
+use races::Race;
 use rand::{distributions::Standard, prelude::Distribution, Rng};
 use serde::Serialize;
 
@@ -23,6 +24,8 @@ use serde::Serialize;
 pub struct Character {
     /// Ability scores of the character
     pub ability_scores: Option<AbilityScores>,
+    /// Race of the character
+    pub race: Option<Race>,
 }
 
 impl Character {
@@ -54,12 +57,28 @@ impl Character {
         self.ability_scores = Some(rng.gen::<AbilityScores>());
         self
     }
+
+    /// Generate a race for your character.
+    ///
+    /// ```
+    /// use characters::Character;
+    /// use rand::Rng;
+    ///
+    /// let mut rng = rand::thread_rng();
+    /// let character = Character::new().ability_scores(&mut rng).gen_race(&mut rng);
+    /// ```
+    #[must_use]
+    #[tracing::instrument(skip(rng))]
+    pub fn gen_race<R: Rng + ?Sized>(mut self, rng: &mut R) -> Self {
+        self.race = Some(rng.gen::<Race>());
+        self
+    }
 }
 
 impl Distribution<Character> for Standard {
     /// Generate a fully random character.
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Character {
-        Character::new().gen_ability_scores(rng)
+        Character::new().gen_ability_scores(rng).gen_race(rng)
     }
 }

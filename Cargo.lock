@@ -412,6 +412,7 @@ version = "0.1.0"
 dependencies = [
  "abilities",
  "metrics",
+ "races",
  "rand",
  "rand_utils",
  "serde",

@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 abilities = { path = "../abilities" }
 metrics = "0.20.1"
+races = { path = "../races" }
 rand = "0.8.5"
 serde = { version = "1.0.140", features = ["derive"] }
 strum = { version = "0.24.1", features = ["derive"] }

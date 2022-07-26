@@ -18,7 +18,7 @@ use serde::{Deserialize, Serialize};
 use strum::Display;
 
 /// Supported Source Books
-#[derive(Debug, Deserialize, Display, Serialize)]
+#[derive(Copy, Clone, Debug, Deserialize, Display, Serialize)]
 #[serde(rename_all = "UPPERCASE")]
 #[strum(serialize_all = "UPPERCASE")]
 pub enum Book {

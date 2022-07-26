@@ -18,7 +18,7 @@ use crate::RaceGenerator;
 /// servants to true dragons, others form the ranks of soldiers in great
 /// wars, and still others find themselves adrift, with no clear calling
 /// in life.
-#[derive(Debug)]
+#[derive(Copy, Clone, Debug)]
 pub struct Dragonborn {
     /// Your breath weapon and damage resistance are determined by this dragon
     /// type.
@@ -26,7 +26,7 @@ pub struct Dragonborn {
 }
 
 /// Dragon types available for ancestry options
-#[derive(Debug, Display, EnumIter)]
+#[derive(Copy, Clone, Debug, Display, EnumIter)]
 enum DraconicAncestry {
     Black,
     Blue,
