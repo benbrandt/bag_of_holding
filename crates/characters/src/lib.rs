@@ -50,7 +50,7 @@ impl Character {
     /// ```
     #[must_use]
     #[tracing::instrument(skip(rng))]
-    pub fn ability_scores<R: Rng + ?Sized>(mut self, rng: &mut R) -> Self {
+    pub fn gen_ability_scores<R: Rng + ?Sized>(mut self, rng: &mut R) -> Self {
         self.ability_scores = Some(rng.gen::<AbilityScores>());
         self
     }
@@ -60,6 +60,6 @@ impl Distribution<Character> for Standard {
     /// Generate a fully random character.
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Character {
-        Character::new().ability_scores(rng)
+        Character::new().gen_ability_scores(rng)
     }
 }

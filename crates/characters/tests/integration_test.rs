@@ -17,7 +17,7 @@ use strum::IntoEnumIterator;
 
 #[test]
 fn generate_ability_scores() {
-    let character = Character::new().ability_scores(&mut rand_utils::rng_from_entropy());
+    let character = Character::new().gen_ability_scores(&mut rand_utils::rng_from_entropy());
 
     for ability in Ability::iter() {
         assert!(character.ability_scores.as_ref().unwrap().score(ability) > 0);
