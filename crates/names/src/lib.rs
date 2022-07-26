@@ -53,7 +53,7 @@ mod yuan_ti;
 
 /// Implements the ability to generate a name for a given race.
 /// Can contain whatever information is necessary for a given name
-/// (such as gender, ethnicity, child names, etc)
+/// (such as clan names, child names, etc)
 ///
 /// Display impl should format the name in a format suitable for a character
 /// sheet.
@@ -240,7 +240,7 @@ impl Name {
     /// let name = Name::Dwarf.gen(&mut rand::thread_rng());
     /// ```
     #[tracing::instrument(skip(rng))]
-    pub fn gen(&self, rng: &mut impl Rng) -> String {
+    pub fn gen<R: Rng + ?Sized>(&self, rng: &mut R) -> String {
         metrics::increment_counter!("names", &[("generator", self.to_string())]);
 
         match self {
