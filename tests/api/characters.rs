@@ -13,7 +13,10 @@ async fn generate_characters() {
         .await
         .unwrap();
 
-    // Assert ability scores are present
+    // There is a name
+    assert!(!character["name"].as_str().unwrap().is_empty());
+
+    // Ability scores are present
     assert_eq!(
         ["CHA", "CON", "DEX", "INT", "STR", "WIS"],
         character["ability_scores"]

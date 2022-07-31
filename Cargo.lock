@@ -419,6 +419,7 @@ dependencies = [
  "serde_json",
  "sources",
  "strum",
+ "thiserror",
  "tracing",
 ]
 
