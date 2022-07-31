@@ -32,7 +32,14 @@ fn can_generate_all_races() {
 
         let name = race.gen_name(&mut rng);
         assert!(!name.is_empty());
+        let sources = race.sources();
+        assert!(!sources.is_empty());
 
-        assert!(!race.sources().is_empty());
+        let citation = race.citation();
+        assert!(citation.contains(&race.to_string()));
+
+        for source in sources {
+            assert!(citation.contains(&source.to_string()));
+        }
     }
 }

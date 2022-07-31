@@ -23,4 +23,7 @@ async fn generate_characters() {
             .collect_vec()
             .as_slice(),
     );
+
+    // Race is generated
+    assert_eq!(character["race"].as_str().unwrap().split('(').count(), 2);
 }

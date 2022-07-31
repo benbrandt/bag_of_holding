@@ -14,6 +14,8 @@
     unused
 )]
 
+use std::fmt;
+
 use serde::{Deserialize, Serialize};
 use strum::Display;
 
@@ -29,7 +31,18 @@ pub enum Book {
 /// Trait for any entity in need of citation.
 ///
 /// Makes it easer for users to find more information in the source books.
-pub trait Sources {
+pub trait Sources: fmt::Display {
     /// Return a list of source books for the entity.
     fn sources(&self) -> &[Book];
+    /// Format the entity with its citations
+    fn citation(&self) -> String {
+        format!(
+            "{self} ({})",
+            self.sources()
+                .iter()
+                .map(ToString::to_string)
+                .collect::<Vec<_>>()
+                .join(", ")
+        )
+    }
 }

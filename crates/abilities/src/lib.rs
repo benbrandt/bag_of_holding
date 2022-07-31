@@ -69,7 +69,7 @@ pub enum Ability {
 }
 
 /// An individual score value and its corresponding modifier
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 struct AbilityScore {
     score: u8,
     modifier: i8,
@@ -102,7 +102,7 @@ impl Distribution<AbilityScore> for Standard {
 }
 
 /// A collection of ability scores
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 pub struct AbilityScores(BTreeMap<Ability, AbilityScore>);
 

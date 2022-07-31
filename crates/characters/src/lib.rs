@@ -18,9 +18,11 @@ use abilities::AbilityScores;
 use races::Race;
 use rand::{distributions::Standard, prelude::Distribution, Rng};
 use serde::Serialize;
+use sources::Sources;
 
 /// Full character information.
-#[derive(Debug, Default, Serialize)]
+#[derive(Clone, Debug, Default, Serialize)]
+#[serde(into = "CharacterSheet")]
 pub struct Character {
     /// Ability scores of the character
     pub ability_scores: Option<AbilityScores>,
@@ -49,7 +51,7 @@ impl Character {
     /// use rand::Rng;
     ///
     /// let mut rng = rand::thread_rng();
-    /// let character = Character::new().ability_scores(&mut rng);
+    /// let character = Character::new().gen_ability_scores(&mut rng);
     /// ```
     #[must_use]
     #[tracing::instrument(skip(rng))]
@@ -65,7 +67,7 @@ impl Character {
     /// use rand::Rng;
     ///
     /// let mut rng = rand::thread_rng();
-    /// let character = Character::new().ability_scores(&mut rng).gen_race(&mut rng);
+    /// let character = Character::new().gen_ability_scores(&mut rng).gen_race(&mut rng);
     /// ```
     #[must_use]
     #[tracing::instrument(skip(rng))]
@@ -80,5 +82,23 @@ impl Distribution<Character> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Character {
         Character::new().gen_ability_scores(rng).gen_race(rng)
+    }
+}
+
+/// Serializable, public interface for a character
+#[derive(Serialize)]
+struct CharacterSheet {
+    /// Ability scores of the character
+    pub ability_scores: Option<AbilityScores>,
+    /// Chosen race of the character
+    pub race: Option<String>,
+}
+
+impl From<Character> for CharacterSheet {
+    fn from(character: Character) -> Self {
+        Self {
+            ability_scores: character.ability_scores,
+            race: character.race.map(|r| r.citation()),
+        }
     }
 }

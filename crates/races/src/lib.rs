@@ -75,8 +75,7 @@ impl RaceOption {
 
 /// Available race options to generate races from
 #[enum_dispatch(RaceGenerator)]
-#[derive(Clone, Debug, Serialize)]
-#[serde(into = "RaceSerializer")]
+#[derive(Clone, Debug)]
 pub enum Race {
     /// Born of dragons, as their name proclaims, the dragonborn walk proudly
     /// through a world that greets them with fearful incomprehension. Shaped
@@ -110,23 +109,5 @@ impl Distribution<Race> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Race {
         RaceOption::iter().choose(rng).unwrap().gen(rng)
-    }
-}
-
-/// Serializable public interface of a given race
-#[derive(Serialize)]
-struct RaceSerializer {
-    /// Human-readable string version of the race
-    race: String,
-    /// Sources for the generated race
-    sources: Vec<Book>,
-}
-
-impl From<Race> for RaceSerializer {
-    fn from(race: Race) -> Self {
-        Self {
-            race: race.to_string(),
-            sources: race.sources().to_vec(),
-        }
     }
 }
