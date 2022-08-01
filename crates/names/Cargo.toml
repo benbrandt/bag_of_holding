@@ -10,7 +10,7 @@ metrics = "0.20.1"
 rand = "0.8.5"
 serde = { version = "1.0.140", features = ["derive"] }
 strum = { version = "0.24.1", features = ["derive"] }
-tracing = "0.1.35"
+tracing = "0.1.36"
 
 [dev-dependencies]
 rand_utils = { path = "../rand_utils" }
