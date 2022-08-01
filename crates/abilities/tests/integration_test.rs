@@ -13,6 +13,7 @@
 use abilities::{Ability, AbilityScores};
 use itertools::{repeat_n, Itertools};
 use rand::Rng;
+use serde_json::json;
 use statrs::statistics::Statistics;
 use strum::IntoEnumIterator;
 
@@ -43,4 +44,20 @@ fn modifiers() {
     // All modifiers are in valid range
     let results = Ability::iter().map(|a| scores.modifier(a)).collect_vec();
     assert!(results.iter().all(|r| (-5..=5).contains(r)));
+}
+
+#[test]
+fn serialization() {
+    let scores: AbilityScores = rand_utils::rng_from_entropy().gen();
+    let serialized = json!(scores);
+
+    for ability in Ability::iter() {
+        assert_eq!(
+            json!({
+                "score": scores.score(ability),
+                "modifier": scores.modifier(ability),
+            }),
+            serialized[ability.to_string()]
+        );
+    }
 }

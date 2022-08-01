@@ -12,6 +12,7 @@ dependencies = [
  "rand",
  "rand_utils",
  "serde",
+ "serde_json",
  "statrs",
  "strum",
  "tracing",
