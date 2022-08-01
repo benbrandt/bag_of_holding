@@ -13,7 +13,7 @@ rand = "0.8.5"
 serde = { version = "1.0.140", features = ["derive"] }
 sources = { path = "../sources" }
 strum = { version = "0.24.1", features = ["derive"] }
-tracing = "0.1.35"
+tracing = "0.1.36"
 
 [dev-dependencies]
 rand_utils = { path = "../rand_utils" }
