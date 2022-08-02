@@ -148,7 +148,7 @@ impl AbilityScores {
                         self.base_scores
                             .iter()
                             .find(|s| s.ability == a)
-                            .unwrap()
+                            .unwrap_or_else(|| panic!("Ability score missing for {a}"))
                             .score,
                     ),
                 )
