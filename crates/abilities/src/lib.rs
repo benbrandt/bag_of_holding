@@ -17,7 +17,7 @@
     unused
 )]
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashSet};
 
 use dice::Die;
 use itertools::Itertools;
@@ -68,10 +68,27 @@ pub enum Ability {
     Charisma,
 }
 
+/// An individual Ability Score value. Either base or increase.
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+pub struct AbilityScore {
+    /// Ability this score is to be used for
+    ability: Ability,
+    /// Score to add to total for this ability
+    score: u8,
+}
+
+impl AbilityScore {
+    /// Create a new ability score
+    #[tracing::instrument]
+    fn new(ability: Ability, score: u8) -> Self {
+        Self { ability, score }
+    }
+}
+
 /// An individual score value and its corresponding modifier
 ///
 /// Cached so that the modifier doesn't have to be calculated constantly.
-#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Serialize)]
 struct AbilityScoreTotal {
     score: u8,
     modifier: i8,
@@ -94,24 +111,52 @@ impl AbilityScoreTotal {
     }
 }
 
-impl Distribution<AbilityScoreTotal> for Standard {
-    /// Generate base ability score for a character.
-    /// The result of rolling 4d6 and taking the top 3 dice.
-    #[tracing::instrument(skip(rng))]
-    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> AbilityScoreTotal {
-        AbilityScoreTotal::new(Die::D6.roll_multiple(rng, 4).sorted().rev().take(3).sum())
-    }
-}
-
 /// A collection of ability scores
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(transparent)]
+#[derive(Clone, Debug, Serialize)]
+#[serde(into = "AbilityScoreStats")]
 pub struct AbilityScores {
+    base_scores: HashSet<AbilityScore>,
     /// Cached calculated total scores and modifiers
     cache: BTreeMap<Ability, AbilityScoreTotal>,
 }
 
 impl AbilityScores {
+    /// Generate a new set of ability scores with a given set of base scores.
+    ///
+    /// Most likely you will generate this with `rng.gen()`, but can be created
+    /// manually as well if necessary.
+    #[must_use]
+    #[tracing::instrument]
+    pub fn new(base_scores: HashSet<AbilityScore>) -> Self {
+        let mut scores = Self {
+            base_scores,
+            cache: BTreeMap::new(),
+        };
+        // Generate cache
+        scores.regenerate_cache();
+        scores
+    }
+
+    /// Recalculate cached values by summing up all scores and increases
+    #[tracing::instrument]
+    fn regenerate_cache(&mut self) -> &mut Self {
+        self.cache = Ability::iter()
+            .map(|a| {
+                (
+                    a,
+                    AbilityScoreTotal::new(
+                        self.base_scores
+                            .iter()
+                            .find(|s| s.ability == a)
+                            .unwrap()
+                            .score,
+                    ),
+                )
+            })
+            .collect();
+        self
+    }
+
     /// Internal method to access a given ability score
     ///
     /// # Panics
@@ -169,23 +214,32 @@ impl Distribution<AbilityScores> for Standard {
     /// ```
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> AbilityScores {
-        AbilityScores {
-            cache: Ability::iter()
+        AbilityScores::new(
+            Ability::iter()
                 .map(|a| {
-                    let score: AbilityScoreTotal = rng.gen();
+                    let score: u8 = Die::D6.roll_multiple(rng, 4).sorted().rev().take(3).sum();
 
                     metrics::increment_counter!(
                         "abilities_score",
-                        &[
-                            ("ability", a.to_string()),
-                            ("score", score.score.to_string())
-                        ]
+                        &[("ability", a.to_string()), ("score", score.to_string())]
                     );
 
-                    (a, score)
+                    AbilityScore::new(a, score)
                 })
                 .collect(),
-        }
+        )
+    }
+}
+
+/// Serializable version of the ability scores (usually for character sheets)
+/// A `BTreeMap` so that it stays in the same order
+#[derive(Clone, Debug, Serialize)]
+#[serde(transparent)]
+struct AbilityScoreStats(BTreeMap<Ability, AbilityScoreTotal>);
+
+impl From<AbilityScores> for AbilityScoreStats {
+    fn from(scores: AbilityScores) -> Self {
+        Self(scores.cache)
     }
 }
 
