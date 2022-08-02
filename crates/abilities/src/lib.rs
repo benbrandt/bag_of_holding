@@ -69,13 +69,15 @@ pub enum Ability {
 }
 
 /// An individual score value and its corresponding modifier
+///
+/// Cached so that the modifier doesn't have to be calculated constantly.
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
-struct AbilityScore {
+struct AbilityScoreTotal {
     score: u8,
     modifier: i8,
 }
 
-impl AbilityScore {
+impl AbilityScoreTotal {
     /// Construct a new ability score and modifier for a given score.
     ///
     /// # Panics
@@ -92,19 +94,22 @@ impl AbilityScore {
     }
 }
 
-impl Distribution<AbilityScore> for Standard {
+impl Distribution<AbilityScoreTotal> for Standard {
     /// Generate base ability score for a character.
     /// The result of rolling 4d6 and taking the top 3 dice.
     #[tracing::instrument(skip(rng))]
-    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> AbilityScore {
-        AbilityScore::new(Die::D6.roll_multiple(rng, 4).sorted().rev().take(3).sum())
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> AbilityScoreTotal {
+        AbilityScoreTotal::new(Die::D6.roll_multiple(rng, 4).sorted().rev().take(3).sum())
     }
 }
 
 /// A collection of ability scores
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
-pub struct AbilityScores(BTreeMap<Ability, AbilityScore>);
+pub struct AbilityScores {
+    /// Cached calculated total scores and modifiers
+    cache: BTreeMap<Ability, AbilityScoreTotal>,
+}
 
 impl AbilityScores {
     /// Internal method to access a given ability score
@@ -113,8 +118,8 @@ impl AbilityScores {
     ///
     /// Will panic if a score for the ability doesn't exist (because it should)
     #[tracing::instrument]
-    fn ability_score(&self, ability: Ability) -> &AbilityScore {
-        self.0
+    fn ability_score(&self, ability: Ability) -> &AbilityScoreTotal {
+        self.cache
             .get(&ability)
             .unwrap_or_else(|| panic!("Ability score missing for {ability}"))
     }
@@ -164,10 +169,10 @@ impl Distribution<AbilityScores> for Standard {
     /// ```
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> AbilityScores {
-        AbilityScores(
-            Ability::iter()
+        AbilityScores {
+            cache: Ability::iter()
                 .map(|a| {
-                    let score: AbilityScore = rng.gen();
+                    let score: AbilityScoreTotal = rng.gen();
 
                     metrics::increment_counter!(
                         "abilities_score",
@@ -180,7 +185,7 @@ impl Distribution<AbilityScores> for Standard {
                     (a, score)
                 })
                 .collect(),
-        )
+        }
     }
 }
 
@@ -190,26 +195,26 @@ mod test {
 
     #[test]
     fn modifier_logic() {
-        assert_eq!(AbilityScore::new(0).modifier, -5);
-        assert_eq!(AbilityScore::new(1).modifier, -5);
-        assert_eq!(AbilityScore::new(2).modifier, -4);
-        assert_eq!(AbilityScore::new(3).modifier, -4);
-        assert_eq!(AbilityScore::new(4).modifier, -3);
-        assert_eq!(AbilityScore::new(5).modifier, -3);
-        assert_eq!(AbilityScore::new(6).modifier, -2);
-        assert_eq!(AbilityScore::new(7).modifier, -2);
-        assert_eq!(AbilityScore::new(8).modifier, -1);
-        assert_eq!(AbilityScore::new(9).modifier, -1);
-        assert_eq!(AbilityScore::new(10).modifier, 0);
-        assert_eq!(AbilityScore::new(11).modifier, 0);
-        assert_eq!(AbilityScore::new(12).modifier, 1);
-        assert_eq!(AbilityScore::new(13).modifier, 1);
-        assert_eq!(AbilityScore::new(14).modifier, 2);
-        assert_eq!(AbilityScore::new(15).modifier, 2);
-        assert_eq!(AbilityScore::new(16).modifier, 3);
-        assert_eq!(AbilityScore::new(17).modifier, 3);
-        assert_eq!(AbilityScore::new(18).modifier, 4);
-        assert_eq!(AbilityScore::new(19).modifier, 4);
-        assert_eq!(AbilityScore::new(20).modifier, 5);
+        assert_eq!(AbilityScoreTotal::new(0).modifier, -5);
+        assert_eq!(AbilityScoreTotal::new(1).modifier, -5);
+        assert_eq!(AbilityScoreTotal::new(2).modifier, -4);
+        assert_eq!(AbilityScoreTotal::new(3).modifier, -4);
+        assert_eq!(AbilityScoreTotal::new(4).modifier, -3);
+        assert_eq!(AbilityScoreTotal::new(5).modifier, -3);
+        assert_eq!(AbilityScoreTotal::new(6).modifier, -2);
+        assert_eq!(AbilityScoreTotal::new(7).modifier, -2);
+        assert_eq!(AbilityScoreTotal::new(8).modifier, -1);
+        assert_eq!(AbilityScoreTotal::new(9).modifier, -1);
+        assert_eq!(AbilityScoreTotal::new(10).modifier, 0);
+        assert_eq!(AbilityScoreTotal::new(11).modifier, 0);
+        assert_eq!(AbilityScoreTotal::new(12).modifier, 1);
+        assert_eq!(AbilityScoreTotal::new(13).modifier, 1);
+        assert_eq!(AbilityScoreTotal::new(14).modifier, 2);
+        assert_eq!(AbilityScoreTotal::new(15).modifier, 2);
+        assert_eq!(AbilityScoreTotal::new(16).modifier, 3);
+        assert_eq!(AbilityScoreTotal::new(17).modifier, 3);
+        assert_eq!(AbilityScoreTotal::new(18).modifier, 4);
+        assert_eq!(AbilityScoreTotal::new(19).modifier, 4);
+        assert_eq!(AbilityScoreTotal::new(20).modifier, 5);
     }
 }
