@@ -16,5 +16,5 @@ tracing = "0.1.36"
 
 [dev-dependencies]
 rand_utils = { path = "../rand_utils" }
-serde_json = "1.0.82"
+serde_json = "1.0.83"
 statrs = "0.15.0"
