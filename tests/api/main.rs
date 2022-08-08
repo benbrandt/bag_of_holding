@@ -16,7 +16,7 @@ use std::{
 };
 
 use axum::http::{header, Method, Request, StatusCode};
-use bag_of_holding::{start_server, ServerConfig};
+use bag_of_holding::{start_server, Config};
 use hyper::{client::HttpConnector, Body, Client};
 use serde_json::Value;
 use tokio::task::JoinHandle;
@@ -42,7 +42,7 @@ impl TestServer {
         Self {
             addr,
             client: Client::new(),
-            _handle: tokio::spawn(start_server(ServerConfig::new(listener, None))),
+            _handle: tokio::spawn(start_server(Config::new(listener, None))),
         }
     }
 

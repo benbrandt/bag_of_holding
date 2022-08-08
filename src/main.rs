@@ -14,8 +14,7 @@
 
 use std::env;
 
-use bag_of_holding::{start_server, Config, ServerConfig};
-use clap::Parser;
+use bag_of_holding::{start_server, Config};
 use sentry::{release_name, ClientOptions};
 
 /// Basic wrapper around `start_app()` to configure running in a server environment
@@ -34,8 +33,6 @@ async fn main() {
     });
 
     // Parse command line arguments and start app
-    let server_config = ServerConfig::from_config(Config::parse())
-        .await
-        .expect("Failed to start app");
-    start_server(server_config).await;
+    let config = Config::parse().await.expect("Failed to start app");
+    start_server(config).await;
 }

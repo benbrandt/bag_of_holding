@@ -100,7 +100,7 @@ fn app() -> Router {
 /// Command line arguments
 #[derive(Debug, Parser)]
 #[clap(author, version, about, long_about = None)]
-pub struct Config {
+struct CliConfig {
     /// The port to listen on for the app
     #[clap(value_parser, long, short, default_value = "5000")]
     port: u16,
@@ -114,25 +114,27 @@ pub struct Config {
 
 /// Derived server config from `Config` options
 #[derive(Debug)]
-pub struct ServerConfig {
+pub struct Config {
     /// Bound TCP Listener for the designated port
     listener: TcpListener,
     /// Config for serving over HTTPS
     tls: Option<RustlsConfig>,
 }
 
-impl ServerConfig {
+impl Config {
     /// Generate a new server config
     #[must_use]
     pub fn new(listener: TcpListener, tls: Option<RustlsConfig>) -> Self {
         Self { listener, tls }
     }
 
-    /// Generate server config from command line arguments
+    /// Parse config from command line
     ///
     /// # Errors
     /// Errors if can't bind to port or read from cert files
-    pub async fn from_config(config: Config) -> std::io::Result<Self> {
+    pub async fn parse() -> std::io::Result<Self> {
+        let config = CliConfig::parse();
+
         let tls = if let (Some(cert), Some(key)) = (config.ssl_cert, config.ssl_key) {
             Some(RustlsConfig::from_pem(cert.as_bytes().to_vec(), key.as_bytes().to_vec()).await?)
         } else {
@@ -147,7 +149,7 @@ impl ServerConfig {
 }
 
 /// Start the server with a given `TcpListener` and TLS Config
-pub async fn start_server(ServerConfig { listener, tls }: ServerConfig) {
+pub async fn start_server(Config { listener, tls }: Config) {
     if let Some(tls_config) = tls {
         axum_server::from_tcp_rustls(listener, tls_config)
             .serve(app().into_make_service())
