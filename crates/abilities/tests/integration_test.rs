@@ -61,3 +61,28 @@ fn serialization() {
         );
     }
 }
+
+#[test]
+fn racial_increases() {
+    let mut rng = rand::thread_rng();
+    let mut scores: AbilityScores = rng.gen();
+    let increases = &[1, 2];
+
+    // Cache previous scores
+    let prev_scores = scores.clone();
+
+    // Update scores
+    scores.gen_racial_increases(&mut rng, increases);
+
+    // Check that two were updated with the correct diff
+    let diffs = Ability::iter()
+        .map(|a| scores.score(a) - prev_scores.score(a))
+        .filter(|s| s > &0)
+        .sorted()
+        .collect::<Vec<_>>();
+
+    assert_eq!(diffs, increases);
+
+    // Check that none are above 20
+    assert!(Ability::iter().map(|a| scores.score(a)).all(|s| s <= 20));
+}

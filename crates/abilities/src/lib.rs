@@ -17,11 +17,15 @@
     unused
 )]
 
-use std::collections::{BTreeMap, HashSet};
+use std::{
+    collections::{BTreeMap, HashSet},
+    f64::consts::E,
+    hash::Hash,
+};
 
 use dice::Die;
 use itertools::Itertools;
-use rand::{distributions::Standard, prelude::Distribution, Rng};
+use rand::{distributions::Standard, prelude::Distribution, seq::SliceRandom, Rng};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
@@ -115,7 +119,10 @@ impl AbilityScoreTotal {
 #[derive(Clone, Debug, Serialize)]
 #[serde(into = "AbilityScoreStats")]
 pub struct AbilityScores {
+    /// Base scores generated for this character
     base_scores: HashSet<AbilityScore>,
+    /// Ability score increases chosen for the race
+    racial_increases: HashSet<AbilityScore>,
     /// Cached calculated total scores and modifiers
     cache: BTreeMap<Ability, AbilityScoreTotal>,
 }
@@ -130,6 +137,7 @@ impl AbilityScores {
     pub fn new(base_scores: HashSet<AbilityScore>) -> Self {
         let mut scores = Self {
             base_scores,
+            racial_increases: HashSet::new(),
             cache: BTreeMap::new(),
         };
         // Generate cache
@@ -142,16 +150,21 @@ impl AbilityScores {
     fn regenerate_cache(&mut self) -> &mut Self {
         self.cache = Ability::iter()
             .map(|a| {
-                (
-                    a,
-                    AbilityScoreTotal::new(
-                        self.base_scores
-                            .iter()
-                            .find(|s| s.ability == a)
-                            .unwrap_or_else(|| panic!("Ability score missing for {a}"))
-                            .score,
-                    ),
-                )
+                let base = self
+                    .base_scores
+                    .iter()
+                    .find(|s| s.ability == a)
+                    .unwrap_or_else(|| panic!("Ability score missing for {a}"))
+                    .score;
+
+                let increase = self
+                    .racial_increases
+                    .iter()
+                    .find(|s| s.ability == a)
+                    .map(|s| s.score)
+                    .unwrap_or_default();
+
+                (a, AbilityScoreTotal::new(base + increase))
             })
             .collect();
         self
@@ -163,7 +176,7 @@ impl AbilityScores {
     ///
     /// Will panic if a score for the ability doesn't exist (because it should)
     #[tracing::instrument]
-    fn ability_score(&self, ability: Ability) -> &AbilityScoreTotal {
+    fn ability(&self, ability: Ability) -> &AbilityScoreTotal {
         self.cache
             .get(&ability)
             .unwrap_or_else(|| panic!("Ability score missing for {ability}"))
@@ -182,7 +195,7 @@ impl AbilityScores {
     #[must_use]
     #[tracing::instrument]
     pub fn score(&self, ability: Ability) -> u8 {
-        self.ability_score(ability).score
+        self.ability(ability).score
     }
 
     /// Get a modifiers for a specific ability. Will be between -5 and 5
@@ -198,7 +211,75 @@ impl AbilityScores {
     #[must_use]
     #[tracing::instrument]
     pub fn modifier(&self, ability: Ability) -> i8 {
-        self.ability_score(ability).modifier
+        self.ability(ability).modifier
+    }
+
+    /// Method to get the weight for a particular ability when doing a `choose_weighted` call.
+    fn weight(&self, ability: Ability) -> f64 {
+        let min_modifier = Ability::iter()
+            .map(|a| self.modifier(a))
+            .min()
+            .expect("No ability scores present");
+        let modifier = self.modifier(ability);
+
+        // Subtract min modifier from this to offset by minimum score.
+        E.powi(i32::from(modifier - min_modifier))
+    }
+
+    /// Choose racial increases for this character.
+    ///
+    /// Will weight choices where possible towards applying increases to
+    /// ability scores that would cause in increase in the modifier.
+    ///
+    /// ```
+    /// use abilities::AbilityScores;
+    /// use rand::Rng;
+    ///
+    /// let mut rng = rand::thread_rng();
+    /// let mut scores: AbilityScores = rng.gen();
+    /// scores.gen_racial_increases(&mut rng, &[2, 1]);
+    /// ```
+    ///
+    /// # Panics
+    ///
+    /// Panics if an increase cannot be chosen, which shouldn't be possible.
+    pub fn gen_racial_increases<R: Rng + ?Sized>(
+        &mut self,
+        rng: &mut R,
+        increases: &[u8],
+    ) -> &mut Self {
+        let mut abilities = Ability::iter().collect::<HashSet<_>>();
+
+        for increase in increases {
+            let all_ability_choices = abilities
+                .iter()
+                .copied()
+                // Filter out options that aren't valid
+                .filter(|&a| self.ability(a).score + increase <= 20)
+                .collect::<Vec<_>>();
+            let optimal_ability_choices = all_ability_choices
+                .iter()
+                .copied()
+                // See if any would cause an increase in modifier score
+                .filter(|&a| self.ability(a).score % 2 == increase % 2)
+                .collect::<Vec<_>>();
+
+            // Choose from optimal choices if available, otherwise, choose any of them. Weighted by current modifier
+            let ability = if optimal_ability_choices.is_empty() {
+                all_ability_choices.as_slice()
+            } else {
+                optimal_ability_choices.as_slice()
+            }
+            .choose_weighted(rng, |&a| self.weight(a))
+            .unwrap();
+
+            abilities.remove(ability);
+            self.racial_increases
+                .insert(AbilityScore::new(*ability, *increase));
+        }
+
+        self.regenerate_cache();
+        self
     }
 }
 
