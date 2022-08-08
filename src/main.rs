@@ -12,27 +12,11 @@
     unused
 )]
 
-use std::{env, net::SocketAddr};
+use std::env;
 
-use axum_server::tls_rustls::RustlsConfig;
-use bag_of_holding::app;
+use bag_of_holding::{start_server, Config, ServerConfig};
 use clap::Parser;
 use sentry::{release_name, ClientOptions};
-
-/// Command line arguments
-#[derive(Debug, Parser)]
-#[clap(author, version, about, long_about = None)]
-pub struct Config {
-    /// The port to listen on for the app
-    #[clap(value_parser, long, short, default_value = "5000")]
-    port: u16,
-    /// SSL Certificate value
-    #[clap(value_parser, env, long)]
-    ssl_cert: Option<String>,
-    /// SSL Key value
-    #[clap(value_parser, env, long)]
-    ssl_key: Option<String>,
-}
 
 /// Basic wrapper around `start_app()` to configure running in a server environment
 #[tokio::main]
@@ -50,30 +34,8 @@ async fn main() {
     });
 
     // Parse command line arguments and start app
-    let config = Config::parse();
-
-    // Get TLS config if available
-    let tls_config = if let (Some(cert), Some(key)) = (config.ssl_cert, config.ssl_key) {
-        Some(
-            RustlsConfig::from_pem(cert.as_bytes().to_vec(), key.as_bytes().to_vec())
-                .await
-                .expect("Failed to load TLS certs"),
-        )
-    } else {
-        None
-    };
-
-    let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
-
-    if let Some(config) = tls_config {
-        axum_server::bind_rustls(addr, config)
-            .serve(app().into_make_service())
-            .await
-            .expect("server error");
-    } else {
-        axum_server::bind(addr)
-            .serve(app().into_make_service())
-            .await
-            .expect("server error");
-    }
+    let server_config = ServerConfig::from_config(Config::parse())
+        .await
+        .expect("Failed to start app");
+    start_server(server_config).await;
 }

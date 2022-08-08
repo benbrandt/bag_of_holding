@@ -14,9 +14,15 @@
     unused
 )]
 
-use std::{sync::Arc, time::Duration};
+use std::{
+    net::{SocketAddr, TcpListener},
+    sync::Arc,
+    time::Duration,
+};
 
 use axum::{http::header, middleware, Router};
+use axum_server::tls_rustls::RustlsConfig;
+use clap::Parser;
 use metrics_exporter_prometheus::PrometheusBuilder;
 use once_cell::sync::Lazy;
 use sentry::integrations::tower::{NewSentryLayer, SentryHttpLayer};
@@ -50,7 +56,7 @@ static METRICS: Lazy<()> = Lazy::new(|| {
 
 /// Top-level app. To be consumed by main.rs and
 #[must_use]
-pub fn app() -> Router {
+fn app() -> Router {
     // In once_cells so they work in test threads
     Lazy::force(&TRACING);
     Lazy::force(&METRICS);
@@ -89,4 +95,68 @@ pub fn app() -> Router {
         .merge(names::routes())
         .layer(middleware)
         .route_layer(route_middleware)
+}
+
+/// Command line arguments
+#[derive(Debug, Parser)]
+#[clap(author, version, about, long_about = None)]
+pub struct Config {
+    /// The port to listen on for the app
+    #[clap(value_parser, long, short, default_value = "5000")]
+    port: u16,
+    /// SSL Certificate value
+    #[clap(value_parser, env, long)]
+    ssl_cert: Option<String>,
+    /// SSL Key value
+    #[clap(value_parser, env, long)]
+    ssl_key: Option<String>,
+}
+
+/// Derived server config from `Config` options
+#[derive(Debug)]
+pub struct ServerConfig {
+    /// Bound TCP Listener for the designated port
+    listener: TcpListener,
+    /// Config for serving over HTTPS
+    tls: Option<RustlsConfig>,
+}
+
+impl ServerConfig {
+    /// Generate a new server config
+    #[must_use]
+    pub fn new(listener: TcpListener, tls: Option<RustlsConfig>) -> Self {
+        Self { listener, tls }
+    }
+
+    /// Generate server config from command line arguments
+    ///
+    /// # Errors
+    /// Errors if can't bind to port or read from cert files
+    pub async fn from_config(config: Config) -> std::io::Result<Self> {
+        let tls = if let (Some(cert), Some(key)) = (config.ssl_cert, config.ssl_key) {
+            Some(RustlsConfig::from_pem(cert.as_bytes().to_vec(), key.as_bytes().to_vec()).await?)
+        } else {
+            None
+        };
+
+        Ok(Self {
+            listener: TcpListener::bind(SocketAddr::from(([0, 0, 0, 0], config.port)))?,
+            tls,
+        })
+    }
+}
+
+/// Start the server with a given `TcpListener` and TLS Config
+pub async fn start_server(ServerConfig { listener, tls }: ServerConfig) {
+    if let Some(tls_config) = tls {
+        axum_server::from_tcp_rustls(listener, tls_config)
+            .serve(app().into_make_service())
+            .await
+            .expect("server error");
+    } else {
+        axum_server::from_tcp(listener)
+            .serve(app().into_make_service())
+            .await
+            .expect("server error");
+    }
 }
