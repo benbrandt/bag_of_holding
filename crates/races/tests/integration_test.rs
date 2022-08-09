@@ -43,5 +43,8 @@ fn can_generate_all_races() {
         for source in sources {
             assert!(citation.contains(&source.to_string()));
         }
+
+        let age = race.gen_age(&mut rng);
+        assert!(race.age_range().contains(&age));
     }
 }

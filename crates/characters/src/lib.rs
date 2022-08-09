@@ -25,10 +25,12 @@ use thiserror::Error;
 #[derive(Clone, Debug, Default, Serialize)]
 #[serde(into = "CharacterSheet")]
 pub struct Character {
-    /// The characters name
-    pub name: String,
     /// Ability scores of the character
     pub ability_scores: Option<AbilityScores>,
+    /// The character's age
+    pub age: Option<u16>,
+    /// The character's name
+    pub name: String,
     /// Race of the character
     pub race: Option<Race>,
 }
@@ -80,7 +82,9 @@ impl Character {
     /// let mut rng = rand::thread_rng();
     /// let character = Character::new().gen_ability_scores(&mut rng).gen_race(&mut rng);
     /// ```
-    #[must_use]
+    /// # Errors
+    ///
+    /// Will error if ability scores are not already chosen.
     #[tracing::instrument(skip(rng))]
     pub fn gen_race<R: Rng + ?Sized>(mut self, rng: &mut R) -> Result<Self, CharacterBuildError> {
         let race = rng.gen::<Race>();
@@ -113,19 +117,49 @@ impl Character {
     ///     .gen_name(&mut rng)
     ///     .unwrap();
     /// ```
-    #[must_use]
+    /// # Errors
+    ///
+    /// Will error if race is not already chosen.
     #[tracing::instrument(skip(rng))]
     pub fn gen_name<R: Rng + ?Sized>(mut self, rng: &mut R) -> Result<Self, CharacterBuildError> {
         self.name = self.try_race()?.gen_name(rng);
         Ok(self)
     }
 
+    /// Generate an age for your character.
+    ///
+    /// Requires a Race to be selected already.
+    ///
+    /// ```
+    /// use characters::Character;
+    /// use rand::Rng;
+    ///
+    /// let mut rng = rand::thread_rng();
+    /// let character = Character::new()
+    ///     .gen_ability_scores(&mut rng)
+    ///     .gen_race(&mut rng)
+    ///     .unwrap()
+    ///     .gen_age(&mut rng)
+    ///     .unwrap();
+    /// ```
+    ///
+    /// # Errors
+    ///
+    /// Will error if race is not already chosen.
+    #[tracing::instrument(skip(rng))]
+    pub fn gen_age<R: Rng + ?Sized>(mut self, rng: &mut R) -> Result<Self, CharacterBuildError> {
+        self.age = Some(self.try_race()?.gen_age(rng));
+        Ok(self)
+    }
+
     /// Helper method to generate a full character in the right order with a result.
+    #[tracing::instrument(skip(rng))]
     fn gen<R: Rng + ?Sized>(rng: &mut R) -> Result<Self, CharacterBuildError> {
         Character::new()
             .gen_ability_scores(rng)
             .gen_race(rng)?
-            .gen_name(rng)
+            .gen_name(rng)?
+            .gen_age(rng)
     }
 }
 
@@ -152,10 +186,12 @@ pub enum CharacterBuildError {
 /// Serializable, public interface for a character
 #[derive(Serialize)]
 struct CharacterSheet {
-    /// Name of the character
-    pub name: String,
     /// Ability scores of the character
     pub ability_scores: Option<AbilityScores>,
+    /// The character's age
+    pub age: Option<u16>,
+    /// Name of the character
+    pub name: String,
     /// Chosen race of the character
     pub race: Option<String>,
 }
@@ -163,8 +199,9 @@ struct CharacterSheet {
 impl From<Character> for CharacterSheet {
     fn from(character: Character) -> Self {
         Self {
-            name: character.name,
             ability_scores: character.ability_scores,
+            age: character.age,
+            name: character.name,
             race: character.race.map(|r| r.citation()),
         }
     }

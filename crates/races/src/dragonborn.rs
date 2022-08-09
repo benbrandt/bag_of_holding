@@ -1,4 +1,4 @@
-use std::fmt;
+use std::{fmt, ops::RangeInclusive};
 
 use names::Name;
 use rand::{
@@ -51,6 +51,11 @@ impl RaceGenerator for Dragonborn {
     #[tracing::instrument]
     fn ability_increases(&self) -> &[u8] {
         &[2, 1]
+    }
+
+    /// Generate an age for a character of this race
+    fn age_range(&self) -> RangeInclusive<u16> {
+        3..=80
     }
 }
 

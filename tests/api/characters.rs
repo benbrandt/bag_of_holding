@@ -29,4 +29,7 @@ async fn generate_characters() {
 
     // Race is generated
     assert_eq!(character["race"].as_str().unwrap().split('(').count(), 2);
+
+    // There is an age
+    assert!(character["age"].as_i64().unwrap() > 0);
 }

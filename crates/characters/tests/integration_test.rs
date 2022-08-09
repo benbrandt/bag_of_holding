@@ -57,12 +57,26 @@ fn generate_race() {
 }
 
 #[test]
+fn generate_age() {
+    let mut rng = rand_utils::rng_from_entropy();
+    let character = Character::new()
+        .gen_ability_scores(&mut rng)
+        .gen_race(&mut rng)
+        .unwrap()
+        .gen_age(&mut rng)
+        .unwrap();
+
+    assert!(character.age.unwrap() > 0);
+}
+
+#[test]
 fn generate_full_character() {
     let character: Character = rand_utils::rng_from_entropy().gen();
 
     assert!(!character.name.is_empty());
     assert!(character.ability_scores.is_some());
     assert!(character.race.is_some());
+    assert!(character.age.is_some());
 }
 
 #[test]
@@ -76,6 +90,7 @@ fn serialize_to_character_sheet() {
         serialized["ability_scores"]
     );
     assert_eq!(character.race.unwrap().citation(), serialized["race"]);
+    assert_eq!(character.age.unwrap(), serialized["age"]);
 }
 
 #[test]
@@ -96,6 +111,17 @@ fn race_is_chosen_before_name() {
 
     assert_eq!(
         character.gen_name(&mut rng).unwrap_err(),
+        CharacterBuildError::MissingRace
+    );
+}
+
+#[test]
+fn race_is_chosen_before_age() {
+    let mut rng = rand_utils::rng_from_entropy();
+    let character = Character::new();
+
+    assert_eq!(
+        character.gen_age(&mut rng).unwrap_err(),
         CharacterBuildError::MissingRace
     );
 }

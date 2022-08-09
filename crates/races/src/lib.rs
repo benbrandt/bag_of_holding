@@ -13,7 +13,7 @@
     unused
 )]
 
-use std::fmt;
+use std::{fmt, ops::RangeInclusive};
 
 use enum_dispatch::enum_dispatch;
 use names::Name;
@@ -47,6 +47,14 @@ where
 
     /// Ability increases available for this race
     fn ability_increases(&self) -> &[u8];
+
+    /// Range of ages applicable for this race
+    fn age_range(&self) -> RangeInclusive<u16>;
+
+    /// Generate an age for a character of this race
+    fn gen_age<R: Rng + ?Sized>(&self, rng: &mut R) -> u16 {
+        rng.gen_range(self.age_range())
+    }
 }
 
 /// Supported races to choose from
