@@ -227,6 +227,49 @@ impl AbilityScores {
         E.powi(i32::from(modifier - min_modifier))
     }
 
+    /// Choose a single racial increase.
+    ///
+    /// Will weight choices where possible towards applying increases to
+    /// ability scores that would cause in increase in the modifier.
+    ///
+    /// # Panics
+    ///
+    /// Panics if an increase cannot be chosen, which shouldn't be possible.
+    #[tracing::instrument(skip(rng))]
+    fn gen_racial_increase<R: Rng + ?Sized>(&mut self, rng: &mut R, increase: u8) -> &mut Self {
+        // Get all abilities that haven't already been chosen for racial increases.
+        let abilities = Ability::iter().collect::<HashSet<_>>();
+        let current_racial_increases = self.racial_increases.iter().map(|i| i.ability).collect();
+        let remaining_abilities = abilities.difference(&current_racial_increases);
+
+        // Filter out options that aren't valid choices
+        let all_ability_choices = remaining_abilities
+            .copied()
+            .filter(|&a| self.ability(a).score + increase <= 20)
+            .collect::<Vec<_>>();
+        // See if any would cause an increase in modifier score
+        let optimal_ability_choices = all_ability_choices
+            .iter()
+            .copied()
+            .filter(|&a| self.ability(a).score % 2 == increase % 2)
+            .collect::<Vec<_>>();
+
+        // Choose from optimal choices if available, otherwise, choose any of them. Weighted by current modifier
+        let ability = if optimal_ability_choices.is_empty() {
+            all_ability_choices.as_slice()
+        } else {
+            optimal_ability_choices.as_slice()
+        }
+        .choose_weighted(rng, |&a| self.weight(a))
+        .unwrap();
+
+        self.racial_increases
+            .insert(AbilityScore::new(*ability, increase));
+        self.regenerate_cache();
+
+        self
+    }
+
     /// Choose racial increases for this character.
     ///
     /// Will weight choices where possible towards applying increases to
@@ -250,37 +293,10 @@ impl AbilityScores {
         rng: &mut R,
         increases: &[u8],
     ) -> &mut Self {
-        let mut abilities = Ability::iter().collect::<HashSet<_>>();
-
-        for increase in increases {
-            let all_ability_choices = abilities
-                .iter()
-                .copied()
-                // Filter out options that aren't valid
-                .filter(|&a| self.ability(a).score + increase <= 20)
-                .collect::<Vec<_>>();
-            let optimal_ability_choices = all_ability_choices
-                .iter()
-                .copied()
-                // See if any would cause an increase in modifier score
-                .filter(|&a| self.ability(a).score % 2 == increase % 2)
-                .collect::<Vec<_>>();
-
-            // Choose from optimal choices if available, otherwise, choose any of them. Weighted by current modifier
-            let ability = if optimal_ability_choices.is_empty() {
-                all_ability_choices.as_slice()
-            } else {
-                optimal_ability_choices.as_slice()
-            }
-            .choose_weighted(rng, |&a| self.weight(a))
-            .unwrap();
-
-            abilities.remove(ability);
-            self.racial_increases
-                .insert(AbilityScore::new(*ability, *increase));
+        for &increase in increases {
+            self.gen_racial_increase(rng, increase);
         }
 
-        self.regenerate_cache();
         self
     }
 }
