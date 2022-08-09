@@ -215,6 +215,7 @@ impl AbilityScores {
     }
 
     /// Method to get the weight for a particular ability when doing a `choose_weighted` call.
+    #[tracing::instrument]
     fn weight(&self, ability: Ability) -> f64 {
         let min_modifier = Ability::iter()
             .map(|a| self.modifier(a))
@@ -243,6 +244,7 @@ impl AbilityScores {
     /// # Panics
     ///
     /// Panics if an increase cannot be chosen, which shouldn't be possible.
+    #[tracing::instrument(skip(rng))]
     pub fn gen_racial_increases<R: Rng + ?Sized>(
         &mut self,
         rng: &mut R,
