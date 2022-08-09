@@ -33,16 +33,20 @@ mod dragonborn;
 /// Implements the ability to generate a race option, with all the necessary
 /// decisions made for features of that race.
 #[enum_dispatch]
-pub trait RaceGenerator: Clone + fmt::Display + Sized + Sources
+pub trait RaceGenerator: Clone + fmt::Debug + fmt::Display + Sized + Sources
 where
     Standard: Distribution<Self>,
 {
     /// Name generator to use for this race
     fn name_generator(&self) -> Name;
+
     /// Generate a name for this race
     fn gen_name<R: Rng + ?Sized>(&self, rng: &mut R) -> String {
         self.name_generator().gen(rng)
     }
+
+    /// Ability increases available for this race
+    fn ability_increases(&self) -> &[u8];
 }
 
 /// Supported races to choose from
@@ -89,6 +93,7 @@ pub enum Race {
 }
 
 impl Sources for Race {
+    #[tracing::instrument]
     fn sources(&self) -> &[Book] {
         match self {
             Self::Dragonborn(d) => d.sources(),

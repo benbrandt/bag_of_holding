@@ -46,9 +46,16 @@ impl RaceGenerator for Dragonborn {
     fn name_generator(&self) -> Name {
         Name::Dragonborn
     }
+
+    /// Ability score increase available for this race
+    #[tracing::instrument]
+    fn ability_increases(&self) -> &[u8] {
+        &[2, 1]
+    }
 }
 
 impl Sources for Dragonborn {
+    #[tracing::instrument]
     fn sources(&self) -> &[sources::Book] {
         &[Book::Phb]
     }

@@ -12,6 +12,7 @@
 
 use abilities::Ability;
 use characters::{Character, CharacterBuildError};
+use races::RaceGenerator;
 use rand::Rng;
 use serde_json::json;
 use sources::Sources;
@@ -28,9 +29,31 @@ fn generate_ability_scores() {
 
 #[test]
 fn generate_race() {
-    let character = Character::new().gen_race(&mut rand_utils::rng_from_entropy());
+    let mut rng = rand_utils::rng_from_entropy();
+    let mut character = Character::new().gen_ability_scores(&mut rng);
+
+    let prev_ability_scores = Ability::iter()
+        .map(|a| character.ability_scores.as_ref().unwrap().score(a))
+        .sum::<u8>();
+
+    character = character.gen_race(&mut rng).unwrap();
 
     assert!(character.race.is_some());
+
+    let new_ability_scores = Ability::iter()
+        .map(|a| character.ability_scores.as_ref().unwrap().score(a))
+        .sum::<u8>();
+
+    assert_eq!(
+        new_ability_scores,
+        prev_ability_scores
+            + character
+                .race
+                .unwrap()
+                .ability_increases()
+                .iter()
+                .sum::<u8>()
+    );
 }
 
 #[test]
@@ -53,6 +76,17 @@ fn serialize_to_character_sheet() {
         serialized["ability_scores"]
     );
     assert_eq!(character.race.unwrap().citation(), serialized["race"]);
+}
+
+#[test]
+fn ability_scores_chosen_before_race() {
+    let mut rng = rand_utils::rng_from_entropy();
+    let character = Character::new();
+
+    assert_eq!(
+        character.gen_race(&mut rng).unwrap_err(),
+        CharacterBuildError::MissingAbilityScores
+    );
 }
 
 #[test]

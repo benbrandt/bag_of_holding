@@ -63,6 +63,14 @@ impl Character {
         self
     }
 
+    /// Helper function to return a reference to the ability scores, otherwise error
+    #[tracing::instrument]
+    fn try_ability_scores(&mut self) -> Result<&mut AbilityScores, CharacterBuildError> {
+        self.ability_scores
+            .as_mut()
+            .ok_or(CharacterBuildError::MissingAbilityScores)
+    }
+
     /// Generate a race for your character.
     ///
     /// ```
@@ -74,9 +82,13 @@ impl Character {
     /// ```
     #[must_use]
     #[tracing::instrument(skip(rng))]
-    pub fn gen_race<R: Rng + ?Sized>(mut self, rng: &mut R) -> Self {
-        self.race = Some(rng.gen::<Race>());
-        self
+    pub fn gen_race<R: Rng + ?Sized>(mut self, rng: &mut R) -> Result<Self, CharacterBuildError> {
+        let race = rng.gen::<Race>();
+        // Generate ability score increases
+        self.try_ability_scores()?
+            .gen_racial_increases(rng, race.ability_increases());
+        self.race = Some(race);
+        Ok(self)
     }
 
     /// Helper function to return a reference to the race, otherwise error
@@ -97,6 +109,7 @@ impl Character {
     /// let character = Character::new()
     ///     .gen_ability_scores(&mut rng)
     ///     .gen_race(&mut rng)
+    ///     .unwrap()
     ///     .gen_name(&mut rng)
     ///     .unwrap();
     /// ```
@@ -106,6 +119,14 @@ impl Character {
         self.name = self.try_race()?.gen_name(rng);
         Ok(self)
     }
+
+    /// Helper method to generate a full character in the right order with a result.
+    fn gen<R: Rng + ?Sized>(rng: &mut R) -> Result<Self, CharacterBuildError> {
+        Character::new()
+            .gen_ability_scores(rng)
+            .gen_race(rng)?
+            .gen_name(rng)
+    }
 }
 
 impl Distribution<Character> for Standard {
@@ -113,17 +134,16 @@ impl Distribution<Character> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Character {
         // Not a result because we should be calling these steps in the right order
-        Character::new()
-            .gen_ability_scores(rng)
-            .gen_race(rng)
-            .gen_name(rng)
-            .unwrap()
+        Character::gen(rng).unwrap()
     }
 }
 
 /// Errors caused by an invalid character build
 #[derive(Debug, Eq, Error, PartialEq)]
 pub enum CharacterBuildError {
+    /// Error produced when ability scores are required to make a decision
+    #[error("This character is missing ability scores. Please choose or generate ability scores before this step.")]
+    MissingAbilityScores,
     /// Error produced when a race is required to make a decision
     #[error("This character is missing a race. Please choose or generate a race option before this step.")]
     MissingRace,
