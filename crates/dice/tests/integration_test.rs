@@ -10,8 +10,9 @@
     unused
 )]
 
-use dice::Die;
+use dice::{Die, Roll};
 use itertools::Itertools;
+use rand::{seq::IteratorRandom, Rng};
 use statrs::{
     distribution::Uniform,
     statistics::{Distribution, Statistics},
@@ -47,4 +48,14 @@ fn roll_multiple() {
             assert!(rolls.iter().all(|d| (1..=die.into()).contains(d)));
         }
     }
+}
+
+#[test]
+fn roll_command() {
+    let mut rng = rand_utils::rng_from_entropy();
+    let amount = rng.gen::<u8>() as usize;
+    let die = Die::iter().choose(&mut rng).unwrap();
+    let rolls = Roll::new(amount, die).gen(&mut rng);
+
+    assert_eq!(rolls.count(), amount);
 }

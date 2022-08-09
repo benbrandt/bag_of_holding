@@ -125,3 +125,50 @@ macro_rules! impl_float_from_die {
 }
 
 impl_float_from_die!(f32, f64);
+
+/// A way to represent a roll that should be carried out.
+/// Programmatic way of representing 2d6 for example.
+///
+/// ```
+/// use dice::{Die, Roll};
+///
+/// let mut rng = rand::thread_rng();
+/// let rolls = Roll::new(2, Die::D6).gen(&mut rng);
+///
+/// assert_eq!(rolls.count(), 2);
+/// ```
+#[derive(Clone, Copy, Debug)]
+pub struct Roll {
+    /// Amount of die to be rolled
+    amount: usize,
+    /// Die to use in the roll
+    die: Die,
+}
+
+impl Roll {
+    /// Create a new roll to be rolled later
+    ///
+    /// ```
+    /// use dice::{Die, Roll};
+    ///
+    /// let roll = Roll::new(2, Die::D8);
+    /// ````
+    #[must_use]
+    pub fn new(amount: usize, die: Die) -> Self {
+        Self { amount, die }
+    }
+
+    /// Roll the specified dice
+    ///
+    /// ```
+    /// use dice::{Die, Roll};
+    ///
+    /// let mut rng = rand::thread_rng();
+    /// let rolls = Roll::new(2, Die::D6).gen(&mut rng);
+    ///
+    /// assert_eq!(rolls.count(), 2);
+    /// ```
+    pub fn gen<R: Rng + ?Sized>(self, rng: &mut R) -> impl Iterator<Item = u8> + '_ {
+        self.die.roll_multiple(rng, self.amount)
+    }
+}
