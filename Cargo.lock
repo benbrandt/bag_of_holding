@@ -1969,6 +1969,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "sizes"
+version = "0.1.0"
+dependencies = [
+ "dice",
+ "rand",
+ "rand_utils",
+ "serde",
+ "strum",
+ "tracing",
+]
+
+[[package]]
 name = "sketches-ddsketch"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"

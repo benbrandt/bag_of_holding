@@ -154,6 +154,7 @@ impl Roll {
     /// let roll = Roll::new(2, Die::D8);
     /// ````
     #[must_use]
+    #[tracing::instrument]
     pub fn new(amount: usize, die: Die) -> Self {
         Self { amount, die }
     }
@@ -168,7 +169,36 @@ impl Roll {
     ///
     /// assert_eq!(rolls.count(), 2);
     /// ```
+    #[tracing::instrument(skip(rng))]
     pub fn gen<R: Rng + ?Sized>(self, rng: &mut R) -> impl Iterator<Item = u8> + '_ {
         self.die.roll_multiple(rng, self.amount)
+    }
+
+    /// Minimum valid generatable value if rolled.
+    ///
+    /// ```
+    /// use dice::{Die, Roll};
+    ///
+    /// let min = Roll::new(2, Die::D6).min();
+    /// assert_eq!(min, 2);
+    /// ```
+    #[must_use]
+    #[tracing::instrument]
+    pub fn min(self) -> usize {
+        self.amount
+    }
+
+    /// Maximum valid generatable value if rolled.
+    ///
+    /// ```
+    /// use dice::{Die, Roll};
+    ///
+    /// let max = Roll::new(2, Die::D6).max();
+    /// assert_eq!(max, 12);
+    /// ```
+    #[must_use]
+    #[tracing::instrument]
+    pub fn max(self) -> usize {
+        self.amount * usize::from(self.die)
     }
 }

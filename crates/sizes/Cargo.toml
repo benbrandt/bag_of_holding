@@ -1,0 +1,16 @@
+[package]
+name = "sizes"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+dice = { path = "../dice" }
+rand = "0.8.5"
+serde = { version = "1.0.143", features = ["derive"] }
+strum = { version = "0.24.1", features = ["derive"] }
+tracing = "0.1.36"
+
+[dev-dependencies]
+rand_utils = { path = "../rand_utils" }
