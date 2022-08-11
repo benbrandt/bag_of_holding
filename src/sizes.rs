@@ -1,8 +1,8 @@
 use axum::{response::IntoResponse, Json, Router};
 use axum_extra::routing::{Resource, TypedPath};
 use itertools::Itertools;
-use sizes::HeightAndWeightTable;
 use serde::Deserialize;
+use sizes::HeightAndWeightTable;
 use strum::IntoEnumIterator;
 
 /// Routes related to height and weight tables
