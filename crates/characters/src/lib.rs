@@ -18,6 +18,7 @@ use abilities::AbilityScores;
 use races::{Race, RaceGenerator};
 use rand::{distributions::Standard, prelude::Distribution, Rng};
 use serde::Serialize;
+use sizes::{HeightAndWeight, Size};
 use sources::Sources;
 use thiserror::Error;
 
@@ -29,6 +30,8 @@ pub struct Character {
     pub ability_scores: Option<AbilityScores>,
     /// The character's age
     pub age: Option<u16>,
+    /// The character's height and weight
+    pub height_and_weight: Option<HeightAndWeight>,
     /// The character's name
     pub name: String,
     /// Race of the character
@@ -112,10 +115,9 @@ impl Character {
     /// let mut rng = rand::thread_rng();
     /// let character = Character::new()
     ///     .gen_ability_scores(&mut rng)
-    ///     .gen_race(&mut rng)
-    ///     .unwrap()
-    ///     .gen_name(&mut rng)
-    ///     .unwrap();
+    ///     .gen_race(&mut rng)?
+    ///     .gen_name(&mut rng)?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     /// # Errors
     ///
@@ -137,10 +139,9 @@ impl Character {
     /// let mut rng = rand::thread_rng();
     /// let character = Character::new()
     ///     .gen_ability_scores(&mut rng)
-    ///     .gen_race(&mut rng)
-    ///     .unwrap()
-    ///     .gen_age(&mut rng)
-    ///     .unwrap();
+    ///     .gen_race(&mut rng)?
+    ///     .gen_age(&mut rng)?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     ///
     /// # Errors
@@ -152,6 +153,34 @@ impl Character {
         Ok(self)
     }
 
+    /// Generate a height and weight for your character.
+    ///
+    /// Requires a Race to be selected already.
+    ///
+    /// ```
+    /// use characters::Character;
+    /// use rand::Rng;
+    ///
+    /// let mut rng = rand::thread_rng();
+    /// let character = Character::new()
+    ///     .gen_ability_scores(&mut rng)
+    ///     .gen_race(&mut rng)?
+    ///     .gen_height_and_weight(&mut rng)?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    ///
+    /// # Errors
+    ///
+    /// Will error if race is not already chosen.
+    #[tracing::instrument(skip(rng))]
+    pub fn gen_height_and_weight<R: Rng + ?Sized>(
+        mut self,
+        rng: &mut R,
+    ) -> Result<Self, CharacterBuildError> {
+        self.height_and_weight = Some(self.try_race()?.gen_height_and_weight(rng));
+        Ok(self)
+    }
+
     /// Helper method to generate a full character in the right order with a result.
     #[tracing::instrument(skip(rng))]
     fn gen<R: Rng + ?Sized>(rng: &mut R) -> Result<Self, CharacterBuildError> {
@@ -159,7 +188,8 @@ impl Character {
             .gen_ability_scores(rng)
             .gen_race(rng)?
             .gen_name(rng)?
-            .gen_age(rng)
+            .gen_age(rng)?
+            .gen_height_and_weight(rng)
     }
 }
 
@@ -183,6 +213,24 @@ pub enum CharacterBuildError {
     MissingRace,
 }
 
+#[derive(Serialize)]
+struct CharacterSize {
+    /// The character's size
+    pub size: Option<Size>,
+    /// The character's height and weight
+    #[serde(flatten)]
+    pub height_and_weight: Option<HeightAndWeight>,
+}
+
+impl CharacterSize {
+    fn new(size: Option<Size>, height_and_weight: Option<HeightAndWeight>) -> Self {
+        Self {
+            size,
+            height_and_weight,
+        }
+    }
+}
+
 /// Serializable, public interface for a character
 #[derive(Serialize)]
 struct CharacterSheet {
@@ -194,6 +242,8 @@ struct CharacterSheet {
     pub name: String,
     /// Chosen race of the character
     pub race: Option<String>,
+    /// The character's size
+    pub size: CharacterSize,
 }
 
 impl From<Character> for CharacterSheet {
@@ -202,7 +252,11 @@ impl From<Character> for CharacterSheet {
             ability_scores: character.ability_scores,
             age: character.age,
             name: character.name,
-            race: character.race.map(|r| r.citation()),
+            race: character.race.as_ref().map(Sources::citation),
+            size: CharacterSize::new(
+                character.race.as_ref().map(RaceGenerator::size),
+                character.height_and_weight,
+            ),
         }
     }
 }

@@ -23,6 +23,7 @@ use rand::{
     Rng,
 };
 use serde::{Deserialize, Serialize};
+use sizes::{HeightAndWeight, HeightAndWeightTable, Size};
 use sources::{Book, Sources};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
@@ -55,6 +56,17 @@ where
     fn gen_age<R: Rng + ?Sized>(&self, rng: &mut R) -> u16 {
         rng.gen_range(self.age_range())
     }
+
+    /// Height and weight table to use for this race
+    fn height_and_weight_table(&self) -> HeightAndWeightTable;
+
+    /// Generate a height and weight for this race
+    fn gen_height_and_weight<R: Rng + ?Sized>(&self, rng: &mut R) -> HeightAndWeight {
+        self.height_and_weight_table().gen(rng)
+    }
+
+    /// Size of this race
+    fn size(&self) -> Size;
 }
 
 /// Supported races to choose from

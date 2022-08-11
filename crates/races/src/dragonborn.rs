@@ -5,6 +5,7 @@ use rand::{
     distributions::Standard,
     prelude::{Distribution, IteratorRandom},
 };
+use sizes::{HeightAndWeightTable, Size};
 use sources::{Book, Sources};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
@@ -56,6 +57,16 @@ impl RaceGenerator for Dragonborn {
     /// Generate an age for a character of this race
     fn age_range(&self) -> RangeInclusive<u16> {
         3..=80
+    }
+
+    /// Height and weight table to use for this race
+    fn height_and_weight_table(&self) -> HeightAndWeightTable {
+        HeightAndWeightTable::Dragonborn
+    }
+
+    /// Size of this race
+    fn size(&self) -> Size {
+        Size::Medium
     }
 }
 

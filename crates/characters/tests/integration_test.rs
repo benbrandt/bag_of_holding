@@ -15,6 +15,7 @@ use characters::{Character, CharacterBuildError};
 use races::RaceGenerator;
 use rand::Rng;
 use serde_json::json;
+use sizes::HeightAndWeight;
 use sources::Sources;
 use strum::IntoEnumIterator;
 
@@ -70,6 +71,20 @@ fn generate_age() {
 }
 
 #[test]
+fn generate_height_and_weight() {
+    let mut rng = rand_utils::rng_from_entropy();
+    let character = Character::new()
+        .gen_ability_scores(&mut rng)
+        .gen_race(&mut rng)
+        .unwrap()
+        .gen_height_and_weight(&mut rng)
+        .unwrap();
+
+    assert!(character.height_and_weight.unwrap().height > 0);
+    assert!(character.height_and_weight.unwrap().weight > 0);
+}
+
+#[test]
 fn generate_full_character() {
     let character: Character = rand_utils::rng_from_entropy().gen();
 
@@ -77,6 +92,7 @@ fn generate_full_character() {
     assert!(character.ability_scores.is_some());
     assert!(character.race.is_some());
     assert!(character.age.is_some());
+    assert!(character.height_and_weight.is_some());
 }
 
 #[test]
@@ -89,8 +105,19 @@ fn serialize_to_character_sheet() {
         json!(&character.ability_scores),
         serialized["ability_scores"]
     );
-    assert_eq!(character.race.unwrap().citation(), serialized["race"]);
+    assert_eq!(
+        character.race.as_ref().unwrap().citation(),
+        serialized["race"]
+    );
     assert_eq!(character.age.unwrap(), serialized["age"]);
+
+    let HeightAndWeight { height, weight } = character.height_and_weight.unwrap();
+    assert_eq!(height, serialized["size"]["height"]);
+    assert_eq!(weight, serialized["size"]["weight"]);
+    assert_eq!(
+        json!(character.race.as_ref().unwrap().size()),
+        serialized["size"]["size"]
+    );
 }
 
 #[test]
@@ -122,6 +149,17 @@ fn race_is_chosen_before_age() {
 
     assert_eq!(
         character.gen_age(&mut rng).unwrap_err(),
+        CharacterBuildError::MissingRace
+    );
+}
+
+#[test]
+fn race_is_chosen_before_height_and_weight() {
+    let mut rng = rand_utils::rng_from_entropy();
+    let character = Character::new();
+
+    assert_eq!(
+        character.gen_height_and_weight(&mut rng).unwrap_err(),
         CharacterBuildError::MissingRace
     );
 }

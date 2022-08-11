@@ -12,6 +12,7 @@
 
 use races::{Race, RaceGenerator, RaceOption};
 use rand::Rng;
+use sizes::HeightAndWeight;
 use sources::Sources;
 use strum::IntoEnumIterator;
 
@@ -46,5 +47,10 @@ fn can_generate_all_races() {
 
         let age = race.gen_age(&mut rng);
         assert!(race.age_range().contains(&age));
+
+        let HeightAndWeight { height, weight } = race.gen_height_and_weight(&mut rng);
+        assert!(height > 0);
+        assert!(weight > 0);
+        assert!(weight > height.into());
     }
 }
