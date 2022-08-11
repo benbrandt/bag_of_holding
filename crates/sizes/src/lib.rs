@@ -111,16 +111,16 @@ impl HeightAndWeightTable {
     /// ```
     #[tracing::instrument(skip(rng))]
     pub fn gen<R: Rng + ?Sized>(self, rng: &mut R) -> HeightAndWeight {
-        let height = self.base_height() + self.height_modifier().gen(rng).sum::<u8>();
+        let height_mod = self.height_modifier().gen(rng).sum::<u8>();
 
         // Weight modifier is multiplied by height
         let weight_mod: u16 = match self.weight_modifier() {
             WeightMod::_Fixed(f) => f,
             WeightMod::Roll(r) => u16::from(r.gen(rng).sum::<u8>()),
-        } * u16::from(height);
+        } * u16::from(height_mod);
 
         HeightAndWeight {
-            height,
+            height: self.base_height() + height_mod,
             weight: self.base_weight() + weight_mod,
         }
     }
@@ -172,8 +172,8 @@ mod test {
             let min_h = base_h + h_mod.min();
             let max_h = base_h + h_mod.max();
 
-            let min_w = base_w + (min_h * w_mod.min());
-            let max_w = base_w + (max_h * w_mod.max());
+            let min_w = base_w + (h_mod.min() * w_mod.min());
+            let max_w = base_w + (h_mod.max() * w_mod.max());
 
             assert!((min_h..=max_h).contains(&height.into()));
             assert!((min_w..=max_w).contains(&weight.into()));
