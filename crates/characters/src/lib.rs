@@ -20,6 +20,7 @@ use rand::{distributions::Standard, prelude::Distribution, Rng};
 use serde::Serialize;
 use sizes::{HeightAndWeight, Size};
 use sources::Sources;
+use speeds::{Speed, Speeds};
 use thiserror::Error;
 
 /// Full character information.
@@ -244,6 +245,8 @@ struct CharacterSheet {
     pub race: Option<String>,
     /// The character's size
     pub size: CharacterSize,
+    /// The character's speeds
+    pub speeds: Vec<Speed>,
 }
 
 impl From<Character> for CharacterSheet {
@@ -257,6 +260,11 @@ impl From<Character> for CharacterSheet {
                 character.race.as_ref().map(RaceGenerator::size),
                 character.height_and_weight,
             ),
+            speeds: character
+                .race
+                .as_ref()
+                .map(|r| r.speeds().to_vec())
+                .unwrap_or_default(),
         }
     }
 }

@@ -421,6 +421,7 @@ dependencies = [
  "serde_json",
  "sizes",
  "sources",
+ "speeds",
  "strum",
  "thiserror",
  "tracing",
@@ -1521,6 +1522,7 @@ dependencies = [
  "serde",
  "sizes",
  "sources",
+ "speeds",
  "strum",
  "tracing",
 ]
@@ -2020,6 +2022,13 @@ version = "0.1.0"
 dependencies = [
  "serde",
  "strum",
+]
+
+[[package]]
+name = "speeds"
+version = "0.1.0"
+dependencies = [
+ "serde",
 ]
 
 [[package]]

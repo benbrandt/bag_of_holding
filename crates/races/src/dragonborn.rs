@@ -7,6 +7,7 @@ use rand::{
 };
 use sizes::{HeightAndWeightTable, Size};
 use sources::{Book, Sources};
+use speeds::{Speed, Speeds};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
 use crate::RaceGenerator;
@@ -74,6 +75,13 @@ impl Sources for Dragonborn {
     #[tracing::instrument]
     fn sources(&self) -> &[sources::Book] {
         &[Book::Phb]
+    }
+}
+
+impl Speeds for Dragonborn {
+    #[tracing::instrument]
+    fn speeds(&self) -> &[Speed] {
+        &[Speed::Walking(30)]
     }
 }
 

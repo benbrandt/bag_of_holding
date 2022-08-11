@@ -13,6 +13,7 @@ rand = "0.8.5"
 serde = { version = "1.0.143", features = ["derive"] }
 sizes = { path = "../sizes" }
 sources = { path = "../sources" }
+speeds = { path = "../speeds" }
 strum = { version = "0.24.1", features = ["derive"] }
 tracing = "0.1.36"
 
