@@ -25,6 +25,7 @@ mod abilities;
 mod characters;
 mod dice;
 mod names;
+mod sizes;
 
 /// Use the entire server for tests
 struct TestServer {

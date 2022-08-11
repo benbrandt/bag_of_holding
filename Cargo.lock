@@ -326,6 +326,7 @@ dependencies = [
  "sentry-tower",
  "serde",
  "serde_json",
+ "sizes",
  "statrs",
  "strum",
  "tokio",

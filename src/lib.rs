@@ -37,6 +37,7 @@ mod characters;
 mod dice;
 mod metrics;
 mod names;
+mod sizes;
 
 // Setup tracing
 static TRACING: Lazy<()> = Lazy::new(|| {
@@ -93,6 +94,7 @@ fn app() -> Router {
         .merge(abilities::routes())
         .merge(characters::routes())
         .merge(names::routes())
+        .merge(sizes::routes())
         .layer(middleware)
         .route_layer(route_middleware)
 }

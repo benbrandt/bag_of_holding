@@ -54,7 +54,9 @@ pub struct HeightAndWeight {
 ///
 /// let HeightAndWeight { height, weight } = HeightAndWeightTable::Dragonborn.gen(&mut rand::thread_rng());
 /// ```
-#[derive(Copy, Clone, Debug, EnumIter)]
+#[derive(Copy, Clone, Debug, Deserialize, Display, EnumIter, Serialize)]
+#[serde(rename_all = "kebab-case")]
+#[strum(serialize_all = "kebab-case")]
 pub enum HeightAndWeightTable {
     /// Generate from a range of valid Dragonborn sizes.
     Dragonborn,
