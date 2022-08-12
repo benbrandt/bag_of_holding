@@ -12,6 +12,7 @@
 
 use abilities::Ability;
 use characters::{Character, CharacterBuildError};
+use damage::Resistances;
 use races::RaceGenerator;
 use rand::Rng;
 use serde_json::json;
@@ -113,16 +114,21 @@ fn serialize_to_character_sheet() {
     assert_eq!(character.age.unwrap(), serialized["age"]);
 
     let HeightAndWeight { height, weight } = character.height_and_weight.unwrap();
-    assert_eq!(height, serialized["size"]["height"]);
-    assert_eq!(weight, serialized["size"]["weight"]);
+    assert_eq!(height, serialized["height"]);
+    assert_eq!(weight, serialized["weight"]);
     assert_eq!(
         json!(character.race.as_ref().unwrap().size()),
-        serialized["size"]["size"]
+        serialized["size"]
     );
 
     assert_eq!(
         json!(character.race.as_ref().unwrap().speeds()),
         serialized["speeds"]
+    );
+
+    assert_eq!(
+        json!(character.race.as_ref().unwrap().resistances().to_vec()),
+        serialized["resistances"]
     );
 }
 

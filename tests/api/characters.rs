@@ -32,4 +32,8 @@ async fn generate_characters() {
 
     // There is an age
     assert!(character["age"].as_i64().unwrap() > 0);
+    // There is size info
+    assert!(character["height"].as_i64().unwrap() > 0);
+    assert!(character["weight"].as_i64().unwrap() > 0);
+    assert!(!character["size"].as_str().unwrap().is_empty());
 }

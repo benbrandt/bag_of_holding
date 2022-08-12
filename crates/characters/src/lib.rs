@@ -15,6 +15,7 @@
 )]
 
 use abilities::AbilityScores;
+use damage::{DamageType, Resistances};
 use races::{Race, RaceGenerator};
 use rand::{distributions::Standard, prelude::Distribution, Rng};
 use serde::Serialize;
@@ -214,24 +215,6 @@ pub enum CharacterBuildError {
     MissingRace,
 }
 
-#[derive(Serialize)]
-struct CharacterSize {
-    /// The character's size
-    pub size: Option<Size>,
-    /// The character's height and weight
-    #[serde(flatten)]
-    pub height_and_weight: Option<HeightAndWeight>,
-}
-
-impl CharacterSize {
-    fn new(size: Option<Size>, height_and_weight: Option<HeightAndWeight>) -> Self {
-        Self {
-            size,
-            height_and_weight,
-        }
-    }
-}
-
 /// Serializable, public interface for a character
 #[derive(Serialize)]
 struct CharacterSheet {
@@ -239,12 +222,17 @@ struct CharacterSheet {
     pub ability_scores: Option<AbilityScores>,
     /// The character's age
     pub age: Option<u16>,
+    /// The character's height and weight
+    #[serde(flatten)]
+    pub height_and_weight: Option<HeightAndWeight>,
     /// Name of the character
     pub name: String,
     /// Chosen race of the character
     pub race: Option<String>,
+    /// Chosen resistances of the character
+    pub resistances: Vec<DamageType>,
     /// The character's size
-    pub size: CharacterSize,
+    pub size: Option<Size>,
     /// The character's speeds
     pub speeds: Vec<Speed>,
 }
@@ -254,12 +242,15 @@ impl From<Character> for CharacterSheet {
         Self {
             ability_scores: character.ability_scores,
             age: character.age,
+            height_and_weight: character.height_and_weight,
             name: character.name,
             race: character.race.as_ref().map(Sources::citation),
-            size: CharacterSize::new(
-                character.race.as_ref().map(RaceGenerator::size),
-                character.height_and_weight,
-            ),
+            resistances: character
+                .race
+                .as_ref()
+                .map(|r| r.resistances().to_vec())
+                .unwrap_or_default(),
+            size: character.race.as_ref().map(RaceGenerator::size),
             speeds: character
                 .race
                 .as_ref()

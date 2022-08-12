@@ -6,6 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+damage = { path = "../damage" }
 enum_dispatch = "0.3.8"
 names = { path = "../names" }
 metrics = "0.20.1"
@@ -18,4 +19,5 @@ strum = { version = "0.24.1", features = ["derive"] }
 tracing = "0.1.36"
 
 [dev-dependencies]
+itertools = "0.10.3"
 rand_utils = { path = "../rand_utils" }

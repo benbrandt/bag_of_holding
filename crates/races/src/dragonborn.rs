@@ -1,5 +1,6 @@
-use std::{fmt, ops::RangeInclusive};
+use std::{borrow::Cow, fmt, ops::RangeInclusive};
 
+use damage::{DamageType, Resistances};
 use names::Name;
 use rand::{
     distributions::Standard,
@@ -42,6 +43,21 @@ enum DraconicAncestry {
     White,
 }
 
+impl Dragonborn {
+    /// Damage type associated with draconic ancestry
+    const fn damage_type(self) -> DamageType {
+        match self.draconic_ancestry {
+            DraconicAncestry::Black | DraconicAncestry::Copper => DamageType::Acid,
+            DraconicAncestry::Blue | DraconicAncestry::Bronze => DamageType::Lightning,
+            DraconicAncestry::Brass | DraconicAncestry::Gold | DraconicAncestry::Red => {
+                DamageType::Fire
+            }
+            DraconicAncestry::Green => DamageType::Poison,
+            DraconicAncestry::Silver | DraconicAncestry::White => DamageType::Cold,
+        }
+    }
+}
+
 impl RaceGenerator for Dragonborn {
     /// Name generator to use for this race
     #[tracing::instrument]
@@ -68,6 +84,12 @@ impl RaceGenerator for Dragonborn {
     /// Size of this race
     fn size(&self) -> Size {
         Size::Medium
+    }
+}
+
+impl Resistances for Dragonborn {
+    fn resistances(&self) -> Cow<'_, [DamageType]> {
+        Cow::Owned(vec![self.damage_type()])
     }
 }
 
@@ -106,5 +128,20 @@ impl Distribution<Dragonborn> for Standard {
         );
 
         Dragonborn { draconic_ancestry }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use itertools::equal;
+    use rand::Rng;
+
+    use super::*;
+
+    #[test]
+    fn resistance() {
+        let race = rand_utils::rng_from_entropy().gen::<Dragonborn>();
+
+        assert!(equal(vec![race.damage_type()], race.resistances().to_vec()));
     }
 }
