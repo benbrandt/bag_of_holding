@@ -19,13 +19,13 @@
 
 use std::{
     collections::{BTreeMap, HashSet},
-    f64::consts::E,
     hash::Hash,
 };
 
 use dice::Die;
 use itertools::Itertools;
 use rand::{distributions::Standard, prelude::Distribution, seq::SliceRandom, Rng};
+use rand_utils::exp_weight;
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
@@ -224,7 +224,7 @@ impl AbilityScores {
         let modifier = self.modifier(ability);
 
         // Subtract min modifier from this to offset by minimum score.
-        E.powi(i32::from(modifier - min_modifier))
+        exp_weight(modifier - min_modifier)
     }
 
     /// Choose a single racial increase.

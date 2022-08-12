@@ -13,6 +13,8 @@
     unused
 )]
 
+use std::f64::consts::E;
+
 use rand::{Rng, SeedableRng};
 use rand_pcg::Pcg64;
 
@@ -33,6 +35,19 @@ use rand_pcg::Pcg64;
 #[must_use]
 pub fn rng_from_entropy() -> impl Rng {
     Pcg64::from_entropy()
+}
+
+/// Create an exponential based weight from a value.
+/// Works well for `choose_weighted*` options.
+///
+/// ```
+/// let weight = rand_utils::exp_weight(2);
+/// ```
+pub fn exp_weight<V>(val: V) -> f64
+where
+    i32: TryFrom<V>,
+{
+    E.powi(i32::try_from(val).unwrap_or_default())
 }
 
 #[cfg(test)]
