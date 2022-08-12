@@ -89,6 +89,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "alignments"
+version = "0.1.0"
+dependencies = [
+ "itertools",
+ "metrics",
+ "rand",
+ "rand_utils",
+ "serde",
+ "statrs",
+ "strum",
+ "tracing",
+]
+
+[[package]]
 name = "alloc-no-stdlib"
 version = "2.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -413,6 +427,7 @@ name = "characters"
 version = "0.1.0"
 dependencies = [
  "abilities",
+ "alignments",
  "damage",
  "metrics",
  "races",

@@ -15,6 +15,7 @@
 )]
 
 use abilities::AbilityScores;
+use alignments::Alignment;
 use damage::{DamageType, Resistances};
 use races::{Race, RaceGenerator};
 use rand::{distributions::Standard, prelude::Distribution, Rng};
@@ -32,6 +33,8 @@ pub struct Character {
     pub ability_scores: Option<AbilityScores>,
     /// The character's age
     pub age: Option<u16>,
+    /// The character's alignment
+    pub alignment: Option<Alignment>,
     /// The character's height and weight
     pub height_and_weight: Option<HeightAndWeight>,
     /// The character's name
@@ -183,15 +186,32 @@ impl Character {
         Ok(self)
     }
 
+    /// Generate an alignment for your character.
+    ///
+    /// ```
+    /// use characters::Character;
+    /// use rand::Rng;
+    ///
+    /// let mut rng = rand::thread_rng();
+    /// let character = Character::new()
+    ///     .gen_alignment(&mut rng);
+    /// ```
+    #[tracing::instrument(skip(rng))]
+    pub fn gen_alignment<R: Rng + ?Sized>(mut self, rng: &mut R) -> Self {
+        self.alignment = Some(Alignment::gen(rng, &[], &[]));
+        self
+    }
+
     /// Helper method to generate a full character in the right order with a result.
     #[tracing::instrument(skip(rng))]
     fn gen<R: Rng + ?Sized>(rng: &mut R) -> Result<Self, CharacterBuildError> {
-        Character::new()
+        Ok(Character::new()
             .gen_ability_scores(rng)
             .gen_race(rng)?
             .gen_name(rng)?
             .gen_age(rng)?
-            .gen_height_and_weight(rng)
+            .gen_height_and_weight(rng)?
+            .gen_alignment(rng))
     }
 }
 
@@ -222,6 +242,8 @@ struct CharacterSheet {
     pub ability_scores: Option<AbilityScores>,
     /// The character's age
     pub age: Option<u16>,
+    /// The character's alignment
+    pub alignment: Option<String>,
     /// The character's height and weight
     #[serde(flatten)]
     pub height_and_weight: Option<HeightAndWeight>,
@@ -242,6 +264,7 @@ impl From<Character> for CharacterSheet {
         Self {
             ability_scores: character.ability_scores,
             age: character.age,
+            alignment: character.alignment.map(|a| a.to_string()),
             height_and_weight: character.height_and_weight,
             name: character.name,
             race: character.race.as_ref().map(Sources::citation),

@@ -87,6 +87,14 @@ fn generate_height_and_weight() {
 }
 
 #[test]
+fn generate_alignment() {
+    let mut rng = rand_utils::rng_from_entropy();
+    let character = Character::new().gen_alignment(&mut rng);
+
+    assert!(character.alignment.is_some());
+}
+
+#[test]
 fn generate_full_character() {
     let character: Character = rand_utils::rng_from_entropy().gen();
 
@@ -95,6 +103,7 @@ fn generate_full_character() {
     assert!(character.race.is_some());
     assert!(character.age.is_some());
     assert!(character.height_and_weight.is_some());
+    assert!(character.alignment.is_some());
 }
 
 #[test]
@@ -129,6 +138,11 @@ fn serialize_to_character_sheet() {
     assert_eq!(
         json!(character.race.as_ref().unwrap().resistances().to_vec()),
         serialized["resistances"]
+    );
+
+    assert_eq!(
+        character.alignment.unwrap().to_string(),
+        serialized["alignment"]
     );
 }
 
