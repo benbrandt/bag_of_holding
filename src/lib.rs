@@ -33,6 +33,7 @@ use tracing_subscriber::{
 };
 
 mod abilities;
+mod alignments;
 mod characters;
 mod dice;
 mod metrics;
@@ -92,6 +93,7 @@ fn app() -> Router {
     Router::new()
         .nest("/dice", dice::routes())
         .merge(abilities::routes())
+        .merge(alignments::routes())
         .merge(characters::routes())
         .merge(names::routes())
         .merge(sizes::routes())
