@@ -27,7 +27,7 @@ axum-server = { version = "0.4.2", features = ["tls-rustls"] }
 characters = { path = "./crates/characters" }
 clap = { version = "3.2.16", features = ["derive", "env"] }
 dice = { path = "./crates/dice" }
-futures = "0.3.21"
+futures = "0.3.23"
 hyper = { version = "0.14.20", features = ["full"] }
 itertools = "0.10.3"
 metrics = "0.20.1"
