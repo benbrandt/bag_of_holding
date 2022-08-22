@@ -11,7 +11,7 @@ enum_dispatch = "0.3.8"
 names = { path = "../names" }
 metrics = "0.20.1"
 rand = "0.8.5"
-serde = { version = "1.0.143", features = ["derive"] }
+serde = { version = "1.0.144", features = ["derive"] }
 sizes = { path = "../sizes" }
 sources = { path = "../sources" }
 speeds = { path = "../speeds" }
