@@ -12,7 +12,7 @@ damage = { path = "../damage" }
 metrics = "0.20.1"
 races = { path = "../races" }
 rand = "0.8.5"
-serde = { version = "1.0.143", features = ["derive"] }
+serde = { version = "1.0.144", features = ["derive"] }
 sizes = { path = "../sizes" }
 sources = { path = "../sources" }
 speeds = { path = "../speeds" }

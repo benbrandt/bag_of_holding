@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 dice = { path = "../dice" }
 rand = "0.8.5"
-serde = { version = "1.0.143", features = ["derive"] }
+serde = { version = "1.0.144", features = ["derive"] }
 strum = { version = "0.24.1", features = ["derive"] }
 tracing = "0.1.36"
 
