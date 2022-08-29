@@ -15,4 +15,4 @@ strum = { version = "0.24.1", features = ["derive"] }
 tracing = "0.1.36"
 
 [dev-dependencies]
-statrs = "0.15.0"
+statrs = "0.16.0"
