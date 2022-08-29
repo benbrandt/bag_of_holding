@@ -60,7 +60,7 @@ tracing = "0.1.36"
 tracing-subscriber = { version = "0.3.15", features = ["env-filter"] }
 
 [dev-dependencies]
-statrs = "0.15.0"
+statrs = "0.16.0"
 
 [workspace]
 members = ["crates/*"]
