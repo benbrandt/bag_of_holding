@@ -17,7 +17,7 @@ sizes = { path = "../sizes" }
 sources = { path = "../sources" }
 speeds = { path = "../speeds" }
 strum = { version = "0.24.1", features = ["derive"] }
-thiserror = "1.0.32"
+thiserror = "1.0.33"
 tracing = "0.1.36"
 
 [dev-dependencies]
