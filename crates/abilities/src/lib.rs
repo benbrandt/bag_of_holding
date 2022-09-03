@@ -94,7 +94,13 @@ impl AbilityScore {
 /// Cached so that the modifier doesn't have to be calculated constantly.
 #[derive(Clone, Copy, Debug, Serialize)]
 struct AbilityScoreTotal {
+    /// Base score rolled at character creation
+    base: u8,
+    /// Increase provided by race
+    racial_increase: u8,
+    /// Total score for this ability
     score: u8,
+    /// Modifier derived from the total score
     modifier: i8,
 }
 
@@ -105,9 +111,12 @@ impl AbilityScoreTotal {
     ///
     /// Will only panic if we somehow generate an invalid value for D&D
     #[tracing::instrument]
-    fn new(score: u8) -> Self {
+    fn new(base: u8, racial_increase: u8) -> Self {
+        let score = base + racial_increase;
         let i_score: i8 = score.try_into().unwrap();
         Self {
+            base,
+            racial_increase,
             score,
             // Lower value to closest even number, reduce by 10, and divide by two
             modifier: (i_score - i_score % 2 - 10) / 2,
@@ -123,8 +132,6 @@ pub struct AbilityScores {
     base_scores: HashSet<AbilityScore>,
     /// Ability score increases chosen for the race
     racial_increases: HashSet<AbilityScore>,
-    /// Cached calculated total scores and modifiers
-    cache: BTreeMap<Ability, AbilityScoreTotal>,
 }
 
 impl AbilityScores {
@@ -135,39 +142,10 @@ impl AbilityScores {
     #[must_use]
     #[tracing::instrument]
     pub fn new(base_scores: HashSet<AbilityScore>) -> Self {
-        let mut scores = Self {
+        Self {
             base_scores,
             racial_increases: HashSet::new(),
-            cache: BTreeMap::new(),
-        };
-        // Generate cache
-        scores.regenerate_cache();
-        scores
-    }
-
-    /// Recalculate cached values by summing up all scores and increases
-    #[tracing::instrument]
-    fn regenerate_cache(&mut self) -> &mut Self {
-        self.cache = Ability::iter()
-            .map(|a| {
-                let base = self
-                    .base_scores
-                    .iter()
-                    .find(|s| s.ability == a)
-                    .unwrap_or_else(|| panic!("Ability score missing for {a}"))
-                    .score;
-
-                let increase = self
-                    .racial_increases
-                    .iter()
-                    .find(|s| s.ability == a)
-                    .map(|s| s.score)
-                    .unwrap_or_default();
-
-                (a, AbilityScoreTotal::new(base + increase))
-            })
-            .collect();
-        self
+        }
     }
 
     /// Internal method to access a given ability score
@@ -176,10 +154,22 @@ impl AbilityScores {
     ///
     /// Will panic if a score for the ability doesn't exist (because it should)
     #[tracing::instrument]
-    fn ability(&self, ability: Ability) -> &AbilityScoreTotal {
-        self.cache
-            .get(&ability)
+    fn ability(&self, ability: Ability) -> AbilityScoreTotal {
+        let base = self
+            .base_scores
+            .iter()
+            .find(|s| s.ability == ability)
             .unwrap_or_else(|| panic!("Ability score missing for {ability}"))
+            .score;
+
+        let racial_increase = self
+            .racial_increases
+            .iter()
+            .find(|s| s.ability == ability)
+            .map(|s| s.score)
+            .unwrap_or_default();
+
+        AbilityScoreTotal::new(base, racial_increase)
     }
 
     /// Get a specific ability score.
@@ -265,7 +255,6 @@ impl AbilityScores {
 
         self.racial_increases
             .insert(AbilityScore::new(*ability, increase));
-        self.regenerate_cache();
 
         self
     }
@@ -338,7 +327,7 @@ struct AbilityScoreStats(BTreeMap<Ability, AbilityScoreTotal>);
 
 impl From<AbilityScores> for AbilityScoreStats {
     fn from(scores: AbilityScores) -> Self {
-        Self(scores.cache)
+        Self(Ability::iter().map(|a| (a, scores.ability(a))).collect())
     }
 }
 
@@ -348,26 +337,26 @@ mod test {
 
     #[test]
     fn modifier_logic() {
-        assert_eq!(AbilityScoreTotal::new(0).modifier, -5);
-        assert_eq!(AbilityScoreTotal::new(1).modifier, -5);
-        assert_eq!(AbilityScoreTotal::new(2).modifier, -4);
-        assert_eq!(AbilityScoreTotal::new(3).modifier, -4);
-        assert_eq!(AbilityScoreTotal::new(4).modifier, -3);
-        assert_eq!(AbilityScoreTotal::new(5).modifier, -3);
-        assert_eq!(AbilityScoreTotal::new(6).modifier, -2);
-        assert_eq!(AbilityScoreTotal::new(7).modifier, -2);
-        assert_eq!(AbilityScoreTotal::new(8).modifier, -1);
-        assert_eq!(AbilityScoreTotal::new(9).modifier, -1);
-        assert_eq!(AbilityScoreTotal::new(10).modifier, 0);
-        assert_eq!(AbilityScoreTotal::new(11).modifier, 0);
-        assert_eq!(AbilityScoreTotal::new(12).modifier, 1);
-        assert_eq!(AbilityScoreTotal::new(13).modifier, 1);
-        assert_eq!(AbilityScoreTotal::new(14).modifier, 2);
-        assert_eq!(AbilityScoreTotal::new(15).modifier, 2);
-        assert_eq!(AbilityScoreTotal::new(16).modifier, 3);
-        assert_eq!(AbilityScoreTotal::new(17).modifier, 3);
-        assert_eq!(AbilityScoreTotal::new(18).modifier, 4);
-        assert_eq!(AbilityScoreTotal::new(19).modifier, 4);
-        assert_eq!(AbilityScoreTotal::new(20).modifier, 5);
+        assert_eq!(AbilityScoreTotal::new(0, 0).modifier, -5);
+        assert_eq!(AbilityScoreTotal::new(1, 0).modifier, -5);
+        assert_eq!(AbilityScoreTotal::new(2, 0).modifier, -4);
+        assert_eq!(AbilityScoreTotal::new(3, 0).modifier, -4);
+        assert_eq!(AbilityScoreTotal::new(4, 0).modifier, -3);
+        assert_eq!(AbilityScoreTotal::new(5, 0).modifier, -3);
+        assert_eq!(AbilityScoreTotal::new(6, 0).modifier, -2);
+        assert_eq!(AbilityScoreTotal::new(7, 0).modifier, -2);
+        assert_eq!(AbilityScoreTotal::new(8, 0).modifier, -1);
+        assert_eq!(AbilityScoreTotal::new(9, 0).modifier, -1);
+        assert_eq!(AbilityScoreTotal::new(10, 0).modifier, 0);
+        assert_eq!(AbilityScoreTotal::new(11, 0).modifier, 0);
+        assert_eq!(AbilityScoreTotal::new(12, 0).modifier, 1);
+        assert_eq!(AbilityScoreTotal::new(13, 0).modifier, 1);
+        assert_eq!(AbilityScoreTotal::new(14, 0).modifier, 2);
+        assert_eq!(AbilityScoreTotal::new(15, 0).modifier, 2);
+        assert_eq!(AbilityScoreTotal::new(16, 0).modifier, 3);
+        assert_eq!(AbilityScoreTotal::new(17, 0).modifier, 3);
+        assert_eq!(AbilityScoreTotal::new(18, 0).modifier, 4);
+        assert_eq!(AbilityScoreTotal::new(19, 0).modifier, 4);
+        assert_eq!(AbilityScoreTotal::new(20, 0).modifier, 5);
     }
 }

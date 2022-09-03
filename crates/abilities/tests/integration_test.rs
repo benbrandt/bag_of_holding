@@ -54,6 +54,8 @@ fn serialization() {
     for ability in Ability::iter() {
         assert_eq!(
             json!({
+                "base": scores.score(ability),
+                "racial_increase": 0,
                 "score": scores.score(ability),
                 "modifier": scores.modifier(ability),
             }),
