@@ -25,7 +25,7 @@ axum-extra = { version = "0.3.6", features = [
 axum-macros = "0.2.3"
 axum-server = { version = "0.4.2", features = ["tls-rustls"] }
 characters = { path = "./crates/characters" }
-clap = { version = "3.2.19", features = ["derive", "env"] }
+clap = { version = "3.2.20", features = ["derive", "env"] }
 dice = { path = "./crates/dice" }
 futures = "0.3.24"
 hyper = { version = "0.14.20", features = ["full"] }
