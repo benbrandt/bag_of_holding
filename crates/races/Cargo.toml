@@ -19,5 +19,5 @@ strum = { version = "0.24.1", features = ["derive"] }
 tracing = "0.1.36"
 
 [dev-dependencies]
-itertools = "0.10.3"
+itertools = "0.10.4"
 rand_utils = { path = "../rand_utils" }
