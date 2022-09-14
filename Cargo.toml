@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 abilities = { path = "./crates/abilities" }
 alignments = { path = "./crates/alignments" }
-anyhow = { version = "1.0.64", features = ["backtrace"] }
+anyhow = { version = "1.0.65", features = ["backtrace"] }
 axum = { version = "0.5.16", features = [
     "headers",
     "http2",
