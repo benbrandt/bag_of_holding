@@ -52,7 +52,6 @@ impl Character {
     /// let character = Character::new();
     /// ```
     #[must_use]
-    #[tracing::instrument]
     pub fn new() -> Self {
         Self::default()
     }
@@ -74,7 +73,6 @@ impl Character {
     }
 
     /// Helper function to return a reference to the ability scores, otherwise error
-    #[tracing::instrument]
     fn try_ability_scores(&mut self) -> Result<&mut AbilityScores, CharacterBuildError> {
         self.ability_scores
             .as_mut()
@@ -104,7 +102,6 @@ impl Character {
     }
 
     /// Helper function to return a reference to the race, otherwise error
-    #[tracing::instrument]
     fn try_race(&self) -> Result<&Race, CharacterBuildError> {
         self.race.as_ref().ok_or(CharacterBuildError::MissingRace)
     }

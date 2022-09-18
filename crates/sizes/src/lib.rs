@@ -64,13 +64,11 @@ pub enum HeightAndWeightTable {
 
 impl HeightAndWeightTable {
     /// Convert feet + inches to just inches
-    #[tracing::instrument]
     fn in_inches(feet: u8, inches: u8) -> u8 {
         feet * 12 + inches
     }
 
     /// Base height to use for height calculations
-    #[tracing::instrument]
     fn base_height(self) -> u8 {
         match self {
             Self::Dragonborn => Self::in_inches(5, 6),
@@ -78,7 +76,6 @@ impl HeightAndWeightTable {
     }
 
     /// Variable modifier to use in height calculations
-    #[tracing::instrument]
     fn height_modifier(self) -> Roll {
         match self {
             Self::Dragonborn => Roll::new(2, Die::D8),
@@ -86,7 +83,6 @@ impl HeightAndWeightTable {
     }
 
     /// Base weight to use for weight calculations
-    #[tracing::instrument]
     fn base_weight(self) -> u16 {
         match self {
             Self::Dragonborn => 175,
@@ -94,7 +90,6 @@ impl HeightAndWeightTable {
     }
 
     /// Variable modifier to use in weight calculations
-    #[tracing::instrument]
     fn weight_modifier(self) -> WeightMod {
         match self {
             Self::Dragonborn => WeightMod::Roll(Roll::new(2, Die::D6)),

@@ -32,7 +32,6 @@ pub enum Attitude {
 }
 
 impl Attitude {
-    #[tracing::instrument]
     fn weight(self, influences: &[Self]) -> f64 {
         exp_weight(influences.iter().filter(|&i| i == &self).count())
     }
@@ -50,7 +49,6 @@ pub enum Morality {
 }
 
 impl Morality {
-    #[tracing::instrument]
     fn weight(self, influences: &[Self]) -> f64 {
         exp_weight(influences.iter().filter(|&i| i == &self).count())
     }
@@ -72,7 +70,6 @@ pub struct Alignment {
 impl Alignment {
     /// Create a new alignment
     #[must_use]
-    #[tracing::instrument]
     pub fn new(attitude: Attitude, morality: Morality) -> Self {
         Self { attitude, morality }
     }
@@ -111,7 +108,6 @@ impl Alignment {
     /// Weight of a particular alignment based on influences.
     /// Useful for comparing things like deities.
     #[must_use]
-    #[tracing::instrument]
     pub fn weight(
         &self,
         attitude_influences: &[Attitude],

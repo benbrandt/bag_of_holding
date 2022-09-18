@@ -50,7 +50,6 @@ impl Die {
     ///
     /// assert!((1..=20).contains(&roll));
     /// ```
-    #[tracing::instrument(skip(rng))]
     pub fn roll<R: Rng + ?Sized>(self, rng: &mut R) -> u8 {
         let roll = rng.gen_range(1u8..=self.into());
 
@@ -154,7 +153,6 @@ impl Roll {
     /// let roll = Roll::new(2, Die::D8);
     /// ````
     #[must_use]
-    #[tracing::instrument]
     pub fn new(amount: usize, die: Die) -> Self {
         Self { amount, die }
     }
@@ -183,7 +181,6 @@ impl Roll {
     /// assert_eq!(min, 2);
     /// ```
     #[must_use]
-    #[tracing::instrument]
     pub fn min(self) -> usize {
         self.amount
     }
@@ -197,7 +194,6 @@ impl Roll {
     /// assert_eq!(max, 12);
     /// ```
     #[must_use]
-    #[tracing::instrument]
     pub fn max(self) -> usize {
         self.amount * usize::from(self.die)
     }

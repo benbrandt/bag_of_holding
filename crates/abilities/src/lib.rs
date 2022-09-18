@@ -83,7 +83,6 @@ pub struct AbilityScore {
 
 impl AbilityScore {
     /// Create a new ability score
-    #[tracing::instrument]
     fn new(ability: Ability, score: u8) -> Self {
         Self { ability, score }
     }
@@ -110,7 +109,6 @@ impl AbilityScoreTotal {
     /// # Panics
     ///
     /// Will only panic if we somehow generate an invalid value for D&D
-    #[tracing::instrument]
     fn new(base: u8, racial_increase: u8) -> Self {
         let score = base + racial_increase;
         let i_score: i8 = score.try_into().unwrap();
@@ -140,7 +138,6 @@ impl AbilityScores {
     /// Most likely you will generate this with `rng.gen()`, but can be created
     /// manually as well if necessary.
     #[must_use]
-    #[tracing::instrument]
     pub fn new(base_scores: HashSet<AbilityScore>) -> Self {
         Self {
             base_scores,
@@ -153,7 +150,6 @@ impl AbilityScores {
     /// # Panics
     ///
     /// Will panic if a score for the ability doesn't exist (because it should)
-    #[tracing::instrument]
     fn ability(&self, ability: Ability) -> AbilityScoreTotal {
         let base = self
             .base_scores
@@ -183,7 +179,6 @@ impl AbilityScores {
     ///
     /// ```
     #[must_use]
-    #[tracing::instrument]
     pub fn score(&self, ability: Ability) -> u8 {
         self.ability(ability).score
     }
@@ -199,7 +194,6 @@ impl AbilityScores {
     ///
     /// ```
     #[must_use]
-    #[tracing::instrument]
     pub fn modifier(&self, ability: Ability) -> i8 {
         self.ability(ability).modifier
     }
