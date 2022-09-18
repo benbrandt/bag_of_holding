@@ -35,6 +35,7 @@ use tracing_subscriber::{
 mod abilities;
 mod alignments;
 mod characters;
+mod deities;
 mod dice;
 mod metrics;
 mod names;
@@ -95,6 +96,7 @@ fn app() -> Router {
         .merge(abilities::routes())
         .merge(alignments::routes())
         .merge(characters::routes())
+        .merge(deities::routes())
         .merge(names::routes())
         .merge(sizes::routes())
         .layer(middleware)

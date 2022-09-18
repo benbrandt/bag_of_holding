@@ -1,6 +1,5 @@
 use axum::{response::IntoResponse, Json, Router};
 use axum_extra::routing::{Resource, TypedPath};
-use itertools::Itertools;
 use serde::Deserialize;
 use sizes::HeightAndWeightTable;
 use strum::IntoEnumIterator;
@@ -16,7 +15,7 @@ pub fn routes() -> Router {
 /// List height and weight table generator options
 #[tracing::instrument]
 async fn index() -> impl IntoResponse {
-    Json(HeightAndWeightTable::iter().collect_vec())
+    Json(HeightAndWeightTable::iter().collect::<Vec<_>>())
 }
 
 #[derive(Debug, Deserialize, TypedPath)]

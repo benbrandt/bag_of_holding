@@ -24,6 +24,7 @@ use tokio::task::JoinHandle;
 mod abilities;
 mod alignments;
 mod characters;
+mod deities;
 mod dice;
 mod names;
 mod sizes;

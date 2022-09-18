@@ -1,6 +1,5 @@
 use axum::http::Method;
 use hyper::Body;
-use itertools::Itertools;
 
 use crate::TestServer;
 
@@ -16,7 +15,12 @@ async fn generate_ability_scores() {
     // Assert all keys are present
     assert_eq!(
         ["CHA", "CON", "DEX", "INT", "STR", "WIS"],
-        rolls.as_object().unwrap().keys().collect_vec().as_slice(),
+        rolls
+            .as_object()
+            .unwrap()
+            .keys()
+            .collect::<Vec<_>>()
+            .as_slice(),
     );
 
     // Assert all values are valid

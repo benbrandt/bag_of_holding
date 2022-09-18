@@ -24,13 +24,13 @@ fn generate_ability_scores() {
         .multi_cartesian_product()
         .map(|l| l.into_iter().sorted().rev().take(3).sum::<i32>())
         .map(f64::from)
-        .collect_vec();
+        .collect::<Vec<_>>();
     let mean = possibilities.iter().mean();
     let std_dev = possibilities.iter().std_dev();
 
     let scores: AbilityScores = rand_utils::rng_from_entropy().gen();
 
-    let results = Ability::iter().map(|a| scores.score(a)).collect_vec();
+    let results = Ability::iter().map(|a| scores.score(a)).collect::<Vec<_>>();
     // All scores are in valid range
     assert!(results.iter().all(|r| (3..=18).contains(r)));
     // Average is within expected range
@@ -42,7 +42,9 @@ fn modifiers() {
     let scores: AbilityScores = rand_utils::rng_from_entropy().gen();
 
     // All modifiers are in valid range
-    let results = Ability::iter().map(|a| scores.modifier(a)).collect_vec();
+    let results = Ability::iter()
+        .map(|a| scores.modifier(a))
+        .collect::<Vec<_>>();
     assert!(results.iter().all(|r| (-5..=5).contains(r)));
 }
 

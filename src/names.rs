@@ -1,6 +1,5 @@
 use axum::{response::IntoResponse, Json, Router};
 use axum_extra::routing::{Resource, TypedPath};
-use itertools::Itertools;
 use names::Name;
 use serde::Deserialize;
 use strum::IntoEnumIterator;
@@ -16,7 +15,7 @@ pub fn routes() -> Router {
 /// List name generator options
 #[tracing::instrument]
 async fn index() -> impl IntoResponse {
-    Json(Name::iter().collect_vec())
+    Json(Name::iter().collect::<Vec<_>>())
 }
 
 #[derive(Debug, Deserialize, TypedPath)]

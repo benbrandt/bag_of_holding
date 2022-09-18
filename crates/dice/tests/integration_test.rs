@@ -11,7 +11,6 @@
 )]
 
 use dice::{Die, Roll};
-use itertools::Itertools;
 use rand::{seq::IteratorRandom, Rng};
 use statrs::{
     distribution::Uniform,
@@ -29,7 +28,7 @@ fn roll() {
         let rolls = (0..u32::from(die) * 10)
             .into_iter()
             .map(|_| die.roll(&mut rng))
-            .collect_vec();
+            .collect::<Vec<_>>();
 
         assert!(rolls.iter().all(|roll| (1..=die.into()).contains(roll)));
         let mean = rolls.iter().map(|&r| f64::from(r)).mean();
@@ -43,7 +42,7 @@ fn roll_multiple() {
     for die in Die::iter() {
         // Roll a normal range of dice
         for i in 1..=12 {
-            let rolls = die.roll_multiple(&mut rng, i).collect_vec();
+            let rolls = die.roll_multiple(&mut rng, i).collect::<Vec<_>>();
             assert_eq!(rolls.len(), i as usize);
             assert!(rolls.iter().all(|d| (1..=die.into()).contains(d)));
         }

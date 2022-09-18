@@ -1,6 +1,5 @@
 use axum::http::Method;
 use hyper::Body;
-use itertools::Itertools;
 
 use crate::TestServer;
 
@@ -23,7 +22,7 @@ async fn generate_characters() {
             .as_object()
             .unwrap()
             .keys()
-            .collect_vec()
+            .collect::<Vec<_>>()
             .as_slice(),
     );
 

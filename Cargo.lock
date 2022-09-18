@@ -97,7 +97,6 @@ dependencies = [
  "rand",
  "rand_utils",
  "serde",
- "statrs",
  "strum",
  "tracing",
 ]
@@ -328,6 +327,7 @@ dependencies = [
  "axum-server",
  "characters",
  "clap",
+ "deities",
  "dice",
  "futures",
  "hyper",
@@ -594,6 +594,18 @@ checksum = "bef552e6f588e446098f6ba40d89ac146c8c7b64aade83c051ee00bb5d2bc18d"
 dependencies = [
  "serde",
  "uuid",
+]
+
+[[package]]
+name = "deities"
+version = "0.1.0"
+dependencies = [
+ "metrics",
+ "rand",
+ "rand_utils",
+ "serde",
+ "strum",
+ "tracing",
 ]
 
 [[package]]
