@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 dice = { path = "../dice" }
-itertools = "0.10.4"
+itertools = "0.10.5"
 metrics = "0.20.1"
 rand = "0.8.5"
 rand_utils = { path = "../rand_utils" }
