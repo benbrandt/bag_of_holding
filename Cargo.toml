@@ -30,7 +30,7 @@ deities = { path = "./crates/deities" }
 dice = { path = "./crates/dice" }
 futures = "0.3.24"
 hyper = { version = "0.14.20", features = ["full"] }
-itertools = "0.10.4"
+itertools = "0.10.5"
 metrics = "0.20.1"
 metrics-exporter-prometheus = "0.11.0"
 mime = "0.3.16"
