@@ -1,10 +1,10 @@
 [package]
 name = "damage"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+edition.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-serde = { version = "1.0.145", features = ["derive"] }
-strum = { version = "0.24.1", features = ["derive"] }
+serde.workspace = true
+strum.workspace = true

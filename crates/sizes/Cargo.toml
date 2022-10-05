@@ -1,16 +1,16 @@
 [package]
 name = "sizes"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+edition.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dice = { path = "../dice" }
-rand = "0.8.5"
-serde = { version = "1.0.145", features = ["derive"] }
-strum = { version = "0.24.1", features = ["derive"] }
-tracing = "0.1.36"
+dice.workspace = true
+rand.workspace = true
+serde.workspace = true
+strum.workspace = true
+tracing.workspace = true
 
 [dev-dependencies]
-rand_utils = { path = "../rand_utils" }
+rand_utils.workspace = true
