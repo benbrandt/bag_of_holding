@@ -1,23 +1,23 @@
 [package]
 name = "races"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+edition.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-damage = { path = "../damage" }
-enum_dispatch = "0.3.8"
-names = { path = "../names" }
-metrics = "0.20.1"
-rand = "0.8.5"
-serde = { version = "1.0.145", features = ["derive"] }
-sizes = { path = "../sizes" }
-sources = { path = "../sources" }
-speeds = { path = "../speeds" }
-strum = { version = "0.24.1", features = ["derive"] }
-tracing = "0.1.36"
+damage.workspace = true
+enum_dispatch.workspace = true
+names.workspace = true
+metrics.workspace = true
+rand.workspace = true
+serde.workspace = true
+sizes.workspace = true
+sources.workspace = true
+speeds.workspace = true
+strum.workspace = true
+tracing.workspace = true
 
 [dev-dependencies]
-itertools = "0.10.5"
-rand_utils = { path = "../rand_utils" }
+itertools.workspace = true
+rand_utils.workspace = true
