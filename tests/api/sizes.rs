@@ -5,7 +5,7 @@ use crate::TestServer;
 
 #[tokio::test]
 async fn generate_height_and_weight() {
-    let server = TestServer::new().await;
+    let server = TestServer::new();
 
     let options = server
         .request(Method::GET, "/height-and-weight", Body::empty())

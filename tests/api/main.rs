@@ -37,7 +37,7 @@ struct TestServer {
 }
 
 impl TestServer {
-    async fn new() -> Self {
+    fn new() -> Self {
         // Grab a random port
         let listener = TcpListener::bind(SocketAddr::from(([0, 0, 0, 0], 0))).unwrap();
         let addr = listener.local_addr().unwrap();

@@ -5,7 +5,7 @@ use crate::TestServer;
 
 #[tokio::test]
 async fn generate_alignment() {
-    let server = TestServer::new().await;
+    let server = TestServer::new();
 
     let alignment = server
         .request(Method::POST, "/alignments", Body::empty())

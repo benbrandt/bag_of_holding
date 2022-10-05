@@ -5,7 +5,7 @@ use crate::TestServer;
 
 #[tokio::test]
 async fn generate_ability_scores() {
-    let server = TestServer::new().await;
+    let server = TestServer::new();
 
     let rolls = server
         .request(Method::POST, "/abilities", Body::empty())

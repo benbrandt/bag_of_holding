@@ -5,7 +5,7 @@ use crate::TestServer;
 
 #[tokio::test]
 async fn generate_characters() {
-    let server = TestServer::new().await;
+    let server = TestServer::new();
 
     let character = server
         .request(Method::POST, "/characters", Body::empty())

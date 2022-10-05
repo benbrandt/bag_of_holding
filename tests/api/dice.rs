@@ -15,7 +15,7 @@ use crate::TestServer;
 
 #[tokio::test]
 async fn die_roll() {
-    let server = TestServer::new().await;
+    let server = TestServer::new();
 
     for sides in [4u32, 6, 8, 10, 12, 20, 100] {
         let rolls = try_join_all((0..sides * 10).into_iter().map(|_| async {
@@ -37,7 +37,7 @@ async fn die_roll() {
 
 #[tokio::test]
 async fn roll_multiple_die_rolls() {
-    let server = TestServer::new().await;
+    let server = TestServer::new();
 
     let items = Die::iter().enumerate().map(|(i, d)| (d, i));
     let body: HashMap<Die, usize> = items.clone().collect();
