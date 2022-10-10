@@ -14,8 +14,7 @@
     unused
 )]
 
-use rand::{seq::SliceRandom, Rng};
-use rand_utils::exp_weight;
+use rand::{distributions::Standard, prelude::Distribution, seq::IteratorRandom, Rng};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
@@ -165,47 +164,12 @@ pub enum Domain {
     War,
 }
 
-impl Domain {
-    /// Create a weight based on other factors that may influence a Domain
-    /// choice, such as a character's choice of deity
-    fn weight(self, influences: &[Self]) -> f64 {
-        exp_weight(influences.iter().filter(|&i| i == &self).count())
-    }
+impl Distribution<Domain> for Standard {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Domain {
+        let domain = Domain::iter().choose(rng).unwrap();
 
-    /// Generate a domain choice, weighted by influences from other choices on
-    /// the character sheet
-    ///
-    /// # Panics
-    ///
-    /// Will panic if weighting logic is wrong
-    #[tracing::instrument(skip(rng))]
-    pub fn gen<R: Rng + ?Sized>(rng: &mut R, influences: &[Self]) -> Self {
-        let domain = *Self::iter()
-            .collect::<Vec<_>>()
-            .choose_weighted(rng, |d| d.weight(influences))
-            .unwrap();
-
-        metrics::increment_counter!("domains", &[("domain", domain.to_string()),]);
+        metrics::increment_counter!("domains", &[("domain", domain.to_string())]);
 
         domain
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn weight() {
-        assert!((Domain::Life.weight(&[Domain::Death]) - exp_weight(0)).abs() < f64::EPSILON);
-        assert!(
-            (Domain::Life.weight(&[Domain::Life, Domain::Death]) - exp_weight(1)).abs()
-                < f64::EPSILON
-        );
-        assert!(
-            (Domain::Life.weight(&[Domain::Life, Domain::Life, Domain::Death]) - exp_weight(2))
-                .abs()
-                < f64::EPSILON
-        );
     }
 }
