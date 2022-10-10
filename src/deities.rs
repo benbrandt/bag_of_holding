@@ -1,6 +1,7 @@
 use axum::{response::IntoResponse, Json, Router};
 use axum_extra::routing::Resource;
 use deities::Domain;
+use rand::Rng;
 use strum::IntoEnumIterator;
 
 /// Routes related to deities
@@ -21,5 +22,5 @@ async fn index() -> impl IntoResponse {
 #[tracing::instrument]
 async fn create() -> impl IntoResponse {
     let mut rng = rand_utils::rng_from_entropy();
-    Json(Domain::gen(&mut rng, &[]))
+    Json(rng.gen::<Domain>())
 }
