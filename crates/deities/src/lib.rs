@@ -14,9 +14,13 @@
     unused
 )]
 
+use alignments::{Alignment, Attitude, Morality};
+use dragon::DRAGON;
 use rand::{distributions::Standard, prelude::Distribution, seq::IteratorRandom, Rng};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
+
+mod dragon;
 
 /// In a pantheon, every deity has influence over different aspects of mortal
 /// life and civilization, called a deity’s domain. All the domains over which
@@ -171,5 +175,77 @@ impl Distribution<Domain> for Standard {
         metrics::increment_counter!("domains", &[("domain", domain.to_string())]);
 
         domain
+    }
+}
+
+/// Each world in the D&D multiverse has its own pantheons of deities, ranging
+/// in size from the teeming pantheons of the Forgotten Realms and Greyhawk to
+/// the more focused religions of Eberron and Dragonlance. Many of the nonhuman
+/// races worship the same gods on different worlds—Moradin, for example, is
+/// revered by dwarves of the Forgotten Realms, Greyhawk, and many other
+/// worlds.
+#[derive(Debug, Serialize)]
+pub enum Pantheon {
+    // Bugbear,
+    // Celtic,
+    /// Deities most commonly worshiped by dragons
+    Dragon,
+    // Dragonlance,
+    // Drow,
+    // Duergar,
+    // Dwarven,
+    // Eberron,
+    // Egyptian,
+    // Elven,
+    // #[serde(rename = "Forgotten Realms")]
+    // ForgottenRealms,
+    // Giant,
+    // Gnomish,
+    // Goblin,
+    // Greek,
+    // Greyhawk,
+    // Halfling,
+    // Kobold,
+    // Lizardfolk,
+    // Norse,
+    // Orc,
+    // None,
+}
+
+impl Pantheon {
+    /// Get a list of deities that are part of this pantheon
+    #[must_use]
+    pub fn deities(&self) -> &[Deity] {
+        match self {
+            Self::Dragon => DRAGON,
+        }
+    }
+}
+
+/// Information about a given deity. Includes information to recognize the
+/// deity by, as well as player-relevant information like Alignment and Domains
+#[derive(Debug, Serialize)]
+pub struct Deity {
+    /// Alignment of the deity. Important for influencing character alignment
+    /// of characters who favor this deity.
+    pub alignment: Alignment,
+    /// Domains this deity is responsible for. Key for Clerics to choose a
+    /// domain that matches their deity's domains.
+    pub domains: &'static [Domain],
+    /// Name the deity is called by
+    pub name: &'static str,
+    /// Pantheon that this deity is a part of
+    pub pantheon: Pantheon,
+    /// Symbols that are used to represent this deity.
+    pub symbols: &'static [&'static str],
+    /// Different titles the deity is also known by
+    pub titles: &'static [&'static str],
+}
+
+impl Deity {
+    /// Weight deity choice to more likely align to other alignment influences
+    fn weight(&self, attitude_influences: &[Attitude], morality_influences: &[Morality]) -> f64 {
+        self.alignment
+            .weight(attitude_influences, morality_influences)
     }
 }

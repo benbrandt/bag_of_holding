@@ -70,7 +70,7 @@ pub struct Alignment {
 impl Alignment {
     /// Create a new alignment
     #[must_use]
-    pub fn new(attitude: Attitude, morality: Morality) -> Self {
+    pub const fn new(attitude: Attitude, morality: Morality) -> Self {
         Self { attitude, morality }
     }
 

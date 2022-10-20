@@ -589,6 +589,7 @@ dependencies = [
 name = "deities"
 version = "0.1.0"
 dependencies = [
+ "alignments",
  "metrics",
  "rand",
  "rand_utils",
