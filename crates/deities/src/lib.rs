@@ -18,6 +18,7 @@ use alignments::{Alignment, Attitude, Morality};
 use dragon::DRAGON;
 use dragonlance::DRAGONLANCE;
 use duergar::DUERGAR;
+use dwarven::DWARVEN;
 use rand::{distributions::Standard, prelude::Distribution, seq::IteratorRandom, Rng};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
@@ -25,6 +26,7 @@ use strum::{Display, EnumIter, IntoEnumIterator};
 mod dragon;
 mod dragonlance;
 mod duergar;
+mod dwarven;
 
 /// In a pantheon, every deity has influence over different aspects of mortal
 /// life and civilization, called a deity’s domain. All the domains over which
@@ -205,7 +207,8 @@ pub enum Pantheon {
     // Drow,
     /// Deities most commonly worshipped by Duergar
     Duergar,
-    // Dwarven,
+    /// Deities most commonly worshipped by Dwarves
+    Dwarven,
     // Eberron,
     // Egyptian,
     // Elven,
@@ -232,6 +235,7 @@ impl Pantheon {
             Self::Dragon => DRAGON,
             Self::Dragonlance => DRAGONLANCE,
             Self::Duergar => DUERGAR,
+            Self::Dwarven => DWARVEN,
         }
     }
 }
