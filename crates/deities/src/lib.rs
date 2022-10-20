@@ -17,12 +17,14 @@
 use alignments::{Alignment, Attitude, Morality};
 use dragon::DRAGON;
 use dragonlance::DRAGONLANCE;
+use duergar::DUERGAR;
 use rand::{distributions::Standard, prelude::Distribution, seq::IteratorRandom, Rng};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
 mod dragon;
 mod dragonlance;
+mod duergar;
 
 /// In a pantheon, every deity has influence over different aspects of mortal
 /// life and civilization, called a deity’s domain. All the domains over which
@@ -201,7 +203,8 @@ pub enum Pantheon {
     /// as constellations.
     Dragonlance,
     // Drow,
-    // Duergar,
+    /// Deities most commonly worshipped by Duergar
+    Duergar,
     // Dwarven,
     // Eberron,
     // Egyptian,
@@ -228,6 +231,7 @@ impl Pantheon {
         match self {
             Self::Dragon => DRAGON,
             Self::Dragonlance => DRAGONLANCE,
+            Self::Duergar => DUERGAR,
         }
     }
 }
@@ -236,14 +240,14 @@ impl Pantheon {
 /// deity by, as well as player-relevant information like Alignment and Domains
 #[derive(Debug, Serialize)]
 pub struct Deity {
+    /// Name the deity is called by
+    pub name: &'static str,
     /// Alignment of the deity. Important for influencing character alignment
     /// of characters who favor this deity.
     pub alignment: Alignment,
     /// Domains this deity is responsible for. Key for Clerics to choose a
     /// domain that matches their deity's domains.
     pub domains: &'static [Domain],
-    /// Name the deity is called by
-    pub name: &'static str,
     /// Pantheon that this deity is a part of
     pub pantheon: Pantheon,
     /// Symbols that are used to represent this deity.
