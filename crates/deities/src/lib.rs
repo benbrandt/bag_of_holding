@@ -16,11 +16,13 @@
 
 use alignments::{Alignment, Attitude, Morality};
 use dragon::DRAGON;
+use dragonlance::DRAGONLANCE;
 use rand::{distributions::Standard, prelude::Distribution, seq::IteratorRandom, Rng};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
 mod dragon;
+mod dragonlance;
 
 /// In a pantheon, every deity has influence over different aspects of mortal
 /// life and civilization, called a deity’s domain. All the domains over which
@@ -190,7 +192,14 @@ pub enum Pantheon {
     // Celtic,
     /// Deities most commonly worshiped by dragons
     Dragon,
-    // Dragonlance,
+    /// The gods of the world of Krynn are three families: seven gods of good
+    /// headed by Paladine and Mishakal, seven of neutrality headed by Gilean,
+    /// and seven of evil headed by Takhisis and Sargonnas. These deities have
+    /// been called by many different names and held in varying levels of
+    /// esteem by different peoples and cultures through the world’s history,
+    /// but they are the only gods of this world—their place fixed in the stars
+    /// as constellations.
+    Dragonlance,
     // Drow,
     // Duergar,
     // Dwarven,
@@ -218,6 +227,7 @@ impl Pantheon {
     pub fn deities(&self) -> &[Deity] {
         match self {
             Self::Dragon => DRAGON,
+            Self::Dragonlance => DRAGONLANCE,
         }
     }
 }
