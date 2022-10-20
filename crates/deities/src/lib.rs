@@ -19,6 +19,7 @@ use dragon::DRAGON;
 use dragonlance::DRAGONLANCE;
 use duergar::DUERGAR;
 use dwarven::DWARVEN;
+use eberron::EBERRON;
 use rand::{distributions::Standard, prelude::Distribution, seq::IteratorRandom, Rng};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
@@ -27,6 +28,7 @@ mod dragon;
 mod dragonlance;
 mod duergar;
 mod dwarven;
+mod eberron;
 
 /// In a pantheon, every deity has influence over different aspects of mortal
 /// life and civilization, called a deity’s domain. All the domains over which
@@ -209,7 +211,27 @@ pub enum Pantheon {
     Duergar,
     /// Deities most commonly worshipped by Dwarves
     Dwarven,
-    // Eberron,
+    /// The world of Eberron has many different religions, but the most
+    /// important revolves around a pantheon called the Sovereign Host and
+    /// their malign shadow, the Dark Six. The gods of the Sovereign Host are
+    /// thought to have dominion over every aspect of existence, and to speak
+    /// with a unified voice. But the Dark Six are the primitive, bloody, and
+    /// cruel gods who offer a dissenting voice.
+    ///
+    /// Eberron’s other religions are very different from the traditional D&D
+    /// pantheons. The monotheistic Church of the Silver Flame is devoted to
+    /// fighting against evil in the world, but plagued by corruption in its
+    /// own ranks. The philosophy of the Blood of Vol teaches that divinity
+    /// lies within all mortal beings and reveres the undead who have secured
+    /// that immortality. Various mad cults are devoted to the demons and
+    /// horrors imprisoned in Eberron’s Underdark (called Khyber, the Dragon
+    /// Below). The followers of the Path of Light believe that the world is
+    /// heading toward a glorious future where the shadows that cloud this
+    /// world will be transformed into light. And two related nations of elves
+    /// revere their ancestral spirits: the Undying Court, preserved as spirits
+    /// or even undead forms, and the glorified Spirits of the Past, the great
+    /// heroes of ancient wars.
+    Eberron,
     // Egyptian,
     // Elven,
     // #[serde(rename = "Forgotten Realms")]
@@ -236,6 +258,7 @@ impl Pantheon {
             Self::Dragonlance => DRAGONLANCE,
             Self::Duergar => DUERGAR,
             Self::Dwarven => DWARVEN,
+            Self::Eberron => EBERRON,
         }
     }
 }
