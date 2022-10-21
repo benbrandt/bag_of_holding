@@ -17,6 +17,7 @@
 use alignments::{Alignment, Attitude, Morality};
 use dragon::DRAGON;
 use dragonlance::DRAGONLANCE;
+use drow::DROW;
 use duergar::DUERGAR;
 use dwarven::DWARVEN;
 use eberron::EBERRON;
@@ -26,6 +27,7 @@ use strum::{Display, EnumIter, IntoEnumIterator};
 
 mod dragon;
 mod dragonlance;
+mod drow;
 mod duergar;
 mod dwarven;
 mod eberron;
@@ -206,7 +208,8 @@ pub enum Pantheon {
     /// but they are the only gods of this world—their place fixed in the stars
     /// as constellations.
     Dragonlance,
-    // Drow,
+    /// Deities most commonly worshipped by Drow
+    Drow,
     /// Deities most commonly worshipped by Duergar
     Duergar,
     /// Deities most commonly worshipped by Dwarves
@@ -256,6 +259,7 @@ impl Pantheon {
         match self {
             Self::Dragon => DRAGON,
             Self::Dragonlance => DRAGONLANCE,
+            Self::Drow => DROW,
             Self::Duergar => DUERGAR,
             Self::Dwarven => DWARVEN,
             Self::Eberron => EBERRON,
