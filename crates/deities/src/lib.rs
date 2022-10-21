@@ -15,20 +15,11 @@
 )]
 
 use alignments::{Alignment, Attitude, Morality};
-use dragon::DRAGON;
-use dragonlance::DRAGONLANCE;
-use drow::DROW;
-use duergar::DUERGAR;
-use dwarven::DWARVEN;
-use eberron::EBERRON;
-use elven::ELVEN;
-use forgotten_realms::FORGOTTEN_REALMS;
-use giant::GIANT;
-use gnomish::GNOMISH;
 use rand::{distributions::Standard, prelude::Distribution, seq::IteratorRandom, Rng};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
+mod bugbear;
 mod dragon;
 mod dragonlance;
 mod drow;
@@ -39,6 +30,7 @@ mod elven;
 mod forgotten_realms;
 mod giant;
 mod gnomish;
+mod goblin;
 
 /// In a pantheon, every deity has influence over different aspects of mortal
 /// life and civilization, called a deity’s domain. All the domains over which
@@ -204,7 +196,8 @@ impl Distribution<Domain> for Standard {
 /// worlds.
 #[derive(Debug, Serialize)]
 pub enum Pantheon {
-    // Bugbear,
+    /// Deities most commonly worshiped by Bugbears
+    Bugbear,
     // Celtic,
     /// Deities most commonly worshiped by dragons
     Dragon,
@@ -256,7 +249,8 @@ pub enum Pantheon {
     Giant,
     /// Deities most commonly worshipped by Gnomes
     Gnomish,
-    // Goblin,
+    /// Deities most commonly worshipped by Goblins
+    Goblin,
     // Greek,
     // Greyhawk,
     // Halfling,
@@ -272,16 +266,18 @@ impl Pantheon {
     #[must_use]
     pub fn deities(&self) -> &[Deity] {
         match self {
-            Self::Dragon => DRAGON,
-            Self::Dragonlance => DRAGONLANCE,
-            Self::Drow => DROW,
-            Self::Duergar => DUERGAR,
-            Self::Dwarven => DWARVEN,
-            Self::Eberron => EBERRON,
-            Self::Elven => ELVEN,
-            Self::ForgottenRealms => FORGOTTEN_REALMS,
-            Self::Giant => GIANT,
-            Self::Gnomish => GNOMISH,
+            Self::Bugbear => bugbear::BUGBEAR,
+            Self::Dragon => dragon::DRAGON,
+            Self::Dragonlance => dragonlance::DRAGONLANCE,
+            Self::Drow => drow::DROW,
+            Self::Duergar => duergar::DUERGAR,
+            Self::Dwarven => dwarven::DWARVEN,
+            Self::Eberron => eberron::EBERRON,
+            Self::Elven => elven::ELVEN,
+            Self::ForgottenRealms => forgotten_realms::FORGOTTEN_REALMS,
+            Self::Giant => giant::GIANT,
+            Self::Gnomish => gnomish::GNOMISH,
+            Self::Goblin => goblin::GOBLIN,
         }
     }
 }
