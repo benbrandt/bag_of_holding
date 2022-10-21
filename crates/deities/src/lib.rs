@@ -24,6 +24,7 @@ use eberron::EBERRON;
 use elven::ELVEN;
 use forgotten_realms::FORGOTTEN_REALMS;
 use giant::GIANT;
+use gnomish::GNOMISH;
 use rand::{distributions::Standard, prelude::Distribution, seq::IteratorRandom, Rng};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
@@ -37,6 +38,7 @@ mod eberron;
 mod elven;
 mod forgotten_realms;
 mod giant;
+mod gnomish;
 
 /// In a pantheon, every deity has influence over different aspects of mortal
 /// life and civilization, called a deity’s domain. All the domains over which
@@ -252,7 +254,8 @@ pub enum Pantheon {
     ForgottenRealms,
     /// Deities most commonly worshipped by Giants
     Giant,
-    // Gnomish,
+    /// Deities most commonly worshipped by Gnomes
+    Gnomish,
     // Goblin,
     // Greek,
     // Greyhawk,
@@ -278,6 +281,7 @@ impl Pantheon {
             Self::Elven => ELVEN,
             Self::ForgottenRealms => FORGOTTEN_REALMS,
             Self::Giant => GIANT,
+            Self::Gnomish => GNOMISH,
         }
     }
 }
