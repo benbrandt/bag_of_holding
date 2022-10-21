@@ -20,19 +20,23 @@ use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
 mod bugbear;
+mod celtic;
 mod dragon;
 mod dragonlance;
 mod drow;
 mod duergar;
 mod dwarven;
 mod eberron;
+mod egyptian;
 mod elven;
 mod forgotten_realms;
 mod giant;
 mod gnomish;
 mod goblin;
+mod greek;
 mod greyhawk;
 mod halfling;
+mod norse;
 
 /// In a pantheon, every deity has influence over different aspects of mortal
 /// life and civilization, called a deity’s domain. All the domains over which
@@ -200,7 +204,18 @@ impl Distribution<Domain> for Standard {
 pub enum Pantheon {
     /// Deities most commonly worshiped by Bugbears
     Bugbear,
-    // Celtic,
+    /// It’s said that something wild lurks in the heart of every soul, a space
+    /// that thrills to the sound of geese calling at night, to the whispering
+    /// wind through the pines, to the unexpected red of mistletoe on an oak—
+    /// and it is in this space that the Celtic gods dwell. They sprang from
+    /// the brook and stream, their might heightened by the strength of the oak
+    /// and the beauty of the woodlands and open moor. When the first forester
+    /// dared put a name to the face seen in the bole of a tree or the voice
+    /// babbling in a brook, these gods forced themselves into being.
+    ///
+    /// The Celtic gods are as often served by druids as by clerics, for they
+    /// are closely aligned with the forces of nature that druids revere.
+    Celtic,
     /// Deities most commonly worshiped by dragons
     Dragon,
     /// The gods of the world of Krynn are three families: seven gods of good
@@ -238,7 +253,20 @@ pub enum Pantheon {
     /// or even undead forms, and the glorified Spirits of the Past, the great
     /// heroes of ancient wars.
     Eberron,
-    // Egyptian,
+    /// These gods are a young dynasty of an ancient divine family, heirs to
+    /// the rulership of the cosmos and the maintenance of the divine principle
+    /// of Ma’at—the fundamental order of truth, justice, law, and order that
+    /// puts gods, mortal pharaohs, and ordinary men and women in their logical
+    /// and rightful place in the universe.
+    ///
+    /// The Egyptian pantheon is unusual in having three gods with the Death
+    /// domain of different alignments. Anubis is the lawful neutral god of the
+    /// afterlife, who judges the souls of the dead. Set is a chaotic evil god
+    /// of murder, perhaps best known for killing his brother Osiris. And
+    /// Nephthys is a chaotic good goddess of mourning. Thus, although most
+    /// clerics of the Death domain (found in the Dungeon Master’s Guide) are
+    /// villainous characters, clerics who serve Anubis or Nephthys need not be.
+    Egyptian,
     /// Deities most commonly worshipped by Elves
     Elven,
     /// Dozens of deities are revered, worshiped, and feared throughout the
@@ -253,7 +281,13 @@ pub enum Pantheon {
     Gnomish,
     /// Deities most commonly worshipped by Goblins
     Goblin,
-    // Greek,
+    /// The gods of Olympus make themselves known with the gentle lap of waves
+    /// against the shores and the crash of the thunder among the cloud-
+    /// enshrouded peaks. The thick boar-infested woods and the sere, olive-
+    /// covered hillsides hold evidence of their passing. Every aspect of
+    /// nature echoes with their presence, and they’ve made a place for
+    /// themselves inside the human heart, too.
+    Greek,
     /// The gods of Greyhawk come from at least four different pantheons,
     /// representing the faiths of the various ethnic groups that populated the
     /// continent of Oerik over the ages. As a result, there’s a great deal of
@@ -264,7 +298,28 @@ pub enum Pantheon {
     Halfling,
     // Kobold,
     // Lizardfolk,
-    // Norse,
+    /// Where the land plummets from the snowy hills into the icy fjords below,
+    /// where the longboats draw up on to the beach, where the glaciers flow
+    /// forward and retreat with every fall and spring—this is the land of the
+    /// Vikings, the home of the Norse pantheon. It’s a brutal clime, and one
+    /// that calls for brutal living. The warriors of the land have had to
+    /// adapt to the harsh conditions in order to survive, but they haven’t
+    /// been too twisted by the needs of their environment. Given the necessity
+    /// of raiding for food and wealth, it’s surprising the mortals turned out
+    /// as well as they did. Their powers reflect the need these warriors had
+    /// for strong leadership and decisive action. Thus, they see their deities
+    /// in every bend of a river, hear them in the crash of the thunder and the
+    /// booming of the glaciers, and smell them in the smoke of a burning
+    /// longhouse.
+    ///
+    /// The Norse pantheon includes two main families, the Aesir (deities of
+    /// war and destiny) and the Vanir (gods of fertility and prosperity). Once
+    /// enemies, these two families are now closely allied against their common
+    /// enemies, the giants (including the gods Surtur and Thrym). Like the
+    /// gods of Greyhawk, gods in different families sometimes have overlap in
+    /// their spheres of influence: Frey (of the Vanir) and Odur (of the Aesir)
+    /// are both associated with the sun, for example.
+    Norse,
     // Orc,
     // None,
 }
@@ -275,19 +330,23 @@ impl Pantheon {
     pub fn deities(&self) -> &'static [Deity] {
         match self {
             Self::Bugbear => bugbear::BUGBEAR,
+            Self::Celtic => celtic::CELTIC,
             Self::Dragon => dragon::DRAGON,
             Self::Dragonlance => dragonlance::DRAGONLANCE,
             Self::Drow => drow::DROW,
             Self::Duergar => duergar::DUERGAR,
             Self::Dwarven => dwarven::DWARVEN,
             Self::Eberron => eberron::EBERRON,
+            Self::Egyptian => egyptian::EGYPTIAN,
             Self::Elven => elven::ELVEN,
             Self::ForgottenRealms => forgotten_realms::FORGOTTEN_REALMS,
             Self::Giant => giant::GIANT,
             Self::Gnomish => gnomish::GNOMISH,
             Self::Goblin => goblin::GOBLIN,
+            Self::Greek => greek::GREEK,
             Self::Greyhawk => greyhawk::GREYHAWK,
             Self::Halfling => halfling::HALFLING,
+            Self::Norse => norse::NORSE,
         }
     }
 }
