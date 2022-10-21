@@ -10,7 +10,7 @@
     unused
 )]
 
-use deities::Pantheon;
+use deities::{Deity, Pantheon};
 use strum::IntoEnumIterator;
 
 #[test]
@@ -20,4 +20,16 @@ fn all_deities_match_their_pantheon() {
             assert_eq!(deity.pantheon, pantheon);
         }
     }
+}
+
+#[test]
+fn gen_pantheon() {
+    let mut rng = rand_utils::rng_from_entropy();
+    let _ = Pantheon::gen(&mut rng, &[], &[], &[]);
+}
+
+#[test]
+fn gen_deity() {
+    let mut rng = rand_utils::rng_from_entropy();
+    let _ = Deity::gen(&mut rng, &[], &[], &[]);
 }
