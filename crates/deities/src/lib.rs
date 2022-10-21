@@ -14,8 +14,15 @@
     unused
 )]
 
+use std::collections::HashMap;
+
 use alignments::{Alignment, Attitude, Morality};
-use rand::{distributions::Standard, prelude::Distribution, seq::IteratorRandom, Rng};
+use rand::{
+    distributions::Standard,
+    prelude::Distribution,
+    seq::{IteratorRandom, SliceRandom},
+    Rng,
+};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
@@ -203,7 +210,7 @@ impl Distribution<Domain> for Standard {
 /// races worship the same gods on different worlds—Moradin, for example, is
 /// revered by dwarves of the Forgotten Realms, Greyhawk, and many other
 /// worlds.
-#[derive(Debug, EnumIter, Eq, PartialEq, Serialize)]
+#[derive(Copy, Clone, Debug, EnumIter, Eq, Hash, PartialEq, Serialize)]
 pub enum Pantheon {
     /// Deities most commonly worshiped by Bugbears
     Bugbear,
@@ -359,9 +366,57 @@ impl Pantheon {
     }
 }
 
+impl Pantheon {
+    /// Weight pantheon choice to be more likely based on number of deities
+    /// that align with character alignment. Also weights towards larger
+    /// pantheons
+    fn weight(self, attitude_influences: &[Attitude], morality_influences: &[Morality]) -> f64 {
+        self.deities()
+            .iter()
+            .map(|d| d.weight(attitude_influences, morality_influences))
+            .sum()
+    }
+
+    /// Choose a pantheon, based on cultural pantheon influences as well as
+    /// character alignment
+    ///
+    /// # Panics
+    ///
+    /// Panics if a pantheon isn't chosen, shouldn't happen!
+    #[must_use]
+    #[tracing::instrument(skip(rng))]
+    pub fn gen<R: Rng + ?Sized>(
+        rng: &mut R,
+        pantheon_influences: &[Self],
+        attitude_influences: &[Attitude],
+        morality_influences: &[Morality],
+    ) -> Self {
+        let weights: HashMap<Pantheon, f64> = Pantheon::iter()
+            .map(|p| (p, p.weight(attitude_influences, morality_influences)))
+            .collect();
+        let max = weights
+            .values()
+            .max_by(|a, b| a.total_cmp(b))
+            .unwrap_or(&1.0);
+        *Pantheon::iter()
+            .collect::<Vec<_>>()
+            .choose_weighted(rng, |p| {
+                // Get base weight
+                weights.get(p).unwrap()
+                    // Increase by max * number of times this pantheon was in their influences
+                    + (max
+                        * f64::from(
+                            u32::try_from(pantheon_influences.iter().filter(|&i| i == p).count())
+                                .unwrap(),
+                        ))
+            })
+            .unwrap()
+    }
+}
+
 /// Information about a given deity. Includes information to recognize the
 /// deity by, as well as player-relevant information like Alignment and Domains
-#[derive(Debug, Serialize)]
+#[derive(Copy, Clone, Debug, Serialize)]
 pub struct Deity {
     /// Name the deity is called by
     pub name: &'static str,
@@ -384,5 +439,29 @@ impl Deity {
     fn weight(&self, attitude_influences: &[Attitude], morality_influences: &[Morality]) -> f64 {
         self.alignment
             .weight(attitude_influences, morality_influences)
+    }
+
+    /// Choose a deity, based on cultural pantheon influences as well as
+    /// character alignment
+    ///
+    /// # Panics
+    ///
+    /// Panics if a pantheon isn't chosen or is empty, shouldn't happen!
+    pub fn gen<R: Rng + ?Sized>(
+        rng: &mut R,
+        pantheon_influences: &[Pantheon],
+        attitude_influences: &[Attitude],
+        morality_influences: &[Morality],
+    ) -> Self {
+        let pantheon = Pantheon::gen(
+            rng,
+            pantheon_influences,
+            attitude_influences,
+            morality_influences,
+        );
+        *pantheon
+            .deities()
+            .choose_weighted(rng, |d| d.weight(attitude_influences, morality_influences))
+            .unwrap()
     }
 }
