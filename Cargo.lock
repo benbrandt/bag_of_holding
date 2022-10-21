@@ -429,6 +429,7 @@ dependencies = [
  "abilities",
  "alignments",
  "damage",
+ "deities",
  "metrics",
  "races",
  "rand",
@@ -1566,6 +1567,7 @@ name = "races"
 version = "0.1.0"
 dependencies = [
  "damage",
+ "deities",
  "enum_dispatch",
  "itertools",
  "metrics",

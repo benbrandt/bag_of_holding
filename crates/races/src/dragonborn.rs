@@ -1,6 +1,7 @@
 use std::{borrow::Cow, fmt, ops::RangeInclusive};
 
 use damage::{DamageType, Resistances};
+use deities::{Deities, Pantheon};
 use names::Name;
 use rand::{
     distributions::Standard,
@@ -55,6 +56,12 @@ impl Dragonborn {
             DraconicAncestry::Green => DamageType::Poison,
             DraconicAncestry::Silver | DraconicAncestry::White => DamageType::Cold,
         }
+    }
+}
+
+impl Deities for Dragonborn {
+    fn pantheons(&self) -> &[Pantheon] {
+        &[Pantheon::Dragon]
     }
 }
 

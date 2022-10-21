@@ -141,3 +141,13 @@ pub trait AlignmentInfluences {
         Cow::Borrowed(&[])
     }
 }
+
+impl AlignmentInfluences for Alignment {
+    fn attitude(&self) -> Cow<'_, [Attitude]> {
+        Cow::Owned(vec![self.attitude])
+    }
+
+    fn morality(&self) -> Cow<'_, [Morality]> {
+        Cow::Owned(vec![self.morality])
+    }
+}

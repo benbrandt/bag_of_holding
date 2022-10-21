@@ -14,7 +14,9 @@
     unused
 )]
 
-use alignments::{Alignment, Attitude, Morality};
+use std::borrow::Cow;
+
+use alignments::{Alignment, AlignmentInfluences, Attitude, Morality};
 use rand::{
     distributions::Standard,
     prelude::Distribution,
@@ -503,5 +505,15 @@ pub trait Deities {
     /// Whether or not this would require a character to have chosen a deity
     fn deity_required(&self) -> bool {
         false
+    }
+}
+
+impl AlignmentInfluences for Deity {
+    fn attitude(&self) -> Cow<'_, [Attitude]> {
+        self.alignment.attitude()
+    }
+
+    fn morality(&self) -> Cow<'_, [Morality]> {
+        self.alignment.morality()
     }
 }
