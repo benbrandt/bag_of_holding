@@ -39,6 +39,7 @@ mod halfling;
 mod kobold;
 mod lizardfolk;
 mod norse;
+mod orc;
 
 /// In a pantheon, every deity has influence over different aspects of mortal
 /// life and civilization, called a deity’s domain. All the domains over which
@@ -324,8 +325,8 @@ pub enum Pantheon {
     /// their spheres of influence: Frey (of the Vanir) and Odur (of the Aesir)
     /// are both associated with the sun, for example.
     Norse,
-    // Orc,
-    // None,
+    /// Deities most commonly worshipped by Orcs
+    Orc,
 }
 
 impl Pantheon {
@@ -353,6 +354,7 @@ impl Pantheon {
             Self::Kobold => kobold::KOBOLD,
             Self::Lizardfolk => lizardfolk::LIZARDFOLK,
             Self::Norse => norse::NORSE,
+            Self::Orc => orc::ORC,
         }
     }
 }
