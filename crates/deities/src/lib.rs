@@ -465,3 +465,16 @@ impl Deity {
             .unwrap()
     }
 }
+
+/// Trait for aspects of a character that would influence deity choices
+pub trait Deities {
+    /// Pantheons this would potentially lead to a character choosing from
+    fn pantheons(&self) -> &[Pantheon] {
+        &[]
+    }
+
+    /// Whether or not this would require a character to have chosen a deity
+    fn required(&self) -> bool {
+        false
+    }
+}
