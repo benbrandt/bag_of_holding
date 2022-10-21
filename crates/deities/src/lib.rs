@@ -32,6 +32,7 @@ mod giant;
 mod gnomish;
 mod goblin;
 mod greyhawk;
+mod halfling;
 
 /// In a pantheon, every deity has influence over different aspects of mortal
 /// life and civilization, called a deity’s domain. All the domains over which
@@ -259,7 +260,8 @@ pub enum Pantheon {
     /// overlap in their portfolios: Pelor is the Flan god of the sun and
     /// Pholtus is the Oeridian sun god, for example.
     Greyhawk,
-    // Halfling,
+    /// Deities most commonly worshipped by Halflings
+    Halfling,
     // Kobold,
     // Lizardfolk,
     // Norse,
@@ -285,6 +287,7 @@ impl Pantheon {
             Self::Gnomish => gnomish::GNOMISH,
             Self::Goblin => goblin::GOBLIN,
             Self::Greyhawk => greyhawk::GREYHAWK,
+            Self::Halfling => halfling::HALFLING,
         }
     }
 }
