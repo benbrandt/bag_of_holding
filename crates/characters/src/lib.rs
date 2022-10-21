@@ -15,8 +15,9 @@
 )]
 
 use abilities::AbilityScores;
-use alignments::Alignment;
+use alignments::{Alignment, AlignmentInfluences};
 use damage::{DamageType, Resistances};
+use deities::{Deities, Deity};
 use races::{Race, RaceGenerator};
 use rand::{distributions::Standard, prelude::Distribution, Rng};
 use serde::Serialize;
@@ -35,6 +36,8 @@ pub struct Character {
     pub age: Option<u16>,
     /// The character's alignment
     pub alignment: Option<Alignment>,
+    /// The character's favored deity
+    pub deity: Option<Deity>,
     /// The character's height and weight
     pub height_and_weight: Option<HeightAndWeight>,
     /// The character's name
@@ -183,6 +186,32 @@ impl Character {
         Ok(self)
     }
 
+    /// Generate an deity for your character.
+    ///
+    /// ```
+    /// use characters::Character;
+    /// use rand::Rng;
+    ///
+    /// let mut rng = rand::thread_rng();
+    /// let character = Character::new()
+    ///     .gen_ability_scores(&mut rng)
+    ///     .gen_race(&mut rng)?
+    ///     .gen_deity(&mut rng)?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    #[tracing::instrument(skip(rng))]
+    pub fn gen_deity<R: Rng + ?Sized>(mut self, rng: &mut R) -> Result<Self, CharacterBuildError> {
+        self.try_race()?;
+        self.deity = Deity::gen(
+            rng,
+            self.pantheons(),
+            &self.attitude(),
+            &self.morality(),
+            self.deity_required(),
+        );
+        Ok(self)
+    }
+
     /// Generate an alignment for your character.
     ///
     /// ```
@@ -195,7 +224,7 @@ impl Character {
     /// ```
     #[tracing::instrument(skip(rng))]
     pub fn gen_alignment<R: Rng + ?Sized>(mut self, rng: &mut R) -> Self {
-        self.alignment = Some(Alignment::gen(rng, &[], &[]));
+        self.alignment = Some(Alignment::gen(rng, &self.attitude(), &self.morality()));
         self
     }
 
@@ -208,7 +237,38 @@ impl Character {
             .gen_name(rng)?
             .gen_age(rng)?
             .gen_height_and_weight(rng)?
+            .gen_deity(rng)?
             .gen_alignment(rng))
+    }
+}
+
+impl AlignmentInfluences for Character {
+    fn attitude(&self) -> std::borrow::Cow<'_, [alignments::Attitude]> {
+        self.deity
+            .as_ref()
+            .map(alignments::AlignmentInfluences::attitude)
+            .unwrap_or_default()
+    }
+
+    fn morality(&self) -> std::borrow::Cow<'_, [alignments::Morality]> {
+        self.deity
+            .as_ref()
+            .map(alignments::AlignmentInfluences::morality)
+            .unwrap_or_default()
+    }
+}
+
+impl Deities for Character {
+    fn pantheons(&self) -> &[deities::Pantheon] {
+        self.try_race()
+            .expect("Should have a race already")
+            .pantheons()
+    }
+
+    fn deity_required(&self) -> bool {
+        self.try_race()
+            .expect("Should have a race already")
+            .deity_required()
     }
 }
 
@@ -241,6 +301,8 @@ struct CharacterSheet {
     pub age: Option<u16>,
     /// The character's alignment
     pub alignment: Option<String>,
+    /// The character's favored deity
+    pub deity: Option<Deity>,
     /// The character's height and weight
     #[serde(flatten)]
     pub height_and_weight: Option<HeightAndWeight>,
@@ -262,6 +324,7 @@ impl From<Character> for CharacterSheet {
             ability_scores: character.ability_scores,
             age: character.age,
             alignment: character.alignment.map(|a| a.to_string()),
+            deity: character.deity,
             height_and_weight: character.height_and_weight,
             name: character.name,
             race: character.race.as_ref().map(Sources::citation),

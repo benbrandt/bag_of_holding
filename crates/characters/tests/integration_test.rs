@@ -87,6 +87,17 @@ fn generate_height_and_weight() {
 }
 
 #[test]
+fn generate_deity() {
+    let mut rng = rand_utils::rng_from_entropy();
+    let character = Character::new()
+        .gen_ability_scores(&mut rng)
+        .gen_race(&mut rng)
+        .unwrap()
+        .gen_deity(&mut rng);
+    assert!(character.is_ok());
+}
+
+#[test]
 fn generate_alignment() {
     let mut rng = rand_utils::rng_from_entropy();
     let character = Character::new().gen_alignment(&mut rng);
@@ -144,6 +155,8 @@ fn serialize_to_character_sheet() {
         character.alignment.unwrap().to_string(),
         serialized["alignment"]
     );
+
+    assert_eq!(json!(character.deity), serialized["deity"]);
 }
 
 #[test]
@@ -186,6 +199,17 @@ fn race_is_chosen_before_height_and_weight() {
 
     assert_eq!(
         character.gen_height_and_weight(&mut rng).unwrap_err(),
+        CharacterBuildError::MissingRace
+    );
+}
+
+#[test]
+fn race_is_chosen_before_deity() {
+    let mut rng = rand_utils::rng_from_entropy();
+    let character = Character::new();
+
+    assert_eq!(
+        character.gen_deity(&mut rng).unwrap_err(),
         CharacterBuildError::MissingRace
     );
 }
