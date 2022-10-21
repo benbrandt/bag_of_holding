@@ -30,3 +30,15 @@ async fn generate_domain() {
 
     assert!(Domain::iter().map(|d| json!(d)).contains(&domain));
 }
+
+#[tokio::test]
+async fn generate_deity() {
+    let server = TestServer::new();
+
+    let deity = server
+        .request(Method::POST, "/deities", Body::empty())
+        .await
+        .unwrap();
+
+    assert!(!deity["name"].as_str().unwrap().is_empty());
+}
