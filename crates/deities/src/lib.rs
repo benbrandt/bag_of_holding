@@ -31,6 +31,7 @@ mod forgotten_realms;
 mod giant;
 mod gnomish;
 mod goblin;
+mod greyhawk;
 
 /// In a pantheon, every deity has influence over different aspects of mortal
 /// life and civilization, called a deity’s domain. All the domains over which
@@ -252,7 +253,12 @@ pub enum Pantheon {
     /// Deities most commonly worshipped by Goblins
     Goblin,
     // Greek,
-    // Greyhawk,
+    /// The gods of Greyhawk come from at least four different pantheons,
+    /// representing the faiths of the various ethnic groups that populated the
+    /// continent of Oerik over the ages. As a result, there’s a great deal of
+    /// overlap in their portfolios: Pelor is the Flan god of the sun and
+    /// Pholtus is the Oeridian sun god, for example.
+    Greyhawk,
     // Halfling,
     // Kobold,
     // Lizardfolk,
@@ -264,7 +270,7 @@ pub enum Pantheon {
 impl Pantheon {
     /// Get a list of deities that are part of this pantheon
     #[must_use]
-    pub fn deities(&self) -> &[Deity] {
+    pub fn deities(&self) -> &'static [Deity] {
         match self {
             Self::Bugbear => bugbear::BUGBEAR,
             Self::Dragon => dragon::DRAGON,
@@ -278,6 +284,7 @@ impl Pantheon {
             Self::Giant => giant::GIANT,
             Self::Gnomish => gnomish::GNOMISH,
             Self::Goblin => goblin::GOBLIN,
+            Self::Greyhawk => greyhawk::GREYHAWK,
         }
     }
 }
