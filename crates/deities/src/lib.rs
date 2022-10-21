@@ -37,6 +37,7 @@ mod greek;
 mod greyhawk;
 mod halfling;
 mod kobold;
+mod lizardfolk;
 mod norse;
 
 /// In a pantheon, every deity has influence over different aspects of mortal
@@ -299,7 +300,8 @@ pub enum Pantheon {
     Halfling,
     /// Deities most commonly worshipped by Kobolds
     Kobold,
-    // Lizardfolk,
+    /// Deities most commonly worshipped by Lizardfolk
+    Lizardfolk,
     /// Where the land plummets from the snowy hills into the icy fjords below,
     /// where the longboats draw up on to the beach, where the glaciers flow
     /// forward and retreat with every fall and spring—this is the land of the
@@ -349,6 +351,7 @@ impl Pantheon {
             Self::Greyhawk => greyhawk::GREYHAWK,
             Self::Halfling => halfling::HALFLING,
             Self::Kobold => kobold::KOBOLD,
+            Self::Lizardfolk => lizardfolk::LIZARDFOLK,
             Self::Norse => norse::NORSE,
         }
     }
