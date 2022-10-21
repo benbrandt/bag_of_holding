@@ -21,6 +21,7 @@ use drow::DROW;
 use duergar::DUERGAR;
 use dwarven::DWARVEN;
 use eberron::EBERRON;
+use elven::ELVEN;
 use rand::{distributions::Standard, prelude::Distribution, seq::IteratorRandom, Rng};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
@@ -31,6 +32,7 @@ mod drow;
 mod duergar;
 mod dwarven;
 mod eberron;
+mod elven;
 
 /// In a pantheon, every deity has influence over different aspects of mortal
 /// life and civilization, called a deity’s domain. All the domains over which
@@ -236,7 +238,8 @@ pub enum Pantheon {
     /// heroes of ancient wars.
     Eberron,
     // Egyptian,
-    // Elven,
+    /// Deities most commonly worshipped by Elves
+    Elven,
     // #[serde(rename = "Forgotten Realms")]
     // ForgottenRealms,
     // Giant,
@@ -263,6 +266,7 @@ impl Pantheon {
             Self::Duergar => DUERGAR,
             Self::Dwarven => DWARVEN,
             Self::Eberron => EBERRON,
+            Self::Elven => ELVEN,
         }
     }
 }
