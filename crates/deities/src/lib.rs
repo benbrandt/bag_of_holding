@@ -203,7 +203,7 @@ impl Distribution<Domain> for Standard {
 /// races worship the same gods on different worlds—Moradin, for example, is
 /// revered by dwarves of the Forgotten Realms, Greyhawk, and many other
 /// worlds.
-#[derive(Debug, Serialize)]
+#[derive(Debug, EnumIter, Eq, PartialEq, Serialize)]
 pub enum Pantheon {
     /// Deities most commonly worshiped by Bugbears
     Bugbear,
