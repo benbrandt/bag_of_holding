@@ -29,7 +29,21 @@ fn gen_pantheon() {
 }
 
 #[test]
-fn gen_deity() {
+fn gen_deity_if_required() {
     let mut rng = rand_utils::rng_from_entropy();
-    let _ = Deity::gen(&mut rng, &[], &[], &[]);
+    let deity = Deity::gen(&mut rng, &[], &[], &[], true);
+    assert!(deity.is_some());
+}
+
+#[test]
+fn dont_gen_deity_if_not_required() {
+    let mut rng = rand_utils::rng_from_entropy();
+    let mut deity = None;
+    for _ in 0..1000 {
+        deity = Deity::gen(&mut rng, &[], &[], &[], false);
+        if deity.is_none() {
+            break;
+        }
+    }
+    assert!(deity.is_none());
 }

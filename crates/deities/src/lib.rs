@@ -14,8 +14,6 @@
     unused
 )]
 
-use std::collections::HashMap;
-
 use alignments::{Alignment, Attitude, Morality};
 use rand::{
     distributions::Standard,
@@ -377,6 +375,21 @@ impl Pantheon {
             .sum()
     }
 
+    /// All weights across pantheons
+    fn all_weights<'a>(
+        attitude_influences: &'a [Attitude],
+        morality_influences: &'a [Morality],
+    ) -> impl Iterator<Item = f64> + 'a {
+        Pantheon::iter().map(|p| p.weight(attitude_influences, morality_influences))
+    }
+
+    /// Max weight across all pantheons
+    fn max_weight(attitude_influences: &[Attitude], morality_influences: &[Morality]) -> f64 {
+        Self::all_weights(attitude_influences, morality_influences)
+            .max_by(f64::total_cmp)
+            .unwrap_or(1.0)
+    }
+
     /// Choose a pantheon, based on cultural pantheon influences as well as
     /// character alignment
     ///
@@ -391,18 +404,12 @@ impl Pantheon {
         attitude_influences: &[Attitude],
         morality_influences: &[Morality],
     ) -> Self {
-        let weights: HashMap<Pantheon, f64> = Pantheon::iter()
-            .map(|p| (p, p.weight(attitude_influences, morality_influences)))
-            .collect();
-        let max = weights
-            .values()
-            .max_by(|a, b| a.total_cmp(b))
-            .unwrap_or(&1.0);
+        let max = Self::max_weight(attitude_influences, morality_influences);
         *Pantheon::iter()
             .collect::<Vec<_>>()
             .choose_weighted(rng, |p| {
                 // Get base weight
-                weights.get(p).unwrap()
+                p.weight(attitude_influences, morality_influences)
                     // Increase by max * number of times this pantheon was in their influences
                     + (max
                         * f64::from(
@@ -447,22 +454,42 @@ impl Deity {
     /// # Panics
     ///
     /// Panics if a pantheon isn't chosen or is empty, shouldn't happen!
+    #[tracing::instrument(skip(rng))]
     pub fn gen<R: Rng + ?Sized>(
         rng: &mut R,
         pantheon_influences: &[Pantheon],
         attitude_influences: &[Attitude],
         morality_influences: &[Morality],
-    ) -> Self {
+        required: bool,
+    ) -> Option<Self> {
         let pantheon = Pantheon::gen(
             rng,
             pantheon_influences,
             attitude_influences,
             morality_influences,
         );
-        *pantheon
+
+        let deity = *pantheon
             .deities()
             .choose_weighted(rng, |d| d.weight(attitude_influences, morality_influences))
-            .unwrap()
+            .unwrap();
+
+        if required {
+            Some(deity)
+        } else {
+            let total_weights =
+                Pantheon::all_weights(attitude_influences, morality_influences).sum();
+            let max_weight = Pantheon::max_weight(attitude_influences, morality_influences);
+            *[Some(deity), None]
+                .choose_weighted(rng, |d| {
+                    if d.is_some() {
+                        total_weights
+                    } else {
+                        max_weight
+                    }
+                })
+                .unwrap()
+        }
     }
 }
 
@@ -474,7 +501,7 @@ pub trait Deities {
     }
 
     /// Whether or not this would require a character to have chosen a deity
-    fn required(&self) -> bool {
+    fn deity_required(&self) -> bool {
         false
     }
 }
