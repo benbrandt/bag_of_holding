@@ -21,7 +21,7 @@ axum = { version = "0.5.17", features = [
     "multipart",
     "ws",
 ] }
-axum-extra = { version = "0.3.6", features = [
+axum-extra = { version = "0.3.7", features = [
     "cookie-private",
     "cookie-signed",
     "erased-json",
@@ -60,7 +60,7 @@ sentry = { version = "0.27.0", default-features = false, features = [
     "tracing",
 ] }
 sentry-tower = { version = "0.27.0", features = ["http"] }
-serde = { version = "1.0.145", features = ["derive"] }
+serde = { version = "1.0.147", features = ["derive"] }
 serde_json = "1.0.87"
 sizes = { path = "./crates/sizes" }
 sources = { path = "./crates/sources" }
