@@ -32,8 +32,33 @@ pub enum Attitude {
 }
 
 impl Attitude {
+    /// Weight in comparison to itself. Each has 4 points to spend
+    fn individual_weight(self, influence: Self) -> i32 {
+        match self {
+            Self::Chaotic => match influence {
+                Self::Chaotic => 3,
+                Self::Neutral => 1,
+                Self::Lawful => 0,
+            },
+            Self::Lawful => match influence {
+                Self::Chaotic => 0,
+                Self::Neutral => 1,
+                Self::Lawful => 3,
+            },
+            Self::Neutral => match influence {
+                Self::Neutral => 2,
+                Self::Lawful | Self::Chaotic => 1,
+            },
+        }
+    }
+
     fn weight(self, influences: &[Self]) -> f64 {
-        exp_weight(influences.iter().filter(|&i| i == &self).count())
+        exp_weight(
+            influences
+                .iter()
+                .map(|&i| self.individual_weight(i))
+                .sum::<i32>(),
+        )
     }
 }
 
@@ -49,8 +74,33 @@ pub enum Morality {
 }
 
 impl Morality {
+    /// Weight in comparison to itself. Each has 4 points to spend
+    fn individual_weight(self, influence: Self) -> i32 {
+        match self {
+            Self::Evil => match influence {
+                Self::Evil => 3,
+                Self::Neutral => 1,
+                Self::Good => 0,
+            },
+            Self::Good => match influence {
+                Self::Evil => 0,
+                Self::Neutral => 1,
+                Self::Good => 3,
+            },
+            Self::Neutral => match influence {
+                Self::Neutral => 2,
+                Self::Good | Self::Evil => 1,
+            },
+        }
+    }
+
     fn weight(self, influences: &[Self]) -> f64 {
-        exp_weight(influences.iter().filter(|&i| i == &self).count())
+        exp_weight(
+            influences
+                .iter()
+                .map(|&i| self.individual_weight(i))
+                .sum::<i32>(),
+        )
     }
 }
 
