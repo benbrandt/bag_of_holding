@@ -13,14 +13,14 @@
     unused
 )]
 
-use std::{borrow::Cow, fmt};
+use std::{borrow::Cow, fmt, str};
 
 use rand::{seq::SliceRandom, Rng};
 use rand_utils::exp_weight;
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use strum::{Display, EnumIter, IntoEnumIterator};
 
-#[derive(Clone, Copy, Debug, Deserialize, Display, EnumIter, Eq, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Display, EnumIter, Eq, PartialEq, Serialize)]
 /// attitudes toward society and order
 pub enum Attitude {
     /// little regard for what others expect, creatures follow their whims
@@ -37,7 +37,7 @@ impl Attitude {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Display, EnumIter, Eq, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Display, EnumIter, Eq, PartialEq, Serialize)]
 /// Character's morality, view toward good and bad
 pub enum Morality {
     /// methodically take what they want, do whatever they can get away with, or act with arbitrary violence, spurred by their greed, hatred, or bloodlust
@@ -59,7 +59,8 @@ impl Morality {
 /// two factors: one identifies morality (good, evil, or neutral), and the
 /// other describes attitudes toward society and order (lawful, chaotic, or
 /// neutral). Thus, nine distinct alignments define the possible combinations.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
+#[serde(into = "String")]
 pub struct Alignment {
     /// lawful, chaotic, or neutral
     attitude: Attitude,
@@ -126,6 +127,12 @@ impl fmt::Display for Alignment {
             } => write!(f, "Neutral"),
             Self { attitude, morality } => write!(f, "{attitude} {morality}"),
         }
+    }
+}
+
+impl From<Alignment> for String {
+    fn from(alignment: Alignment) -> Self {
+        alignment.to_string()
     }
 }
 
