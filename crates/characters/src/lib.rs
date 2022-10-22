@@ -300,7 +300,7 @@ struct CharacterSheet {
     /// The character's age
     pub age: Option<u16>,
     /// The character's alignment
-    pub alignment: Option<String>,
+    pub alignment: Option<Alignment>,
     /// The character's favored deity
     pub deity: Option<Deity>,
     /// The character's height and weight
@@ -323,7 +323,7 @@ impl From<Character> for CharacterSheet {
         Self {
             ability_scores: character.ability_scores,
             age: character.age,
-            alignment: character.alignment.map(|a| a.to_string()),
+            alignment: character.alignment,
             deity: character.deity,
             height_and_weight: character.height_and_weight,
             name: character.name,
