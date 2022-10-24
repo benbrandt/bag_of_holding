@@ -23,7 +23,7 @@ use rand::{
         uniform::{SampleBorrow, SampleUniform},
         WeightedError,
     },
-    seq::SliceRandom,
+    seq::{SliceChooseIter, SliceRandom},
     Rng, SeedableRng,
 };
 use rand_pcg::Pcg64;
@@ -102,6 +102,38 @@ pub trait SliceExpRandom: SliceRandom {
         B: SampleBorrow<X> + Copy + Default + Ord + Sub<Output = B>,
         X: SampleUniform + for<'a> AddAssign<&'a X> + PartialOrd<X> + Clone + Default,
         i32: TryFrom<B>;
+
+    /// Similar to [`rand::seq::SliceRandom::choose_multiple_weighted`], but
+    /// applying `E.pow(weight)` to each weight. The elements are returned in an
+    /// arbitrary, unspecified order.
+    ///
+    /// If all of the weights are equal, even if they are all zero, each element has
+    /// an equal likelihood of being selected.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use rand_utils::SliceExpRandom;
+
+    /// let choices = [('a', 2), ('b', 1), ('c', 1)];
+    /// let mut rng = rand_utils::rng_from_entropy();
+    /// println!("{:?}", choices.choose_multiple_exp_weighted(&mut rng, 2, |item| item.1).unwrap().collect::<Vec<_>>());
+    /// ```
+
+    /// # Errors
+    ///
+    /// Errors if weights supplied are not valid
+    fn choose_multiple_exp_weighted<R, F, X>(
+        &self,
+        rng: &mut R,
+        amount: usize,
+        weight: F,
+    ) -> Result<SliceChooseIter<'_, Self, Self::Item>, WeightedError>
+    where
+        R: Rng + ?Sized,
+        F: Fn(&Self::Item) -> X,
+        X: Into<f64> + Copy + Default + Ord + Sub<Output = X>,
+        i32: TryFrom<X>;
 }
 
 impl<T> SliceExpRandom for [T] {
@@ -120,6 +152,23 @@ impl<T> SliceExpRandom for [T] {
     {
         let min = self.iter().map(|i| weight(i)).min().unwrap_or_default();
         self.choose_weighted(rng, |i| exp_weight(weight(i) - min))
+    }
+
+    #[allow(clippy::redundant_closure)]
+    fn choose_multiple_exp_weighted<R, F, X>(
+        &self,
+        rng: &mut R,
+        amount: usize,
+        weight: F,
+    ) -> Result<SliceChooseIter<'_, Self, Self::Item>, WeightedError>
+    where
+        R: Rng + ?Sized,
+        F: Fn(&Self::Item) -> X,
+        X: Into<f64> + Copy + Default + Ord + Sub<Output = X>,
+        i32: TryFrom<X>,
+    {
+        let min = self.iter().map(|i| weight(i)).min().unwrap_or_default();
+        self.choose_multiple_weighted(rng, amount, |i| exp_weight(weight(i) - min))
     }
 }
 

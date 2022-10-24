@@ -34,11 +34,13 @@ characters = { path = "./crates/characters" }
 clap = { version = "4.0.18", features = ["derive", "env"] }
 damage = { path = "./crates/damage" }
 deities = { path = "./crates/deities" }
+derive_more = "0.99.17"
 dice = { path = "./crates/dice" }
 enum_dispatch = "0.3.8"
 futures = "0.3.25"
 hyper = { version = "0.14.20", features = ["full"] }
 itertools = "0.10.5"
+languages = { path = "./crates/languages" }
 metrics = "0.20.1"
 metrics-exporter-prometheus = "0.11.0"
 mime = "0.3.16"
