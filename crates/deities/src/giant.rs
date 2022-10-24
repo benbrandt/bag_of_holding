@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const GIANT: &[Deity] = &[
     Deity {
         name: "Grolantor",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::Giant,
         symbols: &["Wooden club"],
@@ -13,7 +13,7 @@ pub const GIANT: &[Deity] = &[
     },
     Deity {
         name: "Skoraeus Stonebones",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Giant,
         symbols: &["Stalactite"],
@@ -21,7 +21,7 @@ pub const GIANT: &[Deity] = &[
     },
     Deity {
         name: "Surtur",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::Knowledge, Domain::War],
         pantheon: Pantheon::Giant,
         symbols: &["Flaming sword"],
@@ -29,7 +29,7 @@ pub const GIANT: &[Deity] = &[
     },
     Deity {
         name: "Thrym",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::Giant,
         symbols: &["White double-bladed axe"],

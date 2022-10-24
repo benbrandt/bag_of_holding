@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const ORC: &[Deity] = &[
     Deity {
         name: "Bahgtru",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::Orc,
         symbols: &["Broken thigh bone"],
@@ -13,7 +13,7 @@ pub const ORC: &[Deity] = &[
     },
     Deity {
         name: "Gruumsh",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Tempest, Domain::War],
         pantheon: Pantheon::Orc,
         symbols: &["Unblinking eye"],
@@ -25,7 +25,7 @@ pub const ORC: &[Deity] = &[
     },
     Deity {
         name: "Ilneval",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::Orc,
         symbols: &["Upright blood-spattered sword"],
@@ -33,7 +33,7 @@ pub const ORC: &[Deity] = &[
     },
     Deity {
         name: "Luthic",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::Life, Domain::Nature],
         pantheon: Pantheon::Orc,
         symbols: &["Orcish rune meaning \"cave entrance\""],
@@ -44,7 +44,7 @@ pub const ORC: &[Deity] = &[
     },
     Deity {
         name: "Shargaas",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Orc,
         symbols: &["Red crescent moon with a skull between the moon's horns"],
@@ -52,7 +52,7 @@ pub const ORC: &[Deity] = &[
     },
     Deity {
         name: "Yurtrus",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Death],
         pantheon: Pantheon::Orc,
         symbols: &["White hand, palm outward"],

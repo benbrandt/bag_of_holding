@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const DRAGON: &[Deity] = &[
     Deity {
         name: "Bahamut",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Life, Domain::War],
         pantheon: Pantheon::Dragon,
         symbols: &["Dragon's head in profile"],
@@ -13,7 +13,7 @@ pub const DRAGON: &[Deity] = &[
     },
     Deity {
         name: "Tiamat",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Dragon,
         symbols: &["Dragon head with five claw marks"],

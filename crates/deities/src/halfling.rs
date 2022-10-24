@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const HALFLING: &[Deity] = &[
     Deity {
         name: "Arvoreen",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::Halfling,
         symbols: &["Crossed short swords"],
@@ -17,7 +17,7 @@ pub const HALFLING: &[Deity] = &[
     },
     Deity {
         name: "Brandobaris",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Halfling,
         symbols: &["Halfling footprint"],
@@ -28,7 +28,7 @@ pub const HALFLING: &[Deity] = &[
     },
     Deity {
         name: "Charmalaine",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Halfling,
         symbols: &["Burning boot print"],
@@ -36,7 +36,7 @@ pub const HALFLING: &[Deity] = &[
     },
     Deity {
         name: "Cyrrollalee",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Life],
         pantheon: Pantheon::Halfling,
         symbols: &["An open door"],
@@ -48,7 +48,7 @@ pub const HALFLING: &[Deity] = &[
     },
     Deity {
         name: "Sheela Peryroyl",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Nature, Domain::Tempest],
         pantheon: Pantheon::Halfling,
         symbols: &["Flower"],
@@ -63,7 +63,7 @@ pub const HALFLING: &[Deity] = &[
     },
     Deity {
         name: "Urogalan",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Death, Domain::Grave, Domain::Knowledge],
         pantheon: Pantheon::Halfling,
         symbols: &["Silhouette of a dog's head"],
@@ -71,7 +71,7 @@ pub const HALFLING: &[Deity] = &[
     },
     Deity {
         name: "Yondalla",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Life],
         pantheon: Pantheon::Halfling,
         symbols: &["Cornucopia on a shield", "shield", "cornucopia"],

@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const CELTIC: &[Deity] = &[
     Deity {
         name: "The Daghdha",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Nature, Domain::Trickery],
         pantheon: Pantheon::Celtic,
         symbols: &["Bubbling cauldron", "shield"],
@@ -13,7 +13,7 @@ pub const CELTIC: &[Deity] = &[
     },
     Deity {
         name: "Arawn",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Life, Domain::Death],
         pantheon: Pantheon::Celtic,
         symbols: &["Black star on gray background"],
@@ -21,7 +21,7 @@ pub const CELTIC: &[Deity] = &[
     },
     Deity {
         name: "Belenus",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Light],
         pantheon: Pantheon::Celtic,
         symbols: &["Solar disk and standing stones"],
@@ -29,7 +29,7 @@ pub const CELTIC: &[Deity] = &[
     },
     Deity {
         name: "Brigantia",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life],
         pantheon: Pantheon::Celtic,
         symbols: &["Footbridge"],
@@ -37,7 +37,7 @@ pub const CELTIC: &[Deity] = &[
     },
     Deity {
         name: "Diancecht",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Life],
         pantheon: Pantheon::Celtic,
         symbols: &["Crossed oak and mistletoe branches"],
@@ -45,7 +45,7 @@ pub const CELTIC: &[Deity] = &[
     },
     Deity {
         name: "Dunatis",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Nature],
         pantheon: Pantheon::Celtic,
         symbols: &["Red sun-capped mountain peak"],
@@ -53,7 +53,7 @@ pub const CELTIC: &[Deity] = &[
     },
     Deity {
         name: "Goibhniu",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Knowledge, Domain::Life],
         pantheon: Pantheon::Celtic,
         symbols: &["Giant mallet over sword"],
@@ -61,7 +61,7 @@ pub const CELTIC: &[Deity] = &[
     },
     Deity {
         name: "Lugh",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Knowledge, Domain::Life],
         pantheon: Pantheon::Celtic,
         symbols: &["Pair of long hands"],
@@ -69,7 +69,7 @@ pub const CELTIC: &[Deity] = &[
     },
     Deity {
         name: "Manannan mac Lir",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Nature, Domain::Tempest],
         pantheon: Pantheon::Celtic,
         symbols: &["Wave of white water on green"],
@@ -77,7 +77,7 @@ pub const CELTIC: &[Deity] = &[
     },
     Deity {
         name: "Math Mathonwy",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Celtic,
         symbols: &["Staff"],
@@ -85,7 +85,7 @@ pub const CELTIC: &[Deity] = &[
     },
     Deity {
         name: "Morrigan",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::Celtic,
         symbols: &["Two crossed spears"],
@@ -93,7 +93,7 @@ pub const CELTIC: &[Deity] = &[
     },
     Deity {
         name: "Nuada",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::War],
         pantheon: Pantheon::Celtic,
         symbols: &["Silver hand on black background"],
@@ -101,7 +101,7 @@ pub const CELTIC: &[Deity] = &[
     },
     Deity {
         name: "Oghma",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Celtic,
         symbols: &["Unfurled scroll"],
@@ -109,7 +109,7 @@ pub const CELTIC: &[Deity] = &[
     },
     Deity {
         name: "Silvanus",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Nature],
         pantheon: Pantheon::Celtic,
         symbols: &["Summer oak tree"],

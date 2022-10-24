@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const EBERRON: &[Deity] = &[
     Deity {
         name: "Arawai",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life, Domain::Nature],
         pantheon: Pantheon::Eberron,
         symbols: &["Sheaf of wheat tied with green ribbon"],
@@ -13,7 +13,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "Aureon",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Eberron,
         symbols: &["Open tome"],
@@ -21,7 +21,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "Balinor",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Life, Domain::Nature],
         pantheon: Pantheon::Eberron,
         symbols: &["Pair of antlers"],
@@ -29,7 +29,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "Boldrei",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Life],
         pantheon: Pantheon::Eberron,
         symbols: &["Fire in a stone hearth"],
@@ -37,7 +37,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "Dol Arrah",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Light, Domain::War],
         pantheon: Pantheon::Eberron,
         symbols: &["Rising sun"],
@@ -45,7 +45,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "Dol Dorn",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::Eberron,
         symbols: &["Longsword crossed over a shield"],
@@ -53,7 +53,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "Kol Korran",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Eberron,
         symbols: &["Nine-sided gold coin"],
@@ -61,7 +61,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "Olladra",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life, Domain::Trickery],
         pantheon: Pantheon::Eberron,
         symbols: &["Domino"],
@@ -69,7 +69,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "Onatar",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Eberron,
         symbols: &["Crossed hammer and tongs"],
@@ -77,7 +77,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "The Devourer",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Tempest],
         pantheon: Pantheon::Eberron,
         symbols: &["Bundle of five sharpened bones"],
@@ -85,7 +85,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "The Fury",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::Eberron,
         symbols: &["Winged wyrm with woman's head and upper body"],
@@ -93,7 +93,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "The Keeper",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Death],
         pantheon: Pantheon::Eberron,
         symbols: &["Dragonshard stone in the shape of a fang"],
@@ -101,7 +101,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "The Mockery",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::Eberron,
         symbols: &["Five blood-spattered tools"],
@@ -109,7 +109,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "The Shadow",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Eberron,
         symbols: &["Obsidian tower"],
@@ -117,7 +117,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "The Traveler",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Knowledge, Domain::Trickery],
         pantheon: Pantheon::Eberron,
         symbols: &["Four crossed, rune-inscribed bones"],
@@ -125,7 +125,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "The Silver Flame",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Life, Domain::Light, Domain::War],
         pantheon: Pantheon::Eberron,
         symbols: &["Flame drawn on silver or molded from silver"],
@@ -133,7 +133,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "The Blood of Vol",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Death, Domain::Life],
         pantheon: Pantheon::Eberron,
         symbols: &["Stylized dragon skull on red teardrop gem"],
@@ -141,7 +141,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "Cults of the Dragon Below",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Eberron,
         symbols: &["Varies"],
@@ -149,7 +149,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "The Path of Light",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Life, Domain::Light],
         pantheon: Pantheon::Eberron,
         symbols: &["Brilliant crystal"],
@@ -157,7 +157,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "The Undying Court",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Knowledge, Domain::Life],
         pantheon: Pantheon::Eberron,
         symbols: &["Varies"],
@@ -165,7 +165,7 @@ pub const EBERRON: &[Deity] = &[
     },
     Deity {
         name: "The Spirits of the Past",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::Eberron,
         symbols: &["Varies"],

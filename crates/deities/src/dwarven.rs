@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const DWARVEN: &[Deity] = &[
     Deity {
         name: "Abbathor",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Dwarven,
         symbols: &["Jeweled dagger, point-down"],
@@ -13,7 +13,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Berronar Truesilver",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Life, Domain::Light],
         pantheon: Pantheon::Dwarven,
         symbols: &["Intertwined silver rings"],
@@ -27,7 +27,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Clangeddin Silverbeard",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::Dwarven,
         symbols: &["Crossed silver battleaxes"],
@@ -35,7 +35,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Dugmaren Brightmantle",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Dwarven,
         symbols: &["Open book"],
@@ -48,7 +48,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Dumathoin",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Death, Domain::Grave, Domain::Knowledge],
         pantheon: Pantheon::Dwarven,
         symbols: &[
@@ -64,7 +64,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Gorm Gulthyn",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::Dwarven,
         symbols: &["Bronze half-mask"],
@@ -78,7 +78,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Haela Brightaxe",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::Dwarven,
         symbols: &[
@@ -93,7 +93,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Hanseath",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Trickery, Domain::War],
         pantheon: Pantheon::Dwarven,
         symbols: &["Beer stein"],
@@ -101,7 +101,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Marthammor Duin",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Nature, Domain::Trickery],
         pantheon: Pantheon::Dwarven,
         symbols: &["Upright mace in front of a tall boot"],
@@ -115,7 +115,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Moradin",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Forge, Domain::Knowledge],
         pantheon: Pantheon::Dwarven,
         symbols: &["Hammer and anvil"],
@@ -131,7 +131,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Muamman Duathal",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Tempest],
         pantheon: Pantheon::Dwarven,
         symbols: &["Mace held in gauntlets"],
@@ -139,7 +139,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Mya",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Knowledge, Domain::Life],
         pantheon: Pantheon::Dwarven,
         symbols: &["A faceless mother figure"],
@@ -147,7 +147,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Roknar",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Dwarven,
         symbols: &["Hands filled with coins"],
@@ -155,7 +155,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Sharindlar",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Life],
         pantheon: Pantheon::Dwarven,
         symbols: &["Burning needle"],
@@ -167,7 +167,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Thard Harr",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Nature],
         pantheon: Pantheon::Dwarven,
         symbols: &["Two clawed guantlets"],
@@ -175,7 +175,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Tharmekh\u{fb}l",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Forge, Domain::Light],
         pantheon: Pantheon::Dwarven,
         symbols: &["Fiery axe"],
@@ -183,7 +183,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Thautam",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Knowledge, Domain::Trickery],
         pantheon: Pantheon::Dwarven,
         symbols: &["Blindfold"],
@@ -191,7 +191,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Ulaa",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Forge],
         pantheon: Pantheon::Dwarven,
         symbols: &["A miner's pick"],
@@ -199,7 +199,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Valkauna",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Grave, Domain::Life],
         pantheon: Pantheon::Dwarven,
         symbols: &["A silver ewer"],
@@ -207,7 +207,7 @@ pub const DWARVEN: &[Deity] = &[
     },
     Deity {
         name: "Vergadain",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Dwarven,
         symbols: &[

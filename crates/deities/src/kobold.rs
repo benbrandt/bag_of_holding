@@ -1,10 +1,10 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const KOBOLD: &[Deity] = &[Deity {
     name: "Kurtulmak",
-    alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+    alignment: Alignment::LAWFUL_EVIL,
     domains: &[Domain::War],
     pantheon: Pantheon::Kobold,
     symbols: &["Gnome skull"],

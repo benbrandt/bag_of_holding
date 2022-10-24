@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const EGYPTIAN: &[Deity] = &[
     Deity {
         name: "Re-Horakhty",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Life, Domain::Light],
         pantheon: Pantheon::Egyptian,
         symbols: &["Solar disk encircled by serpent"],
@@ -13,7 +13,7 @@ pub const EGYPTIAN: &[Deity] = &[
     },
     Deity {
         name: "Anubis",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Death],
         pantheon: Pantheon::Egyptian,
         symbols: &["Black jackal"],
@@ -21,7 +21,7 @@ pub const EGYPTIAN: &[Deity] = &[
     },
     Deity {
         name: "Apep",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Egyptian,
         symbols: &["Flaming snake"],
@@ -29,7 +29,7 @@ pub const EGYPTIAN: &[Deity] = &[
     },
     Deity {
         name: "Bast",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::Egyptian,
         symbols: &["Cat"],
@@ -37,7 +37,7 @@ pub const EGYPTIAN: &[Deity] = &[
     },
     Deity {
         name: "Bes",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Egyptian,
         symbols: &["Image of the misshapen deity"],
@@ -45,7 +45,7 @@ pub const EGYPTIAN: &[Deity] = &[
     },
     Deity {
         name: "Hathor",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life, Domain::Light],
         pantheon: Pantheon::Egyptian,
         symbols: &["Horned cow's head with lunar disk"],
@@ -53,7 +53,7 @@ pub const EGYPTIAN: &[Deity] = &[
     },
     Deity {
         name: "Imhotep",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Egyptian,
         symbols: &["Step pyramid"],
@@ -61,7 +61,7 @@ pub const EGYPTIAN: &[Deity] = &[
     },
     Deity {
         name: "Isis",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Knowledge, Domain::Life],
         pantheon: Pantheon::Egyptian,
         symbols: &["Ankh and star"],
@@ -69,7 +69,7 @@ pub const EGYPTIAN: &[Deity] = &[
     },
     Deity {
         name: "Nephthys",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Death],
         pantheon: Pantheon::Egyptian,
         symbols: &["Horns around a lunar disk"],
@@ -77,7 +77,7 @@ pub const EGYPTIAN: &[Deity] = &[
     },
     Deity {
         name: "Osiris",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Life, Domain::Nature],
         pantheon: Pantheon::Egyptian,
         symbols: &["Crook and flail"],
@@ -85,7 +85,7 @@ pub const EGYPTIAN: &[Deity] = &[
     },
     Deity {
         name: "Ptah",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Egyptian,
         symbols: &["Bull"],
@@ -93,7 +93,7 @@ pub const EGYPTIAN: &[Deity] = &[
     },
     Deity {
         name: "Set",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Death, Domain::Tempest, Domain::Trickery],
         pantheon: Pantheon::Egyptian,
         symbols: &["Coiled cobra"],
@@ -101,7 +101,7 @@ pub const EGYPTIAN: &[Deity] = &[
     },
     Deity {
         name: "Sobek",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::Nature, Domain::Tempest],
         pantheon: Pantheon::Egyptian,
         symbols: &["Crocodile head with horns and plumes"],
@@ -109,7 +109,7 @@ pub const EGYPTIAN: &[Deity] = &[
     },
     Deity {
         name: "Thoth",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Egyptian,
         symbols: &["Ibis"],

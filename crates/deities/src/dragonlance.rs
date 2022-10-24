@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const DRAGONLANCE: &[Deity] = &[
     Deity {
         name: "Paladine",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Silver triangle"],
@@ -13,7 +13,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Branchala",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Light],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Bard's harp"],
@@ -21,7 +21,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Habbakuk",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Nature, Domain::Tempest],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Blue bird"],
@@ -29,7 +29,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Kiri-Jolith",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Bison's horns"],
@@ -37,7 +37,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Majere",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Copper spider"],
@@ -45,7 +45,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Mishakal",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Knowledge, Domain::Life],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Blue infinity sign"],
@@ -53,7 +53,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Solinari",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[],
         pantheon: Pantheon::Dragonlance,
         symbols: &["White circle or sphere"],
@@ -61,7 +61,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Gilean",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Open book"],
@@ -69,7 +69,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Chislev",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Nature],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Feather"],
@@ -77,7 +77,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Reorx",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Forging hammer"],
@@ -85,7 +85,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Shinare",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Knowledge, Domain::Trickery],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Griffon's wing"],
@@ -93,7 +93,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Sirrion",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Nature],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Multi-colored fire"],
@@ -101,7 +101,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Zivilyn",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Great green or gold tree"],
@@ -109,7 +109,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Lunitari",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Red circle or sphere"],
@@ -117,7 +117,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Takhisis",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::Death],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Black crescent"],
@@ -125,7 +125,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Chemosh",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::Death],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Yellow skull"],
@@ -133,7 +133,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Hiddukel",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Broken merchant's scales"],
@@ -141,7 +141,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Morgion",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Death],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Hood with two red eyes"],
@@ -149,7 +149,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Sargonnas",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Stylized red condor"],
@@ -157,7 +157,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Zeboim",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Tempest],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Turtle shell"],
@@ -165,7 +165,7 @@ pub const DRAGONLANCE: &[Deity] = &[
     },
     Deity {
         name: "Nuitari",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[],
         pantheon: Pantheon::Dragonlance,
         symbols: &["Black circle or sphere"],

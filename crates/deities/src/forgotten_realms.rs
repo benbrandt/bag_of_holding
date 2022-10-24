@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const FORGOTTEN_REALMS: &[Deity] = &[
     Deity {
         name: "Adaki",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Tempest],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Cloud"],
@@ -13,7 +13,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Amaunator",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Life, Domain::Light],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Golden sun"],
@@ -26,7 +26,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Asmodeus",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::Knowledge, Domain::Trickery],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Three inverted triangles arranged in a long triangle"],
@@ -39,7 +39,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Auril",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Nature, Domain::Tempest],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Six-pointed snowflake"],
@@ -52,7 +52,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Azuth",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Arcana, Domain::Knowledge],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Left hand pointing upward, outlined in fire"],
@@ -65,7 +65,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Bane",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Upright black right hand, thumb and fingers together"],
@@ -73,7 +73,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Beshaba",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Black antlers"],
@@ -86,7 +86,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Bhaal",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Death],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Skull surrounded by a ring of blood droplets"],
@@ -94,7 +94,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Chauntea",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Sheaf of grain or a blooming rose over grain"],
@@ -107,7 +107,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Cyric",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["White jawless skull on black or purple sunburst"],
@@ -115,7 +115,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Deneir",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Arcana, Domain::Knowledge],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Lit candle above an open eye"],
@@ -128,7 +128,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Eldath",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life, Domain::Nature],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Waterfall plunging into still pool"],
@@ -141,7 +141,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Gond",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Toothed cog with four spokes"],
@@ -154,7 +154,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Grumbar",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Mountain"],
@@ -162,7 +162,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Gwaeron Windstrom",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Knowledge, Domain::Nature],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Paw print with a five-pointed star in its center"],
@@ -175,7 +175,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Helm",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Life, Domain::Light],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Staring eye on upright left gauntlet"],
@@ -188,7 +188,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Hoar",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::War],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["A coin with a two-faced head"],
@@ -200,7 +200,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Ilmater",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Life],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Hands bound at the wrist with red cord"],
@@ -213,7 +213,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Istishia",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Tempest],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Wave"],
@@ -221,7 +221,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Jergal",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Knowledge, Domain::Death],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["A skull biting a scroll"],
@@ -234,7 +234,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Kelemvor",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Death],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Upright skeletal arm holding balanced scales"],
@@ -246,7 +246,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Kossuth",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Light],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Flame"],
@@ -254,7 +254,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Lathander",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life, Domain::Light],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Road traveling into a sunrise"],
@@ -268,7 +268,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Leira",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Point-down triangle containing a swirl of mist"],
@@ -281,7 +281,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Lliira",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Life],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Triangle of three six-pointed stars"],
@@ -294,7 +294,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Loviatar",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::Death],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Nine-tailed barbed scourge"],
@@ -307,7 +307,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Malar",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Nature],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Clawed paw"],
@@ -315,7 +315,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Mask",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Black mask"],
@@ -327,7 +327,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Mielikki",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Nature],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Unicorn's head"],
@@ -339,7 +339,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Milil",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Light],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Five-stringed harp made of leaves"],
@@ -351,7 +351,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Myrkul",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Death],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["White human skull"],
@@ -364,7 +364,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Mystra",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Arcana, Domain::Knowledge],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &[
@@ -381,7 +381,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Oghma",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Blank scroll"],
@@ -389,7 +389,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "The Red Knight",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::War],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Red knight lanceboard piece with stars for eyes"],
@@ -402,7 +402,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Savras",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Arcana, Domain::Knowledge],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Crystal ball containing many kinds of eyes"],
@@ -415,7 +415,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Sel\u{fb}ne",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Knowledge, Domain::Life],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Pair of eyes surrounded by seven stars"],
@@ -428,7 +428,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Shar",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Death, Domain::Trickery],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Black disk encircled with a purple border"],
@@ -441,7 +441,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Silvanus",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Nature],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Oak leaf"],
@@ -454,7 +454,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Sune",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Life, Domain::Light],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Face of a beautiful red-haired woman"],
@@ -467,7 +467,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Talona",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Death],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Three teardrops on a triangle"],
@@ -480,7 +480,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Talos",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Tempest],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Three lightning bolts radiating from a central point"],
@@ -488,7 +488,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Tempus",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::War],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Upright flaming sword"],
@@ -496,7 +496,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Torm",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["White right gauntlet"],
@@ -509,7 +509,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Tymora",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Face-up coin"],
@@ -517,7 +517,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Tyr",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Balanced scales resting on a warhammer"],
@@ -530,7 +530,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Umberlee",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Tempest],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Wave curling left and right"],
@@ -543,7 +543,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Valkur",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Tempest, Domain::War],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["A cloud and three lightning bolts"],
@@ -551,7 +551,7 @@ pub const FORGOTTEN_REALMS: &[Deity] = &[
     },
     Deity {
         name: "Waukeen",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Knowledge, Domain::Trickery],
         pantheon: Pantheon::ForgottenRealms,
         symbols: &["Upright coin with Waukeen's profile facing left"],

@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const DUERGAR: &[Deity] = &[
     Deity {
         name: "Deep Duerra",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::Arcana, Domain::Knowledge, Domain::War],
         pantheon: Pantheon::Duergar,
         symbols: &["Mind flayer skill"],
@@ -13,7 +13,7 @@ pub const DUERGAR: &[Deity] = &[
     },
     Deity {
         name: "Laduguer",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::Arcana, Domain::Death, Domain::Forge],
         pantheon: Pantheon::Duergar,
         symbols: &["Broken arrow"],

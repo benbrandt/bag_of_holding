@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const GREEK: &[Deity] = &[
     Deity {
         name: "Zeus",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Tempest],
         pantheon: Pantheon::Greek,
         symbols: &["Fist full of lightning bolts"],
@@ -13,7 +13,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Aphrodite",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Light],
         pantheon: Pantheon::Greek,
         symbols: &["Sea shell"],
@@ -21,7 +21,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Apollo",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Knowledge, Domain::Life, Domain::Light],
         pantheon: Pantheon::Greek,
         symbols: &["Lyre"],
@@ -29,7 +29,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Ares",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::Greek,
         symbols: &["Spear"],
@@ -37,7 +37,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Artemis",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life, Domain::Nature],
         pantheon: Pantheon::Greek,
         symbols: &["Bow and arrow on lunar disk"],
@@ -45,7 +45,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Athena",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Knowledge, Domain::War],
         pantheon: Pantheon::Greek,
         symbols: &["Owl"],
@@ -53,7 +53,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Demeter",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life],
         pantheon: Pantheon::Greek,
         symbols: &["Mare's head"],
@@ -61,7 +61,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Dionysus",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Life],
         pantheon: Pantheon::Greek,
         symbols: &["Thyrsus (staff tipped with pine cone)"],
@@ -69,7 +69,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Hades",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::Death],
         pantheon: Pantheon::Greek,
         symbols: &["Black ram"],
@@ -77,7 +77,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Hecate",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Knowledge, Domain::Trickery],
         pantheon: Pantheon::Greek,
         symbols: &["Setting moon"],
@@ -85,7 +85,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Hephaestus",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Greek,
         symbols: &["Hammer and anvil"],
@@ -93,7 +93,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Hera",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Greek,
         symbols: &["Fan of peacock feathers"],
@@ -101,7 +101,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Hercules",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Tempest, Domain::War],
         pantheon: Pantheon::Greek,
         symbols: &["Lion's head"],
@@ -109,7 +109,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Hermes",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Greek,
         symbols: &["Caduceus (winged staff and serpents)"],
@@ -117,7 +117,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Hestia",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life],
         pantheon: Pantheon::Greek,
         symbols: &["Hearth"],
@@ -125,7 +125,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Nike",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::War],
         pantheon: Pantheon::Greek,
         symbols: &["Winged woman"],
@@ -133,7 +133,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Pan",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Nature],
         pantheon: Pantheon::Greek,
         symbols: &["Syrinx (pan pipes)"],
@@ -141,7 +141,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Poseidon",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Tempest],
         pantheon: Pantheon::Greek,
         symbols: &["Trident"],
@@ -149,7 +149,7 @@ pub const GREEK: &[Deity] = &[
     },
     Deity {
         name: "Tyche",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Greek,
         symbols: &["Red pentagram"],

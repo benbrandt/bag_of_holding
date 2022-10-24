@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const GNOMISH: &[Deity] = &[
     Deity {
         name: "Baervan Wildwanderer",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Nature],
         pantheon: Pantheon::Gnomish,
         symbols: &["Face of a raccoon"],
@@ -13,7 +13,7 @@ pub const GNOMISH: &[Deity] = &[
     },
     Deity {
         name: "Baravar Cloakshadow",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Arcana, Domain::Trickery],
         pantheon: Pantheon::Gnomish,
         symbols: &["Dagger against a hooded cloak"],
@@ -21,7 +21,7 @@ pub const GNOMISH: &[Deity] = &[
     },
     Deity {
         name: "Bleredd",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Forge, Domain::Light],
         pantheon: Pantheon::Gnomish,
         symbols: &["Iron mule"],
@@ -29,7 +29,7 @@ pub const GNOMISH: &[Deity] = &[
     },
     Deity {
         name: "Callarduran Smoothhands",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Knowledge, Domain::Nature],
         pantheon: Pantheon::Gnomish,
         symbols: &["Golden signet ring with a six-pointed star"],
@@ -37,7 +37,7 @@ pub const GNOMISH: &[Deity] = &[
     },
     Deity {
         name: "Flandal Steelskin",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Forge, Domain::Knowledge],
         pantheon: Pantheon::Gnomish,
         symbols: &["Flaming hammer"],
@@ -50,7 +50,7 @@ pub const GNOMISH: &[Deity] = &[
     },
     Deity {
         name: "Gaerdal Ironhand",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::Gnomish,
         symbols: &["Iron band"],
@@ -58,7 +58,7 @@ pub const GNOMISH: &[Deity] = &[
     },
     Deity {
         name: "Garl Glittergold",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Gnomish,
         symbols: &["Gold nugget"],
@@ -72,7 +72,7 @@ pub const GNOMISH: &[Deity] = &[
     },
     Deity {
         name: "Gelf Darkhearth",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::War],
         pantheon: Pantheon::Gnomish,
         symbols: &["Broken anvil"],
@@ -80,7 +80,7 @@ pub const GNOMISH: &[Deity] = &[
     },
     Deity {
         name: "Nebelun",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Forge, Domain::Knowledge, Domain::Trickery],
         pantheon: Pantheon::Gnomish,
         symbols: &["Bellows and a lizard tail"],
@@ -88,7 +88,7 @@ pub const GNOMISH: &[Deity] = &[
     },
     Deity {
         name: "Rill Cleverthrush",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Gnomish,
         symbols: &["Interlocking gears"],
@@ -96,7 +96,7 @@ pub const GNOMISH: &[Deity] = &[
     },
     Deity {
         name: "Segojan Earthcaller",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Grave, Domain::Light],
         pantheon: Pantheon::Gnomish,
         symbols: &["Glowing gemstone"],
@@ -108,7 +108,7 @@ pub const GNOMISH: &[Deity] = &[
     },
     Deity {
         name: "Sheyanna Flaxenstrand",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Light],
         pantheon: Pantheon::Gnomish,
         symbols: &["Two silver goblets"],
@@ -116,7 +116,7 @@ pub const GNOMISH: &[Deity] = &[
     },
     Deity {
         name: "Urdlen",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Death, Domain::War],
         pantheon: Pantheon::Gnomish,
         symbols: &["White clawed mole emerging from ground"],

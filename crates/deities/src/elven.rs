@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const ELVEN: &[Deity] = &[
     Deity {
         name: "Aerdrie Faenya",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Life, Domain::Tempest, Domain::Trickery],
         pantheon: Pantheon::Elven,
         symbols: &["Bird silhouetted against a cloud"],
@@ -18,7 +18,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Angharradh",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Knowledge, Domain::Life, Domain::War],
         pantheon: Pantheon::Elven,
         symbols: &[
@@ -33,7 +33,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Alathrien Druanna",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Arcana, Domain::Knowledge],
         pantheon: Pantheon::Elven,
         symbols: &["A quill or glyph"],
@@ -41,7 +41,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Alobal Lorfiril",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Life, Domain::Trickery],
         pantheon: Pantheon::Elven,
         symbols: &["Wine Glass"],
@@ -49,7 +49,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Araleth Letheranil",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Knowledge, Domain::Light],
         pantheon: Pantheon::Elven,
         symbols: &["Shaft of light"],
@@ -57,7 +57,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Corellon Larathian",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Arcana, Domain::Life, Domain::Light, Domain::War],
         pantheon: Pantheon::Elven,
         symbols: &["Crescent moon", "quarter moon", "starburst"],
@@ -69,7 +69,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Darahl Tilvenar",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Forge, Domain::Light],
         pantheon: Pantheon::Elven,
         symbols: &["Flame between hands"],
@@ -77,7 +77,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Deep Sashelas",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Knowledge, Domain::Nature, Domain::Tempest],
         pantheon: Pantheon::Elven,
         symbols: &["Dolphin"],
@@ -89,7 +89,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Elebrin Liothiel",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Life, Domain::Nature],
         pantheon: Pantheon::Elven,
         symbols: &["Acorn"],
@@ -97,7 +97,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Erevan Ilesere",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Elven,
         symbols: &["Asymmetrical eight-armed star", "Asymmetrical starburst"],
@@ -109,7 +109,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Fenmarel Mestarine",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Nature, Domain::Trickery],
         pantheon: Pantheon::Elven,
         symbols: &["Two peering elven eyes"],
@@ -117,7 +117,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Gadhelyn",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Nature, Domain::Trickery],
         pantheon: Pantheon::Elven,
         symbols: &["Leaf-shaped arrowhead"],
@@ -125,7 +125,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Hanali Celanil",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Life],
         pantheon: Pantheon::Elven,
         symbols: &["Golden heart"],
@@ -136,7 +136,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Kirith Sotheril",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Knowledge, Domain::Trickery],
         pantheon: Pantheon::Elven,
         symbols: &["Rainbow sphere"],
@@ -144,7 +144,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Labelas Enoreth",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Arcana, Domain::Knowledge, Domain::Life],
         pantheon: Pantheon::Elven,
         symbols: &["Setting sun"],
@@ -156,7 +156,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Melira Taralen",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Knowledge, Domain::Life, Domain::Trickery],
         pantheon: Pantheon::Elven,
         symbols: &["Lute"],
@@ -164,7 +164,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Mythrien Sarath",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Arcana, Domain::Forge, Domain::Knowledge],
         pantheon: Pantheon::Elven,
         symbols: &["Row of three intertwined rings"],
@@ -172,7 +172,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Naralis Analor",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life, Domain::Grave],
         pantheon: Pantheon::Elven,
         symbols: &["White dove"],
@@ -180,7 +180,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Rellavar Danuvien",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Tempest],
         pantheon: Pantheon::Elven,
         symbols: &["Spear between two circles"],
@@ -188,7 +188,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Rillifane Rallathil",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Nature],
         pantheon: Pantheon::Elven,
         symbols: &["Oak"],
@@ -202,7 +202,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Sarula Iliene",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Tempest, Domain::Trickery],
         pantheon: Pantheon::Elven,
         symbols: &["Three lines symbolizing waves"],
@@ -210,7 +210,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Sehanine Moonbow",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Grave, Domain::Knowledge, Domain::Light],
         pantheon: Pantheon::Elven,
         symbols: &["Full moon under a moonbow", "crescent moon"],
@@ -223,7 +223,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Shevarash",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::War],
         pantheon: Pantheon::Elven,
         symbols: &["Broken arrow over a tear"],
@@ -231,7 +231,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Solonor Thelandira",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Nature, Domain::War],
         pantheon: Pantheon::Elven,
         symbols: &["Silver arrow with green fletching"],
@@ -242,7 +242,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Tarsellis Meunniduin",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Nature, Domain::Tempest],
         pantheon: Pantheon::Elven,
         symbols: &["Mountain with a river"],
@@ -250,7 +250,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Tethrin Varald\u{e9}",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::Elven,
         symbols: &["Crossed swords beneath a quarter moon and above a full moon"],
@@ -258,7 +258,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Vandria Gilmadrith",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Grave, Domain::War],
         pantheon: Pantheon::Elven,
         symbols: &["Weeping eye"],
@@ -266,7 +266,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Ye'Cind",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Life, Domain::Trickery],
         pantheon: Pantheon::Elven,
         symbols: &["Recorder"],
@@ -274,7 +274,7 @@ pub const ELVEN: &[Deity] = &[
     },
     Deity {
         name: "Zandilar",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Life],
         pantheon: Pantheon::Elven,
         symbols: &["Lips"],

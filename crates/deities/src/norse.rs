@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const NORSE: &[Deity] = &[
     Deity {
         name: "Odin",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Knowledge, Domain::War],
         pantheon: Pantheon::Norse,
         symbols: &["Watching blue eye"],
@@ -13,7 +13,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Aegir",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Tempest],
         pantheon: Pantheon::Norse,
         symbols: &["Rough ocean waves"],
@@ -21,7 +21,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Balder",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life, Domain::Light],
         pantheon: Pantheon::Norse,
         symbols: &["Gem-encrusted silver chalice"],
@@ -29,7 +29,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Forseti",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Light],
         pantheon: Pantheon::Norse,
         symbols: &["Head of a bearded man"],
@@ -37,7 +37,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Frey",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life, Domain::Light],
         pantheon: Pantheon::Norse,
         symbols: &["Ice-blue greatsword"],
@@ -45,7 +45,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Freya",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life],
         pantheon: Pantheon::Norse,
         symbols: &["Falcon"],
@@ -53,7 +53,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Frigga",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Life, Domain::Light],
         pantheon: Pantheon::Norse,
         symbols: &["Cat"],
@@ -61,7 +61,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Heimdall",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Light, Domain::War],
         pantheon: Pantheon::Norse,
         symbols: &["Curling musical horn"],
@@ -69,7 +69,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Hel",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Death],
         pantheon: Pantheon::Norse,
         symbols: &["Woman's face, rotting on one side"],
@@ -77,7 +77,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Hermod",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Norse,
         symbols: &["Winged scroll"],
@@ -85,7 +85,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Loki",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Norse,
         symbols: &["Flame"],
@@ -93,7 +93,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Njord",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Nature, Domain::Tempest],
         pantheon: Pantheon::Norse,
         symbols: &["Gold coin"],
@@ -101,7 +101,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Odur",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Light],
         pantheon: Pantheon::Norse,
         symbols: &["Solar disk"],
@@ -109,7 +109,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Sif",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::Norse,
         symbols: &["Upraised sword"],
@@ -117,7 +117,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Skadi",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Nature],
         pantheon: Pantheon::Norse,
         symbols: &["Mountain peak"],
@@ -125,7 +125,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Surtur",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::Norse,
         symbols: &["Flaming sword"],
@@ -133,7 +133,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Thor",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Tempest, Domain::War],
         pantheon: Pantheon::Norse,
         symbols: &["Hammer"],
@@ -141,7 +141,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Thrym",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::Norse,
         symbols: &["White double-bladed axe"],
@@ -149,7 +149,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Tyr",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Knowledge, Domain::War],
         pantheon: Pantheon::Norse,
         symbols: &["Sword"],
@@ -157,7 +157,7 @@ pub const NORSE: &[Deity] = &[
     },
     Deity {
         name: "Uller",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Nature],
         pantheon: Pantheon::Norse,
         symbols: &["Longbow"],

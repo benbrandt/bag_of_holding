@@ -121,6 +121,25 @@ impl Alignment {
         Self { attitude, morality }
     }
 
+    /// Lawful good (LG) creatures can be counted on to do the right thing as expected by society. Gold dragons and paladins are typically lawful good.
+    pub const LAWFUL_GOOD: Self = Self::new(Attitude::Lawful, Morality::Good);
+    /// Neutral good (NG) folk do the best they can to help others according to their needs. Many celestials are neutral good.
+    pub const NEUTRAL_GOOD: Self = Self::new(Attitude::Neutral, Morality::Good);
+    /// Chaotic good (CG) creatures act as their conscience directs, with little regard for what others expect. Copper dragons and unicorns are typically chaotic good.
+    pub const CHAOTIC_GOOD: Self = Self::new(Attitude::Chaotic, Morality::Good);
+    /// Lawful neutral (LN) individuals act in accordance with law, tradition, or personal codes. Modrons and many wizards and monks are lawful neutral.
+    pub const LAWFUL_NEUTRAL: Self = Self::new(Attitude::Lawful, Morality::Neutral);
+    /// Neutral (N) is the alignment of those who prefer to steer clear of moral questions and don’t take sides, doing what seems best at the time. Druids are traditionally neutral, as are typical townsfolk.
+    pub const NEUTRAL: Self = Self::new(Attitude::Neutral, Morality::Neutral);
+    /// Chaotic neutral (CN) creatures follow their whims, holding their personal freedom above all else. Many rogues and bards are chaotic neutral.
+    pub const CHAOTIC_NEUTRAL: Self = Self::new(Attitude::Chaotic, Morality::Neutral);
+    /// Lawful evil (LE) creatures methodically take what they want, within the limits of a code of tradition, loyalty, or order. Devils and blue dragons are typically lawful evil.
+    pub const LAWFUL_EVIL: Self = Self::new(Attitude::Lawful, Morality::Evil);
+    /// Neutral evil (NE) is the alignment of those who do whatever they can get away with, without compassion or qualms. Yugoloths are typically neutral evil.
+    pub const NEUTRAL_EVIL: Self = Self::new(Attitude::Neutral, Morality::Evil);
+    /// Chaotic evil (CE) creatures act with arbitrary violence, spurred by their greed, hatred, or bloodlust. Demons and red dragons are typically chaotic evil.
+    pub const CHAOTIC_EVIL: Self = Self::new(Attitude::Chaotic, Morality::Evil);
+
     /// Generate alignment, weighted by influences from other choices on the character sheet
     ///
     /// # Panics

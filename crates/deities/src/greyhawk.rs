@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const GREYHAWK: &[Deity] = &[
     Deity {
         name: "Beory",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Nature],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Green disk"],
@@ -13,7 +13,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Boccob",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Eye within a pentagram"],
@@ -21,7 +21,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Celestian",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Arc of seven stars inside a circle"],
@@ -29,7 +29,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Ehlonna",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life, Domain::Nature],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Unicorn horn"],
@@ -37,7 +37,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Erythnul",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Blood drop"],
@@ -45,7 +45,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Fharlanghn",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Knowledge, Domain::Trickery],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Circle crossed by a curved horizon line"],
@@ -53,7 +53,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Heironeous",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Lightning bolt"],
@@ -61,7 +61,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Hextor",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+        alignment: Alignment::LAWFUL_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Six arrows facing downward in a fan"],
@@ -69,7 +69,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Kord",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Tempest, Domain::War],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Four spears and four maces radiating out from a central point"],
@@ -77,7 +77,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Incabulos",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Death],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Reptilian eye with a horizontal diamond"],
@@ -85,7 +85,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Istus",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Weaver's spindle with three strands"],
@@ -93,7 +93,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Iuz",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Death],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Grinning human skull"],
@@ -101,7 +101,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Nerull",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Death],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Skull with either a sickle or a scythe"],
@@ -109,7 +109,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Obad-Hai",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Neutral),
+        alignment: Alignment::NEUTRAL,
         domains: &[Domain::Nature],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Oak leaf and acorn"],
@@ -117,7 +117,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Olidammara",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Laughing mask"],
@@ -125,7 +125,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Pelor",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Good),
+        alignment: Alignment::NEUTRAL_GOOD,
         domains: &[Domain::Life, Domain::Light],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Sun"],
@@ -133,7 +133,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Pholtus",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Light],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Silver sun or full moon partially eclipsed by a smaller crescent moon"],
@@ -141,7 +141,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Ralishaz",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Three bone fate-casting sticks"],
@@ -149,7 +149,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Rao",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Greyhawk,
         symbols: &["White heart"],
@@ -157,7 +157,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "St. Cuthbert",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Circle at the center of a starburst of lines"],
@@ -165,7 +165,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Tharizdun",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Dark spiral or inverted ziggurat"],
@@ -173,7 +173,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Trithereon",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::War],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Triskelion"],
@@ -181,7 +181,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Ulaa",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Good),
+        alignment: Alignment::LAWFUL_GOOD,
         domains: &[Domain::Life, Domain::War],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Mountain with a circle at its heart"],
@@ -189,7 +189,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Vecna",
-        alignment: Alignment::new(Attitude::Neutral, Morality::Evil),
+        alignment: Alignment::NEUTRAL_EVIL,
         domains: &[Domain::Knowledge],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Hand with eye in the palm"],
@@ -197,7 +197,7 @@ pub const GREYHAWK: &[Deity] = &[
     },
     Deity {
         name: "Wee Jas",
-        alignment: Alignment::new(Attitude::Lawful, Morality::Neutral),
+        alignment: Alignment::LAWFUL_NEUTRAL,
         domains: &[Domain::Death, Domain::Knowledge],
         pantheon: Pantheon::Greyhawk,
         symbols: &["Red skull in front of fireball"],

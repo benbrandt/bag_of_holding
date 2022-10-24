@@ -1,11 +1,11 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const DROW: &[Deity] = &[
     Deity {
         name: "Eilistraee",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Good),
+        alignment: Alignment::CHAOTIC_GOOD,
         domains: &[Domain::Life, Domain::Light, Domain::Nature],
         pantheon: Pantheon::Drow,
         symbols: &["Sword-wielding dancing drow female silhouetted against the full moon"],
@@ -16,7 +16,7 @@ pub const DROW: &[Deity] = &[
     },
     Deity {
         name: "Ghaunadaur",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::Drow,
         symbols: &["Purple eye with black sclera"],
@@ -24,7 +24,7 @@ pub const DROW: &[Deity] = &[
     },
     Deity {
         name: "Keptolo",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Nature, Domain::Trickery],
         pantheon: Pantheon::Drow,
         symbols: &["Mushroom"],
@@ -32,7 +32,7 @@ pub const DROW: &[Deity] = &[
     },
     Deity {
         name: "Kiaransalee",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Arcana, Domain::Death],
         pantheon: Pantheon::Drow,
         symbols: &["Female drow hand wearing many silver rings"],
@@ -40,7 +40,7 @@ pub const DROW: &[Deity] = &[
     },
     Deity {
         name: "Malyk",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Tempest, Domain::Trickery],
         pantheon: Pantheon::Drow,
         symbols: &["A flame in a tear or a multihued vortex"],
@@ -48,7 +48,7 @@ pub const DROW: &[Deity] = &[
     },
     Deity {
         name: "Lolth",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Trickery, Domain::War],
         pantheon: Pantheon::Drow,
         symbols: &["Spider"],
@@ -60,7 +60,7 @@ pub const DROW: &[Deity] = &[
     },
     Deity {
         name: "Selvetarm",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::War],
         pantheon: Pantheon::Drow,
         symbols: &["Spider over crossed sword and mace"],
@@ -68,7 +68,7 @@ pub const DROW: &[Deity] = &[
     },
     Deity {
         name: "Vhaeraun",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Evil),
+        alignment: Alignment::CHAOTIC_EVIL,
         domains: &[Domain::Trickery, Domain::War],
         pantheon: Pantheon::Drow,
         symbols: &["Black mask with blue glass lenses inset over eyes"],
@@ -76,7 +76,7 @@ pub const DROW: &[Deity] = &[
     },
     Deity {
         name: "Zinzerena",
-        alignment: Alignment::new(Attitude::Chaotic, Morality::Neutral),
+        alignment: Alignment::CHAOTIC_NEUTRAL,
         domains: &[Domain::Trickery],
         pantheon: Pantheon::Drow,
         symbols: &["Shortsword draped with cloth"],

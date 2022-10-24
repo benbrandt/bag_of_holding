@@ -1,10 +1,10 @@
-use alignments::{Alignment, Attitude, Morality};
+use alignments::Alignment;
 
 use crate::{Deity, Domain, Pantheon};
 
 pub const GOBLIN: &[Deity] = &[Deity {
     name: "Maglubiyet",
-    alignment: Alignment::new(Attitude::Lawful, Morality::Evil),
+    alignment: Alignment::LAWFUL_EVIL,
     domains: &[Domain::War],
     symbols: &["Bloody axe"],
     titles: &["god of war"],
