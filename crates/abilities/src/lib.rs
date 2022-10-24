@@ -24,7 +24,12 @@ use std::{
 
 use dice::Die;
 use itertools::Itertools;
-use rand::{distributions::Standard, prelude::Distribution, Rng};
+use rand::{
+    distributions::Standard,
+    prelude::Distribution,
+    seq::{IteratorRandom, SliceRandom},
+    Rng,
+};
 use rand_utils::SliceExpRandom;
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
@@ -72,6 +77,52 @@ pub enum Ability {
     Charisma,
 }
 
+/// Different combat roles from "Live to Tell the Tale" p.22
+#[derive(Clone, Copy, Debug, Display, EnumIter)]
+enum CombatRole {
+    FrontLine,
+    ShockAttacker,
+    Skirmisher,
+    Marksman,
+    Supporter,
+    Spellslinger,
+}
+
+impl CombatRole {
+    /// Primary defensive ability for the character
+    const fn defensive(self) -> Ability {
+        match self {
+            Self::FrontLine | Self::Skirmisher | Self::Supporter => Ability::Constitution,
+            Self::ShockAttacker | Self::Spellslinger => Ability::Dexterity,
+            Self::Marksman => Ability::Wisdom,
+        }
+    }
+
+    /// Primary offensive abilities for the character
+    const fn offensive(self) -> &'static [Ability] {
+        match self {
+            Self::FrontLine => &[Ability::Strength],
+            Self::ShockAttacker => &[Ability::Strength, Ability::Dexterity],
+            Self::Skirmisher | Self::Marksman => &[Ability::Dexterity],
+            Self::Supporter => &[Ability::Wisdom, Ability::Charisma],
+            Self::Spellslinger => &[Ability::Intelligence, Ability::Wisdom, Ability::Charisma],
+        }
+    }
+}
+
+impl Distribution<CombatRole> for Standard {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> CombatRole {
+        let combat_role = CombatRole::iter().choose(rng).unwrap();
+
+        metrics::increment_counter!(
+            "abilities_combat_role",
+            &[("combat_role", combat_role.to_string())]
+        );
+
+        combat_role
+    }
+}
+
 /// An individual Ability Score value. Either base or increase.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct AbilityScore {
@@ -84,6 +135,13 @@ pub struct AbilityScore {
 impl AbilityScore {
     /// Create a new ability score
     fn new(ability: Ability, score: u8) -> Self {
+        metrics::increment_counter!(
+            "abilities_score",
+            &[
+                ("ability", ability.to_string()),
+                ("score", score.to_string())
+            ]
+        );
         Self { ability, score }
     }
 }
@@ -137,8 +195,13 @@ impl AbilityScores {
     ///
     /// Most likely you will generate this with `rng.gen()`, but can be created
     /// manually as well if necessary.
+    ///
+    /// # Panics
+    ///
+    /// Will panic if not all 6 scores are present
     #[must_use]
     pub fn new(base_scores: HashSet<AbilityScore>) -> Self {
+        assert_eq!(base_scores.len(), 6);
         Self {
             base_scores,
             racial_increases: HashSet::new(),
@@ -283,20 +346,40 @@ impl Distribution<AbilityScores> for Standard {
     /// ```
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> AbilityScores {
-        AbilityScores::new(
-            Ability::iter()
-                .map(|a| {
-                    let score: u8 = Die::D6.roll_multiple(rng, 4).sorted().rev().take(3).sum();
+        let mut ability_scores = HashSet::new();
+        // Keep track of what abilities are still needed
+        let mut remaining_abilities: HashSet<Ability> = Ability::iter().collect();
+        // Roll all scores, put them in descending order
+        let mut scores = (0..remaining_abilities.len())
+            .map(|_| {
+                Die::D6
+                    .roll_multiple(rng, 4)
+                    .sorted()
+                    .rev()
+                    .take(3)
+                    .sum::<u8>()
+            })
+            .sorted()
+            .rev();
+        // Choose a combat role to base this on
+        let combat_role = rng.gen::<CombatRole>();
+        // Choose offensive skill from options
+        let offensive_ability = remaining_abilities
+            .take(combat_role.offensive().choose(rng).unwrap())
+            .unwrap();
+        ability_scores.insert(AbilityScore::new(offensive_ability, scores.next().unwrap()));
+        // Add defensive skill if not already chosen
+        if let Some(defensive_ability) = remaining_abilities.take(&combat_role.defensive()) {
+            ability_scores.insert(AbilityScore::new(defensive_ability, scores.next().unwrap()));
+        }
+        // Add the rest
+        for score in scores {
+            let ability = *remaining_abilities.iter().choose(rng).unwrap();
+            remaining_abilities.remove(&ability);
+            ability_scores.insert(AbilityScore::new(ability, score));
+        }
 
-                    metrics::increment_counter!(
-                        "abilities_score",
-                        &[("ability", a.to_string()), ("score", score.to_string())]
-                    );
-
-                    AbilityScore::new(a, score)
-                })
-                .collect(),
-        )
+        AbilityScores::new(ability_scores)
     }
 }
 
