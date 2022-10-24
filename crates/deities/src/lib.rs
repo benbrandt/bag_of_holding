@@ -471,7 +471,7 @@ impl Deity {
                     Some(deity),
                     deity.weight(attitude_influences, morality_influences),
                 ),
-                (None, 1),
+                (None, 0),
             ]
             .choose_exp_weighted(rng, |i| i.1)
             .unwrap()
