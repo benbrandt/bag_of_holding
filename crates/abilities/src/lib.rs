@@ -24,8 +24,8 @@ use std::{
 
 use dice::Die;
 use itertools::Itertools;
-use rand::{distributions::Standard, prelude::Distribution, seq::SliceRandom, Rng};
-use rand_utils::exp_weight;
+use rand::{distributions::Standard, prelude::Distribution, Rng};
+use rand_utils::SliceExpRandom;
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
@@ -198,19 +198,6 @@ impl AbilityScores {
         self.ability(ability).modifier
     }
 
-    /// Method to get the weight for a particular ability when doing a `choose_weighted` call.
-    #[tracing::instrument]
-    fn weight(&self, ability: Ability) -> f64 {
-        let min_modifier = Ability::iter()
-            .map(|a| self.modifier(a))
-            .min()
-            .expect("No ability scores present");
-        let modifier = self.modifier(ability);
-
-        // Subtract min modifier from this to offset by minimum score.
-        exp_weight(modifier - min_modifier)
-    }
-
     /// Choose a single racial increase.
     ///
     /// Will weight choices where possible towards applying increases to
@@ -244,7 +231,7 @@ impl AbilityScores {
         } else {
             optimal_ability_choices.as_slice()
         }
-        .choose_weighted(rng, |&a| self.weight(a))
+        .choose_exp_weighted(rng, |&a| self.modifier(a))
         .unwrap();
 
         self.racial_increases

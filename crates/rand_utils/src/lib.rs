@@ -13,9 +13,19 @@
     unused
 )]
 
-use std::f64::consts::E;
+use std::{
+    f64::consts::E,
+    ops::{AddAssign, Sub},
+};
 
-use rand::{Rng, SeedableRng};
+use rand::{
+    distributions::{
+        uniform::{SampleBorrow, SampleUniform},
+        WeightedError,
+    },
+    seq::SliceRandom,
+    Rng, SeedableRng,
+};
 use rand_pcg::Pcg64;
 
 /// Creates a new instance of the RNG seeded via getrandom.
@@ -38,16 +48,79 @@ pub fn rng_from_entropy() -> impl Rng {
 }
 
 /// Create an exponential based weight from a value.
-/// Works well for `choose_weighted*` options.
-///
-/// ```
-/// let weight = rand_utils::exp_weight(2);
-/// ```
-pub fn exp_weight<V>(val: V) -> f64
+/// Works well for `choose_exp_weighted*` options.
+fn exp_weight<V>(val: V) -> f64
 where
     i32: TryFrom<V>,
 {
     E.powi(i32::try_from(val).unwrap_or_default())
+}
+
+/// Choose values from a slice based on exponential weights.
+/// Will adjust weights by offset of the minimum score so that the minimum
+/// weight is always 1.
+
+/// Extension trait on slices, providing exponential based sampling.
+///
+/// This trait is implemented on all `[T]` slice types, providing several
+/// methods for choosing elements. You must `use` this trait:
+///
+/// ```
+/// use rand_utils::SliceExpRandom;
+///
+/// let mut rng = rand_utils::rng_from_entropy();
+/// let choices = [('a', 2), ('b', 1), ('c', 1)];
+/// // 58% chance to print 'a', 21% chance to print 'b', 21% chance to print 'c'
+/// println!("{:?}", choices.choose_exp_weighted(&mut rng, |item| item.1).unwrap().0);
+/// ```
+pub trait SliceExpRandom: SliceRandom {
+    /// Similar to [`rand::seq::SliceRandom::choose_weighted`], but applying
+    /// `E.pow(weight)` to each weight.
+    ///
+    /// Also scales the weight so that the smallest weight because `E.pow(0)`,
+    /// offsetting the other weights by the same amount before applying the
+    /// exponent.
+    /// ```
+    /// use rand_utils::SliceExpRandom;
+    ///
+    /// let mut rng = rand_utils::rng_from_entropy();
+    /// let choices = [('a', 2), ('b', 1), ('c', 0)];
+    /// // 73% chance to print 'a', 27% chance to print 'b', 10% chance to print 'c'
+    /// println!("{:?}", choices.choose_exp_weighted(&mut rng, |item| item.1).unwrap().0);
+    /// ```
+    /// # Errors
+    ///
+    /// Errors if weights supplied are not valid
+    fn choose_exp_weighted<R, F, B, X>(
+        &self,
+        rng: &mut R,
+        weight: F,
+    ) -> Result<&Self::Item, WeightedError>
+    where
+        R: Rng + ?Sized,
+        F: Fn(&Self::Item) -> B,
+        B: SampleBorrow<X> + Copy + Default + Ord + Sub<Output = B>,
+        X: SampleUniform + for<'a> AddAssign<&'a X> + PartialOrd<X> + Clone + Default,
+        i32: TryFrom<B>;
+}
+
+impl<T> SliceExpRandom for [T] {
+    #[allow(clippy::redundant_closure)]
+    fn choose_exp_weighted<R, F, B, X>(
+        &self,
+        rng: &mut R,
+        weight: F,
+    ) -> Result<&Self::Item, WeightedError>
+    where
+        R: Rng + ?Sized,
+        F: Fn(&Self::Item) -> B,
+        B: SampleBorrow<X> + Copy + Default + Ord + Sub<Output = B>,
+        X: SampleUniform + for<'a> AddAssign<&'a X> + PartialOrd<X> + Clone + Default,
+        i32: TryFrom<B>,
+    {
+        let min = self.iter().map(|i| weight(i)).min().unwrap_or_default();
+        self.choose_weighted(rng, |i| exp_weight(weight(i) - min))
+    }
 }
 
 #[cfg(test)]

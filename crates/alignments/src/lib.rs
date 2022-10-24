@@ -15,8 +15,8 @@
 
 use std::{borrow::Cow, fmt, str};
 
-use rand::{seq::SliceRandom, Rng};
-use rand_utils::exp_weight;
+use rand::Rng;
+use rand_utils::SliceExpRandom;
 use serde::Serialize;
 use strum::{Display, EnumIter, IntoEnumIterator};
 
@@ -52,13 +52,11 @@ impl Attitude {
         }
     }
 
-    fn weight(self, influences: &[Self]) -> f64 {
-        exp_weight(
-            influences
-                .iter()
-                .map(|&i| self.individual_weight(i))
-                .sum::<i32>(),
-        )
+    fn weight(self, influences: &[Self]) -> i32 {
+        influences
+            .iter()
+            .map(|&i| self.individual_weight(i))
+            .sum::<i32>()
     }
 }
 
@@ -94,13 +92,11 @@ impl Morality {
         }
     }
 
-    fn weight(self, influences: &[Self]) -> f64 {
-        exp_weight(
-            influences
-                .iter()
-                .map(|&i| self.individual_weight(i))
-                .sum::<i32>(),
-        )
+    fn weight(self, influences: &[Self]) -> i32 {
+        influences
+            .iter()
+            .map(|&i| self.individual_weight(i))
+            .sum::<i32>()
     }
 }
 
@@ -138,11 +134,11 @@ impl Alignment {
     ) -> Self {
         let attitude = *Attitude::iter()
             .collect::<Vec<_>>()
-            .choose_weighted(rng, |a| a.weight(attitude_influences))
+            .choose_exp_weighted(rng, |a| a.weight(attitude_influences))
             .unwrap();
         let morality = *Morality::iter()
             .collect::<Vec<_>>()
-            .choose_weighted(rng, |a| a.weight(morality_influences))
+            .choose_exp_weighted(rng, |a| a.weight(morality_influences))
             .unwrap();
 
         metrics::increment_counter!(
@@ -163,7 +159,7 @@ impl Alignment {
         &self,
         attitude_influences: &[Attitude],
         morality_influences: &[Morality],
-    ) -> f64 {
+    ) -> i32 {
         self.attitude.weight(attitude_influences) + self.morality.weight(morality_influences)
     }
 }

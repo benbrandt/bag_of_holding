@@ -17,12 +17,8 @@
 use std::borrow::Cow;
 
 use alignments::{Alignment, AlignmentInfluences, Attitude, Morality};
-use rand::{
-    distributions::Standard,
-    prelude::Distribution,
-    seq::{IteratorRandom, SliceRandom},
-    Rng,
-};
+use rand::{distributions::Standard, prelude::Distribution, seq::IteratorRandom, Rng};
+use rand_utils::SliceExpRandom;
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
@@ -370,26 +366,19 @@ impl Pantheon {
     /// Weight pantheon choice to be more likely based on number of deities
     /// that align with character alignment. Also weights towards larger
     /// pantheons
-    fn weight(self, attitude_influences: &[Attitude], morality_influences: &[Morality]) -> f64 {
+    fn weight(self, attitude_influences: &[Attitude], morality_influences: &[Morality]) -> i32 {
         self.deities()
             .iter()
             .map(|d| d.weight(attitude_influences, morality_influences))
             .sum()
     }
 
-    /// All weights across pantheons
-    fn all_weights<'a>(
-        attitude_influences: &'a [Attitude],
-        morality_influences: &'a [Morality],
-    ) -> impl Iterator<Item = f64> + 'a {
-        Pantheon::iter().map(|p| p.weight(attitude_influences, morality_influences))
-    }
-
     /// Max weight across all pantheons
-    fn max_weight(attitude_influences: &[Attitude], morality_influences: &[Morality]) -> f64 {
-        Self::all_weights(attitude_influences, morality_influences)
-            .max_by(f64::total_cmp)
-            .unwrap_or(1.0)
+    fn max_weight(attitude_influences: &[Attitude], morality_influences: &[Morality]) -> i32 {
+        Pantheon::iter()
+            .map(|p| p.weight(attitude_influences, morality_influences))
+            .max()
+            .unwrap_or_default()
     }
 
     /// Choose a pantheon, based on cultural pantheon influences as well as
@@ -409,15 +398,12 @@ impl Pantheon {
         let max = Self::max_weight(attitude_influences, morality_influences);
         *Pantheon::iter()
             .collect::<Vec<_>>()
-            .choose_weighted(rng, |p| {
-                // Get base weight
+            .choose_exp_weighted(rng, |p| {
+                // Get base weight and increase by max * number of times this pantheon was in their influences
                 p.weight(attitude_influences, morality_influences)
-                    // Increase by max * number of times this pantheon was in their influences
                     + (max
-                        * f64::from(
-                            u32::try_from(pantheon_influences.iter().filter(|&i| i == p).count())
-                                .unwrap(),
-                        ))
+                        * i32::try_from(pantheon_influences.iter().filter(|&i| i == p).count())
+                            .unwrap())
             })
             .unwrap()
     }
@@ -445,7 +431,7 @@ pub struct Deity {
 
 impl Deity {
     /// Weight deity choice to more likely align to other alignment influences
-    fn weight(&self, attitude_influences: &[Attitude], morality_influences: &[Morality]) -> f64 {
+    fn weight(&self, attitude_influences: &[Attitude], morality_influences: &[Morality]) -> i32 {
         self.alignment
             .weight(attitude_influences, morality_influences)
     }
@@ -473,24 +459,23 @@ impl Deity {
 
         let deity = *pantheon
             .deities()
-            .choose_weighted(rng, |d| d.weight(attitude_influences, morality_influences))
+            .choose_exp_weighted(rng, |d| d.weight(attitude_influences, morality_influences))
             .unwrap();
 
         if required {
             Some(deity)
         } else {
-            let total_weights =
-                Pantheon::all_weights(attitude_influences, morality_influences).sum();
-            let max_weight = Pantheon::max_weight(attitude_influences, morality_influences);
-            *[Some(deity), None]
-                .choose_weighted(rng, |d| {
-                    if d.is_some() {
-                        total_weights
-                    } else {
-                        max_weight
-                    }
-                })
-                .unwrap()
+            // Weight deity choice based on how aligned it is with the character
+            [
+                (
+                    Some(deity),
+                    deity.weight(attitude_influences, morality_influences),
+                ),
+                (None, 2),
+            ]
+            .choose_exp_weighted(rng, |i| i.1)
+            .unwrap()
+            .0
         }
     }
 }
