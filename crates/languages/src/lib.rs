@@ -35,8 +35,8 @@ impl LanguageType {
     /// Weighting for language likelihood
     const fn weight(self) -> i32 {
         match self {
-            Self::Exotic => 1,
-            Self::Standard => 4,
+            Self::Exotic => 0,
+            Self::Standard => 3,
         }
     }
 }
@@ -131,7 +131,7 @@ impl Language {
     /// Weighting for language based on type and influences
     fn weight(self, likely_languages: &[Language]) -> i32 {
         self.language_type().weight()
-            * i32::try_from(likely_languages.iter().filter(|&ll| ll == &self).count()).unwrap()
+            + i32::try_from(likely_languages.iter().filter(|&ll| ll == &self).count()).unwrap()
     }
 }
 
