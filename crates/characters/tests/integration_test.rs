@@ -13,6 +13,7 @@
 use abilities::Ability;
 use characters::{Character, CharacterBuildError};
 use damage::Resistances;
+use languages::Language;
 use races::RaceGenerator;
 use rand::Rng;
 use serde_json::json;
@@ -106,6 +107,20 @@ fn generate_alignment() {
 }
 
 #[test]
+fn generate_languages() {
+    let mut rng = rand_utils::rng_from_entropy();
+    let character = Character::new()
+        .gen_ability_scores(&mut rng)
+        .gen_race(&mut rng)
+        .unwrap()
+        .gen_languages(&mut rng)
+        .unwrap();
+
+    assert!(character.languages.len() > 1);
+    assert!(character.languages.contains(&Language::Common));
+}
+
+#[test]
 fn generate_full_character() {
     let character: Character = rand_utils::rng_from_entropy().gen();
 
@@ -114,6 +129,7 @@ fn generate_full_character() {
     assert!(character.race.is_some());
     assert!(character.age.is_some());
     assert!(character.height_and_weight.is_some());
+    assert!(character.languages.len() > 1);
     assert!(character.alignment.is_some());
 }
 
@@ -156,6 +172,7 @@ fn serialize_to_character_sheet() {
         serialized["alignment"]
     );
 
+    assert_eq!(json!(character.languages), serialized["languages"]);
     assert_eq!(json!(character.deity), serialized["deity"]);
 }
 
@@ -199,6 +216,17 @@ fn race_is_chosen_before_height_and_weight() {
 
     assert_eq!(
         character.gen_height_and_weight(&mut rng).unwrap_err(),
+        CharacterBuildError::MissingRace
+    );
+}
+
+#[test]
+fn race_is_chosen_before_languages() {
+    let mut rng = rand_utils::rng_from_entropy();
+    let character = Character::new();
+
+    assert_eq!(
+        character.gen_languages(&mut rng).unwrap_err(),
         CharacterBuildError::MissingRace
     );
 }

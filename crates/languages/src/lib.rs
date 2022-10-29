@@ -13,7 +13,7 @@
     unused
 )]
 
-use std::collections::HashSet;
+use std::{borrow::Cow, collections::HashSet};
 
 use derive_more::Deref;
 use rand::Rng;
@@ -135,7 +135,7 @@ impl Language {
 }
 
 /// Set of languages known by a character. All characters know Common
-#[derive(Debug, Deref, Serialize)]
+#[derive(Clone, Debug, Deref, Serialize)]
 #[serde(transparent)]
 pub struct Languages(HashSet<Language>);
 
@@ -190,5 +190,18 @@ impl Languages {
 impl Default for Languages {
     fn default() -> Self {
         Self(HashSet::from([Language::Common]))
+    }
+}
+
+/// Define how this entity influences the character's languages
+pub trait LanguageOptions {
+    /// How many additional languages does this provide the character
+    fn additional_languages(&self) -> usize {
+        0
+    }
+
+    /// Which languages the character is likely to choose from
+    fn likely_languages(&self) -> Cow<'_, [Language]> {
+        Cow::Borrowed(&[])
     }
 }

@@ -14,10 +14,13 @@
     unused
 )]
 
+use std::borrow::Cow;
+
 use abilities::AbilityScores;
 use alignments::{Alignment, AlignmentInfluences};
 use damage::{DamageType, Resistances};
 use deities::{Deities, Deity};
+use languages::{Language, LanguageOptions, Languages};
 use races::{Race, RaceGenerator};
 use rand::{distributions::Standard, prelude::Distribution, Rng};
 use serde::Serialize;
@@ -40,6 +43,8 @@ pub struct Character {
     pub deity: Option<Deity>,
     /// The character's height and weight
     pub height_and_weight: Option<HeightAndWeight>,
+    /// Languages the character knows
+    pub languages: Languages,
     /// The character's name
     pub name: String,
     /// Race of the character
@@ -186,6 +191,76 @@ impl Character {
         Ok(self)
     }
 
+    /// Helper method for getting all additional languages
+    ///
+    /// # Errors
+    ///
+    /// Will error if race isn't already chosen
+    fn additional_languages(&self) -> Result<usize, CharacterBuildError> {
+        let race = self.try_race()?;
+        Ok(race.additional_languages())
+    }
+
+    /// Helper method for getting all likely languages
+    ///
+    /// # Errors
+    ///
+    /// Will error if race isn't already chosen
+    fn likely_languages(&self) -> Result<Vec<Language>, CharacterBuildError> {
+        let race = self.try_race()?;
+        Ok(race.likely_languages().into())
+    }
+
+    /// Generate languages for your character.
+    ///
+    /// Requires a Race to be selected already.
+    ///
+    /// ```
+    /// use characters::Character;
+    /// use rand::Rng;
+    ///
+    /// let mut rng = rand::thread_rng();
+    /// let character = Character::new()
+    ///     .gen_ability_scores(&mut rng)
+    ///     .gen_race(&mut rng)?
+    ///     .gen_languages(&mut rng)?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    ///
+    /// # Errors
+    ///
+    /// Will error if race is not already chosen.
+    #[tracing::instrument(skip(rng))]
+    pub fn gen_languages<R: Rng + ?Sized>(
+        mut self,
+        rng: &mut R,
+    ) -> Result<Self, CharacterBuildError> {
+        self.languages.choose_multiple(
+            rng,
+            self.additional_languages()?,
+            &self.likely_languages()?,
+        );
+        Ok(self)
+    }
+
+    /// Helper for getting all pantheons the character might choose
+    ///
+    /// # Errors
+    ///
+    /// Will error if race isn't already chosen
+    fn pantheons(&self) -> Result<&[deities::Pantheon], CharacterBuildError> {
+        Ok(self.try_race()?.pantheons())
+    }
+
+    /// Helper for whether or not character requires a deity
+    ///
+    /// # Errors
+    ///
+    /// Will error if race isn't already chosen
+    fn deity_required(&self) -> Result<bool, CharacterBuildError> {
+        Ok(self.try_race()?.deity_required())
+    }
+
     /// Generate an deity for your character.
     ///
     /// ```
@@ -201,13 +276,12 @@ impl Character {
     /// ```
     #[tracing::instrument(skip(rng))]
     pub fn gen_deity<R: Rng + ?Sized>(mut self, rng: &mut R) -> Result<Self, CharacterBuildError> {
-        self.try_race()?;
         self.deity = Deity::gen(
             rng,
-            self.pantheons(),
+            self.pantheons()?,
             &self.attitude(),
             &self.morality(),
-            self.deity_required(),
+            self.deity_required()?,
         );
         Ok(self)
     }
@@ -237,38 +311,25 @@ impl Character {
             .gen_name(rng)?
             .gen_age(rng)?
             .gen_height_and_weight(rng)?
+            .gen_languages(rng)?
             .gen_deity(rng)?
             .gen_alignment(rng))
     }
 }
 
 impl AlignmentInfluences for Character {
-    fn attitude(&self) -> std::borrow::Cow<'_, [alignments::Attitude]> {
+    fn attitude(&self) -> Cow<'_, [alignments::Attitude]> {
         self.deity
             .as_ref()
             .map(alignments::AlignmentInfluences::attitude)
             .unwrap_or_default()
     }
 
-    fn morality(&self) -> std::borrow::Cow<'_, [alignments::Morality]> {
+    fn morality(&self) -> Cow<'_, [alignments::Morality]> {
         self.deity
             .as_ref()
             .map(alignments::AlignmentInfluences::morality)
             .unwrap_or_default()
-    }
-}
-
-impl Deities for Character {
-    fn pantheons(&self) -> &[deities::Pantheon] {
-        self.try_race()
-            .expect("Should have a race already")
-            .pantheons()
-    }
-
-    fn deity_required(&self) -> bool {
-        self.try_race()
-            .expect("Should have a race already")
-            .deity_required()
     }
 }
 
@@ -306,6 +367,8 @@ struct CharacterSheet {
     /// The character's height and weight
     #[serde(flatten)]
     pub height_and_weight: Option<HeightAndWeight>,
+    /// Languages the character knows
+    pub languages: Languages,
     /// Name of the character
     pub name: String,
     /// Chosen race of the character
@@ -326,6 +389,7 @@ impl From<Character> for CharacterSheet {
             alignment: character.alignment,
             deity: character.deity,
             height_and_weight: character.height_and_weight,
+            languages: character.languages,
             name: character.name,
             race: character.race.as_ref().map(Sources::citation),
             resistances: character

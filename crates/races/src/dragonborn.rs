@@ -2,6 +2,7 @@ use std::{borrow::Cow, fmt, ops::RangeInclusive};
 
 use damage::{DamageType, Resistances};
 use deities::{Deities, Pantheon};
+use languages::{Language, LanguageOptions};
 use names::Name;
 use rand::{
     distributions::Standard,
@@ -62,6 +63,16 @@ impl Dragonborn {
 impl Deities for Dragonborn {
     fn pantheons(&self) -> &[Pantheon] {
         &[Pantheon::Dragon]
+    }
+}
+
+impl LanguageOptions for Dragonborn {
+    fn additional_languages(&self) -> usize {
+        1
+    }
+
+    fn likely_languages(&self) -> Cow<'_, [Language]> {
+        Cow::Borrowed(&[Language::Draconic])
     }
 }
 
