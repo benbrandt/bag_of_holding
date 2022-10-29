@@ -32,7 +32,7 @@ enum LanguageType {
 
 impl LanguageType {
     /// Weighting for language likelihood
-    fn weight(self) -> i32 {
+    const fn weight(self) -> i32 {
         match self {
             Self::Exotic => 0,
             Self::Standard => 2,
@@ -104,7 +104,7 @@ pub enum Language {
 
 impl Language {
     /// Language type for each language (used for weighting)
-    fn language_type(self) -> LanguageType {
+    const fn language_type(self) -> LanguageType {
         match self {
             Self::Common
             | Self::Dwarvish

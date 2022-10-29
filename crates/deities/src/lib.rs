@@ -335,7 +335,7 @@ pub enum Pantheon {
 impl Pantheon {
     /// Get a list of deities that are part of this pantheon
     #[must_use]
-    pub fn deities(&self) -> &'static [Deity] {
+    pub const fn deities(&self) -> &'static [Deity] {
         match self {
             Self::Bugbear => bugbear::BUGBEAR,
             Self::Celtic => celtic::CELTIC,

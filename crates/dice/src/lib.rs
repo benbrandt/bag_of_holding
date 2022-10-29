@@ -153,7 +153,7 @@ impl Roll {
     /// let roll = Roll::new(2, Die::D8);
     /// ````
     #[must_use]
-    pub fn new(amount: usize, die: Die) -> Self {
+    pub const fn new(amount: usize, die: Die) -> Self {
         Self { amount, die }
     }
 

@@ -33,7 +33,7 @@ pub enum Attitude {
 
 impl Attitude {
     /// Weight in comparison to itself. Each has 4 points to spend
-    fn individual_weight(self, influence: Self) -> i32 {
+    const fn individual_weight(self, influence: Self) -> i32 {
         match self {
             Self::Chaotic => match influence {
                 Self::Chaotic => 3,
@@ -73,7 +73,7 @@ pub enum Morality {
 
 impl Morality {
     /// Weight in comparison to itself. Each has 4 points to spend
-    fn individual_weight(self, influence: Self) -> i32 {
+    const fn individual_weight(self, influence: Self) -> i32 {
         match self {
             Self::Evil => match influence {
                 Self::Evil => 3,

@@ -64,33 +64,33 @@ pub enum HeightAndWeightTable {
 
 impl HeightAndWeightTable {
     /// Convert feet + inches to just inches
-    fn in_inches(feet: u8, inches: u8) -> u8 {
+    const fn in_inches(feet: u8, inches: u8) -> u8 {
         feet * 12 + inches
     }
 
     /// Base height to use for height calculations
-    fn base_height(self) -> u8 {
+    const fn base_height(self) -> u8 {
         match self {
             Self::Dragonborn => Self::in_inches(5, 6),
         }
     }
 
     /// Variable modifier to use in height calculations
-    fn height_modifier(self) -> Roll {
+    const fn height_modifier(self) -> Roll {
         match self {
             Self::Dragonborn => Roll::new(2, Die::D8),
         }
     }
 
     /// Base weight to use for weight calculations
-    fn base_weight(self) -> u16 {
+    const fn base_weight(self) -> u16 {
         match self {
             Self::Dragonborn => 175,
         }
     }
 
     /// Variable modifier to use in weight calculations
-    fn weight_modifier(self) -> WeightMod {
+    const fn weight_modifier(self) -> WeightMod {
         match self {
             Self::Dragonborn => WeightMod::Roll(Roll::new(2, Die::D6)),
         }
