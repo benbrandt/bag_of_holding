@@ -15,6 +15,7 @@
 
 use std::{borrow::Cow, collections::HashSet};
 
+use deities::{Deities, Pantheon};
 use derive_more::Deref;
 use rand::Rng;
 use rand_utils::SliceExpRandom;
@@ -134,6 +135,30 @@ impl Language {
     }
 }
 
+impl Deities for Language {
+    fn pantheons(&self) -> Cow<'_, [Pantheon]> {
+        Cow::Borrowed(match self {
+            Self::Common => &[Pantheon::ForgottenRealms],
+            Self::Dwarvish => &[Pantheon::Dwarven],
+            Self::Elvish | Self::Sylvan => &[Pantheon::Elven],
+            Self::Giant => &[Pantheon::Giant],
+            Self::Gnomish => &[Pantheon::Gnomish],
+            Self::Goblin => &[Pantheon::Bugbear, Pantheon::Goblin],
+            Self::Halfling => &[Pantheon::Halfling],
+            Self::Orc => &[Pantheon::Orc],
+            Self::Draconic => &[Pantheon::Dragon, Pantheon::Kobold, Pantheon::Lizardfolk],
+            Self::Undercommon => &[Pantheon::Drow, Pantheon::Duergar],
+            Self::Abyssal
+            | Self::Celestial
+            | Self::DeepSpeech
+            | Self::Infernal
+            | Self::Primordial
+            | Self::ThievesCant
+            | Self::TongueOfDruids => &[],
+        })
+    }
+}
+
 /// Set of languages known by a character. All characters know Common
 #[derive(Clone, Debug, Deref, Serialize)]
 #[serde(transparent)]
@@ -190,6 +215,16 @@ impl Languages {
 impl Default for Languages {
     fn default() -> Self {
         Self(HashSet::from([Language::Common]))
+    }
+}
+
+impl Deities for Languages {
+    fn pantheons(&self) -> Cow<'_, [Pantheon]> {
+        Cow::Owned(
+            self.iter()
+                .flat_map(|l| l.pantheons().to_vec())
+                .collect::<Vec<_>>(),
+        )
     }
 }
 

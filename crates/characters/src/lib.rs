@@ -19,7 +19,7 @@ use std::borrow::Cow;
 use abilities::AbilityScores;
 use alignments::{Alignment, AlignmentInfluences};
 use damage::{DamageType, Resistances};
-use deities::{Deities, Deity};
+use deities::{Deities, Deity, Pantheon};
 use features::{Feature, Features};
 use languages::{Language, LanguageOptions, Languages};
 use races::{Race, RaceGenerator};
@@ -249,8 +249,12 @@ impl Character {
     /// # Errors
     ///
     /// Will error if race isn't already chosen
-    fn pantheons(&self) -> Result<&[deities::Pantheon], CharacterBuildError> {
-        Ok(self.try_race()?.pantheons())
+    fn pantheons(&self) -> Result<Vec<Pantheon>, CharacterBuildError> {
+        let mut pantheons = vec![];
+        pantheons.extend(self.try_race()?.pantheons().iter());
+        pantheons.extend(self.languages.pantheons().iter());
+
+        Ok(pantheons)
     }
 
     /// Helper for whether or not character requires a deity
@@ -279,7 +283,7 @@ impl Character {
     pub fn gen_deity<R: Rng + ?Sized>(mut self, rng: &mut R) -> Result<Self, CharacterBuildError> {
         self.deity = Deity::gen(
             rng,
-            self.pantheons()?,
+            &self.pantheons()?,
             &self.attitude(),
             &self.morality(),
             self.deity_required()?,

@@ -63,8 +63,8 @@ impl Dragonborn {
 }
 
 impl Deities for Dragonborn {
-    fn pantheons(&self) -> &[Pantheon] {
-        &[Pantheon::Dragon]
+    fn pantheons(&self) -> Cow<'_, [Pantheon]> {
+        Cow::Borrowed(&[Pantheon::Dragon])
     }
 }
 

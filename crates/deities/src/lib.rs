@@ -483,8 +483,8 @@ impl Deity {
 /// Trait for aspects of a character that would influence deity choices
 pub trait Deities {
     /// Pantheons this would potentially lead to a character choosing from
-    fn pantheons(&self) -> &[Pantheon] {
-        &[]
+    fn pantheons(&self) -> Cow<'_, [Pantheon]> {
+        Cow::Borrowed(&[])
     }
 
     /// Whether or not this would require a character to have chosen a deity

@@ -128,7 +128,7 @@ pub enum Race {
 }
 
 impl Deities for Race {
-    fn pantheons(&self) -> &[Pantheon] {
+    fn pantheons(&self) -> Cow<'_, [Pantheon]> {
         match self {
             Self::Dragonborn(d) => d.pantheons(),
         }

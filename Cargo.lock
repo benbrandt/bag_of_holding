@@ -1085,6 +1085,7 @@ dependencies = [
 name = "languages"
 version = "0.1.0"
 dependencies = [
+ "deities",
  "derive_more",
  "rand",
  "rand_utils",
