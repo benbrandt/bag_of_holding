@@ -36,7 +36,7 @@ impl LanguageType {
     const fn weight(self) -> i32 {
         match self {
             Self::Exotic => 1,
-            Self::Standard => 3,
+            Self::Standard => 4,
         }
     }
 }
