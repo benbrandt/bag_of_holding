@@ -1,7 +1,8 @@
-use axum::{response::IntoResponse, Json, Router};
+use axum::{extract::Query, response::IntoResponse, Json, Router};
 use axum_extra::routing::Resource;
 use deities::{Deity, Domain};
 use rand::Rng;
+use serde::Deserialize;
 use strum::IntoEnumIterator;
 
 /// Routes related to deities
@@ -18,11 +19,16 @@ pub fn routes() -> Router {
     Router::new().merge(names)
 }
 
+#[derive(Debug, Deserialize)]
+struct DeityFilters {
+    domain: Option<Domain>,
+}
+
 /// Choose a random deity
 #[tracing::instrument]
-async fn create_deity() -> impl IntoResponse {
+async fn create_deity(Query(query): Query<DeityFilters>) -> impl IntoResponse {
     let mut rng = rand_utils::rng_from_entropy();
-    Json(Deity::gen(&mut rng, &[], &[], &[], true))
+    Json(Deity::gen(&mut rng, query.domain, &[], &[], &[], true))
 }
 
 /// List domain options

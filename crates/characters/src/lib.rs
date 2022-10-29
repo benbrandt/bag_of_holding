@@ -283,6 +283,7 @@ impl Character {
     pub fn gen_deity<R: Rng + ?Sized>(mut self, rng: &mut R) -> Result<Self, CharacterBuildError> {
         self.deity = Deity::gen(
             rng,
+            None,
             &self.pantheons()?,
             &self.attitude(),
             &self.morality(),

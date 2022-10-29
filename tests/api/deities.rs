@@ -42,3 +42,20 @@ async fn generate_deity() {
 
     assert!(!deity["name"].as_str().unwrap().is_empty());
 }
+
+#[tokio::test]
+async fn generate_deity_with_domain_filter() {
+    let server = TestServer::new();
+
+    for _ in 0..10 {
+        let deity = server
+            .request(Method::POST, "/deities?domain=Life", Body::empty())
+            .await
+            .unwrap();
+
+        assert!(deity["domains"]
+            .as_array()
+            .unwrap()
+            .contains(&json!("Life")));
+    }
+}

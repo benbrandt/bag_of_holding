@@ -333,10 +333,11 @@ pub enum Pantheon {
 }
 
 impl Pantheon {
-    /// Get a list of deities that are part of this pantheon
+    /// Get a list of deities that are part of this pantheon.
+    /// Can filter by domain if desired
     #[must_use]
-    pub const fn deities(&self) -> &'static [Deity] {
-        match self {
+    pub fn deities(&self, domain: Option<Domain>) -> Cow<'_, [Deity]> {
+        let deities = match self {
             Self::Bugbear => bugbear::BUGBEAR,
             Self::Celtic => celtic::CELTIC,
             Self::Dragon => dragon::DRAGON,
@@ -358,6 +359,17 @@ impl Pantheon {
             Self::Lizardfolk => lizardfolk::LIZARDFOLK,
             Self::Norse => norse::NORSE,
             Self::Orc => orc::ORC,
+        };
+        if let Some(domain) = domain {
+            Cow::Owned(
+                deities
+                    .iter()
+                    .filter(|d| d.domains.contains(&domain))
+                    .copied()
+                    .collect::<Vec<_>>(),
+            )
+        } else {
+            Cow::Borrowed(deities)
         }
     }
 }
@@ -366,17 +378,26 @@ impl Pantheon {
     /// Weight pantheon choice to be more likely based on number of deities
     /// that align with character alignment. Also weights towards larger
     /// pantheons
-    fn weight(self, attitude_influences: &[Attitude], morality_influences: &[Morality]) -> i32 {
-        self.deities()
+    fn weight(
+        self,
+        domain: Option<Domain>,
+        attitude_influences: &[Attitude],
+        morality_influences: &[Morality],
+    ) -> i32 {
+        self.deities(domain)
             .iter()
             .map(|d| d.weight(attitude_influences, morality_influences))
             .sum()
     }
 
     /// Max weight across all pantheons
-    fn max_weight(attitude_influences: &[Attitude], morality_influences: &[Morality]) -> i32 {
+    fn max_weight(
+        domain: Option<Domain>,
+        attitude_influences: &[Attitude],
+        morality_influences: &[Morality],
+    ) -> i32 {
         Pantheon::iter()
-            .map(|p| p.weight(attitude_influences, morality_influences))
+            .map(|p| p.weight(domain, attitude_influences, morality_influences))
             .max()
             .unwrap_or_default()
     }
@@ -391,16 +412,18 @@ impl Pantheon {
     #[tracing::instrument(skip(rng))]
     pub fn gen<R: Rng + ?Sized>(
         rng: &mut R,
+        domain: Option<Domain>,
         pantheon_influences: &[Self],
         attitude_influences: &[Attitude],
         morality_influences: &[Morality],
     ) -> Self {
-        let max = Self::max_weight(attitude_influences, morality_influences);
+        let max = Self::max_weight(domain, attitude_influences, morality_influences);
         *Pantheon::iter()
+            .filter(|p| !p.deities(domain).is_empty())
             .collect::<Vec<_>>()
             .choose_exp_weighted(rng, |p| {
                 // Get base weight and increase by max * number of times this pantheon was in their influences
-                p.weight(attitude_influences, morality_influences)
+                p.weight(domain, attitude_influences, morality_influences)
                     + (max
                         * i32::try_from(pantheon_influences.iter().filter(|&i| i == p).count())
                             .unwrap())
@@ -445,6 +468,7 @@ impl Deity {
     #[tracing::instrument(skip(rng))]
     pub fn gen<R: Rng + ?Sized>(
         rng: &mut R,
+        domain: Option<Domain>,
         pantheon_influences: &[Pantheon],
         attitude_influences: &[Attitude],
         morality_influences: &[Morality],
@@ -452,13 +476,14 @@ impl Deity {
     ) -> Option<Self> {
         let pantheon = Pantheon::gen(
             rng,
+            domain,
             pantheon_influences,
             attitude_influences,
             morality_influences,
         );
 
         let deity = *pantheon
-            .deities()
+            .deities(domain)
             .choose_exp_weighted(rng, |d| d.weight(attitude_influences, morality_influences))
             .unwrap();
 
