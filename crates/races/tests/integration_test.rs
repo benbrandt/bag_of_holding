@@ -42,7 +42,7 @@ fn can_generate_all_races() {
         let citation = race.citation();
         assert!(citation.contains(&race.to_string()));
 
-        for source in sources {
+        for source in sources.iter() {
             assert!(citation.contains(&source.to_string()));
         }
 

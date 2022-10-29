@@ -2,11 +2,13 @@ use std::{borrow::Cow, fmt, ops::RangeInclusive};
 
 use damage::{DamageType, Resistances};
 use deities::{Deities, Pantheon};
+use features::{Feature, Features};
 use languages::{Language, LanguageOptions};
 use names::Name;
 use rand::{
     distributions::Standard,
     prelude::{Distribution, IteratorRandom},
+    Rng,
 };
 use sizes::{HeightAndWeightTable, Size};
 use sources::{Book, Sources};
@@ -66,6 +68,14 @@ impl Deities for Dragonborn {
     }
 }
 
+const FEATURES: &[Feature] = &[Feature::new("Breath Weapon", Book::Phb)];
+
+impl Features for Dragonborn {
+    fn features(&self) -> &[Feature] {
+        FEATURES
+    }
+}
+
 impl LanguageOptions for Dragonborn {
     fn additional_languages(&self) -> usize {
         1
@@ -110,8 +120,8 @@ impl Resistances for Dragonborn {
 }
 
 impl Sources for Dragonborn {
-    fn sources(&self) -> &[sources::Book] {
-        &[Book::Phb]
+    fn sources(&self) -> Cow<'_, [Book]> {
+        Cow::Borrowed(&[Book::Phb])
     }
 }
 
@@ -130,7 +140,7 @@ impl fmt::Display for Dragonborn {
 impl Distribution<Dragonborn> for Standard {
     /// Generate a random dragonborn
     #[tracing::instrument(skip(rng))]
-    fn sample<R: rand::Rng + ?Sized>(&self, rng: &mut R) -> Dragonborn {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Dragonborn {
         let draconic_ancestry = DraconicAncestry::iter().choose(rng).unwrap();
 
         metrics::increment_counter!(

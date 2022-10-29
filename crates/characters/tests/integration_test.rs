@@ -13,6 +13,7 @@
 use abilities::Ability;
 use characters::{Character, CharacterBuildError};
 use damage::Resistances;
+use features::Features;
 use languages::Language;
 use races::RaceGenerator;
 use rand::Rng;
@@ -131,6 +132,8 @@ fn generate_full_character() {
     assert!(character.height_and_weight.is_some());
     assert!(character.languages.len() > 1);
     assert!(character.alignment.is_some());
+
+    assert!(!character.features().is_empty());
 }
 
 #[test]
@@ -174,6 +177,8 @@ fn serialize_to_character_sheet() {
 
     assert_eq!(json!(character.languages), serialized["languages"]);
     assert_eq!(json!(character.deity), serialized["deity"]);
+
+    assert_eq!(json!(character.features()), serialized["features"]);
 }
 
 #[test]

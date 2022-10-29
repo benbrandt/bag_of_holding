@@ -20,6 +20,7 @@ use abilities::AbilityScores;
 use alignments::{Alignment, AlignmentInfluences};
 use damage::{DamageType, Resistances};
 use deities::{Deities, Deity};
+use features::{Feature, Features};
 use languages::{Language, LanguageOptions, Languages};
 use races::{Race, RaceGenerator};
 use rand::{distributions::Standard, prelude::Distribution, Rng};
@@ -333,6 +334,15 @@ impl AlignmentInfluences for Character {
     }
 }
 
+impl Features for Character {
+    fn features(&self) -> &[Feature] {
+        self.race
+            .as_ref()
+            .map(features::Features::features)
+            .unwrap_or_default()
+    }
+}
+
 impl Distribution<Character> for Standard {
     /// Generate a fully random character.
     #[tracing::instrument(skip(rng))]
@@ -364,6 +374,8 @@ struct CharacterSheet {
     pub alignment: Option<Alignment>,
     /// The character's favored deity
     pub deity: Option<Deity>,
+    /// Features the character has
+    pub features: Vec<Feature>,
     /// The character's height and weight
     #[serde(flatten)]
     pub height_and_weight: Option<HeightAndWeight>,
@@ -383,11 +395,13 @@ struct CharacterSheet {
 
 impl From<Character> for CharacterSheet {
     fn from(character: Character) -> Self {
+        let features = character.features().to_vec();
         Self {
             ability_scores: character.ability_scores,
             age: character.age,
             alignment: character.alignment,
             deity: character.deity,
+            features,
             height_and_weight: character.height_and_weight,
             languages: character.languages,
             name: character.name,

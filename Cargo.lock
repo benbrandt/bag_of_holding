@@ -430,6 +430,7 @@ dependencies = [
  "alignments",
  "damage",
  "deities",
+ "features",
  "languages",
  "metrics",
  "races",
@@ -669,6 +670,15 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "features"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "sources",
 ]
 
 [[package]]
@@ -1601,6 +1611,7 @@ dependencies = [
  "damage",
  "deities",
  "enum_dispatch",
+ "features",
  "itertools",
  "languages",
  "metrics",

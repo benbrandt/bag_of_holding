@@ -14,7 +14,7 @@
     unused
 )]
 
-use std::fmt;
+use std::{borrow::Cow, fmt};
 
 use serde::{Deserialize, Serialize};
 use strum::Display;
@@ -33,7 +33,7 @@ pub enum Book {
 /// Makes it easer for users to find more information in the source books.
 pub trait Sources: fmt::Display {
     /// Return a list of source books for the entity.
-    fn sources(&self) -> &[Book];
+    fn sources(&self) -> Cow<'_, [Book]>;
     /// Format the entity with its citations
     fn citation(&self) -> String {
         format!(
