@@ -384,10 +384,16 @@ impl Pantheon {
         attitude_influences: &[Attitude],
         morality_influences: &[Morality],
     ) -> i32 {
-        self.deities(domain)
-            .iter()
-            .map(|d| d.weight(attitude_influences, morality_influences))
-            .sum()
+        let deities = self.deities(domain);
+        // Only do this is there is some weights to apply (otherwise always 0)
+        if attitude_influences.is_empty() && morality_influences.is_empty() {
+            deities.len().try_into().unwrap()
+        } else {
+            self.deities(domain)
+                .iter()
+                .map(|d| d.weight(attitude_influences, morality_influences))
+                .sum()
+        }
     }
 
     /// Max weight across all pantheons
