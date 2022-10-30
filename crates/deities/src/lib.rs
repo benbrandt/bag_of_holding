@@ -17,7 +17,12 @@
 use std::borrow::Cow;
 
 use alignments::{Alignment, AlignmentInfluences, Attitude, Morality};
-use rand::{distributions::Standard, prelude::Distribution, seq::IteratorRandom, Rng};
+use rand::{
+    distributions::Standard,
+    prelude::Distribution,
+    seq::{IteratorRandom, SliceRandom},
+    Rng,
+};
 use rand_utils::SliceExpRandom;
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
@@ -427,7 +432,8 @@ impl Pantheon {
         *Pantheon::iter()
             .filter(|p| !p.deities(domain).is_empty())
             .collect::<Vec<_>>()
-            .choose_exp_weighted(rng, |p| {
+            // Exp weighting with these weights is much too strong
+            .choose_weighted(rng, |p| {
                 // Get base weight and increase by max * number of times this pantheon was in their influences
                 p.weight(domain, attitude_influences, morality_influences)
                     + (max
