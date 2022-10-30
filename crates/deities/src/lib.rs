@@ -17,7 +17,12 @@
 use std::borrow::Cow;
 
 use alignments::{Alignment, AlignmentInfluences, Attitude, Morality};
-use rand::{distributions::Standard, prelude::Distribution, seq::IteratorRandom, Rng};
+use rand::{
+    distributions::Standard,
+    prelude::Distribution,
+    seq::{IteratorRandom, SliceRandom},
+    Rng,
+};
 use rand_utils::SliceExpRandom;
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
@@ -382,7 +387,7 @@ impl Pantheon {
         match self {
             // Default
             Self::ForgottenRealms => 3,
-            // Racial
+            // Racial and other universes
             Self::Bugbear
             | Self::Dragon
             | Self::Drow
@@ -395,9 +400,8 @@ impl Pantheon {
             | Self::Halfling
             | Self::Kobold
             | Self::Lizardfolk
-            | Self::Orc => 1,
-            // Other universes
-            Self::Celtic
+            | Self::Orc
+            | Self::Celtic
             | Self::Dragonlance
             | Self::Eberron
             | Self::Egyptian
@@ -418,28 +422,24 @@ impl Pantheon {
     pub fn gen<R: Rng + ?Sized>(
         rng: &mut R,
         domain: Option<Domain>,
-        pantheon_influences: &[Self],
+        likely_pantheons: &[Self],
         attitude_influences: &[Attitude],
         morality_influences: &[Morality],
     ) -> Self {
         let pantheons = Pantheon::iter()
             .filter(|p| !p.deities(domain).is_empty())
             .collect::<Vec<_>>();
-        let max = pantheons
+        let remaining_likely = likely_pantheons
             .iter()
-            .map(|p| p.weight())
-            .max()
-            .unwrap_or_default();
-        *pantheons
-            // Exp weighting with these weights is much too strong
-            .choose_exp_weighted(rng, |p| {
-                // Get base weight and increase by max * number of times this pantheon was in their influences
-                p.weight()
-                    + (max
-                        * i32::try_from(pantheon_influences.iter().filter(|&i| i == p).count())
-                            .unwrap())
-            })
-            .unwrap()
+            .filter(|&p| pantheons.contains(p))
+            .collect::<Vec<_>>();
+
+        // 10% chance you'll end up with an unlikely pantheon
+        if remaining_likely.is_empty() || (1..=10).choose(rng).unwrap() == 10 {
+            *pantheons.choose_exp_weighted(rng, |p| p.weight()).unwrap()
+        } else {
+            **remaining_likely.choose(rng).unwrap()
+        }
     }
 }
 
@@ -480,7 +480,7 @@ impl Deity {
     pub fn gen<R: Rng + ?Sized>(
         rng: &mut R,
         domain: Option<Domain>,
-        pantheon_influences: &[Pantheon],
+        likely_pantheons: &[Pantheon],
         attitude_influences: &[Attitude],
         morality_influences: &[Morality],
         required: bool,
@@ -488,7 +488,7 @@ impl Deity {
         let pantheon = Pantheon::gen(
             rng,
             domain,
-            pantheon_influences,
+            likely_pantheons,
             attitude_influences,
             morality_influences,
         );

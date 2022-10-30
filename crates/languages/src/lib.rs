@@ -140,6 +140,7 @@ impl Language {
 impl Deities for Language {
     fn pantheons(&self) -> Cow<'_, [Pantheon]> {
         Cow::Borrowed(match self {
+            Self::Common => &[Pantheon::ForgottenRealms],
             Self::Dwarvish => &[Pantheon::Dwarven],
             Self::Elvish | Self::Sylvan => &[Pantheon::Elven],
             Self::Giant => &[Pantheon::Giant],
@@ -150,7 +151,6 @@ impl Deities for Language {
             Self::Draconic => &[Pantheon::Dragon, Pantheon::Kobold, Pantheon::Lizardfolk],
             Self::Undercommon => &[Pantheon::Drow, Pantheon::Duergar],
             Self::Abyssal
-            | Self::Common
             | Self::Celestial
             | Self::DeepSpeech
             | Self::Infernal
