@@ -131,14 +131,14 @@ impl Language {
     /// Weighting for language based on type and influences
     fn weight(self, likely_languages: &[Language]) -> i32 {
         self.language_type().weight()
-            + i32::try_from(likely_languages.iter().filter(|&ll| ll == &self).count()).unwrap()
+            + (LanguageType::Standard.weight()
+                * i32::try_from(likely_languages.iter().filter(|&ll| ll == &self).count()).unwrap())
     }
 }
 
 impl Deities for Language {
     fn pantheons(&self) -> Cow<'_, [Pantheon]> {
         Cow::Borrowed(match self {
-            Self::Common => &[Pantheon::ForgottenRealms],
             Self::Dwarvish => &[Pantheon::Dwarven],
             Self::Elvish | Self::Sylvan => &[Pantheon::Elven],
             Self::Giant => &[Pantheon::Giant],
@@ -149,6 +149,7 @@ impl Deities for Language {
             Self::Draconic => &[Pantheon::Dragon, Pantheon::Kobold, Pantheon::Lizardfolk],
             Self::Undercommon => &[Pantheon::Drow, Pantheon::Duergar],
             Self::Abyssal
+            | Self::Common
             | Self::Celestial
             | Self::DeepSpeech
             | Self::Infernal

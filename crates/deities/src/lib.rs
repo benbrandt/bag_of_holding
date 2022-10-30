@@ -381,7 +381,7 @@ impl Pantheon {
     fn weight(self) -> i32 {
         match self {
             // Default
-            Self::ForgottenRealms => 2,
+            Self::ForgottenRealms => 3,
             // Racial
             Self::Bugbear
             | Self::Dragon
