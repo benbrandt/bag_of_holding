@@ -17,12 +17,7 @@
 use std::borrow::Cow;
 
 use alignments::{Alignment, AlignmentInfluences, Attitude, Morality};
-use rand::{
-    distributions::Standard,
-    prelude::Distribution,
-    seq::{IteratorRandom, SliceRandom},
-    Rng,
-};
+use rand::{distributions::Standard, prelude::Distribution, seq::IteratorRandom, Rng};
 use rand_utils::SliceExpRandom;
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
@@ -383,35 +378,33 @@ impl Pantheon {
     /// Weight pantheon choice to be more likely based on number of deities
     /// that align with character alignment. Also weights towards larger
     /// pantheons
-    fn weight(
-        self,
-        domain: Option<Domain>,
-        attitude_influences: &[Attitude],
-        morality_influences: &[Morality],
-    ) -> i32 {
-        let deities = self.deities(domain);
-        // Only do this is there is some weights to apply (otherwise always 0)
-        if attitude_influences.is_empty() && morality_influences.is_empty() {
-            deities.len().try_into().unwrap()
-        } else {
-            self.deities(domain)
-                .iter()
-                .map(|d| d.weight(attitude_influences, morality_influences))
-                .sum()
+    fn weight(self) -> i32 {
+        match self {
+            // Default
+            Self::ForgottenRealms => 4,
+            // Racial
+            Self::Bugbear
+            | Self::Dragon
+            | Self::Drow
+            | Self::Duergar
+            | Self::Dwarven
+            | Self::Elven
+            | Self::Giant
+            | Self::Gnomish
+            | Self::Goblin
+            | Self::Halfling
+            | Self::Kobold
+            | Self::Lizardfolk
+            | Self::Orc => 1,
+            // Other universes
+            Self::Celtic
+            | Self::Dragonlance
+            | Self::Eberron
+            | Self::Egyptian
+            | Self::Greek
+            | Self::Greyhawk
+            | Self::Norse => 0,
         }
-    }
-
-    /// Max weight across all pantheons
-    fn max_weight(
-        domain: Option<Domain>,
-        attitude_influences: &[Attitude],
-        morality_influences: &[Morality],
-    ) -> i32 {
-        Pantheon::iter()
-            .filter(|p| !p.deities(domain).is_empty())
-            .map(|p| p.weight(domain, attitude_influences, morality_influences))
-            .max()
-            .unwrap_or_default()
     }
 
     /// Choose a pantheon, based on cultural pantheon influences as well as
@@ -429,14 +422,19 @@ impl Pantheon {
         attitude_influences: &[Attitude],
         morality_influences: &[Morality],
     ) -> Self {
-        let max = Self::max_weight(domain, attitude_influences, morality_influences);
-        *Pantheon::iter()
+        let pantheons = Pantheon::iter()
             .filter(|p| !p.deities(domain).is_empty())
-            .collect::<Vec<_>>()
+            .collect::<Vec<_>>();
+        let max = pantheons
+            .iter()
+            .map(|p| p.weight())
+            .max()
+            .unwrap_or_default();
+        *pantheons
             // Exp weighting with these weights is much too strong
-            .choose_weighted(rng, |p| {
+            .choose_exp_weighted(rng, |p| {
                 // Get base weight and increase by max * number of times this pantheon was in their influences
-                p.weight(domain, attitude_influences, morality_influences)
+                p.weight()
                     + (max
                         * i32::try_from(pantheon_influences.iter().filter(|&i| i == p).count())
                             .unwrap())
