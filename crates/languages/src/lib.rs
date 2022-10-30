@@ -17,7 +17,10 @@ use std::{borrow::Cow, collections::HashSet};
 
 use deities::{Deities, Pantheon};
 use derive_more::Deref;
-use rand::Rng;
+use rand::{
+    seq::{IteratorRandom, SliceRandom},
+    Rng,
+};
 use rand_utils::SliceExpRandom;
 use serde::{Deserialize, Serialize};
 use strum::{EnumIter, IntoEnumIterator};
@@ -128,11 +131,9 @@ impl Language {
         }
     }
 
-    /// Weighting for language based on type and influences
-    fn weight(self, likely_languages: &[Language]) -> i32 {
+    /// Weighting for language based on type
+    fn weight(self) -> i32 {
         self.language_type().weight()
-            + (LanguageType::Standard.weight()
-                * i32::try_from(likely_languages.iter().filter(|&ll| ll == &self).count()).unwrap())
     }
 }
 
@@ -187,10 +188,20 @@ impl Languages {
     ///
     /// If not enough languages to choose from
     pub fn choose<R: Rng + ?Sized>(&mut self, rng: &mut R, likely_languages: &[Language]) {
-        let language = *self
-            .remaining_languages()
-            .choose_exp_weighted(rng, |l| l.weight(likely_languages))
-            .unwrap();
+        let remaining = self.remaining_languages();
+        if remaining.is_empty() {
+            return;
+        }
+        let remaining_likely = likely_languages
+            .iter()
+            .filter(|&l| remaining.contains(l))
+            .collect::<Vec<_>>();
+        // 10% chance we ignore the likely languages
+        let language = if remaining_likely.is_empty() || (1..=10).choose(rng).unwrap() == 10 {
+            *remaining.choose_exp_weighted(rng, |l| l.weight()).unwrap()
+        } else {
+            **remaining_likely.choose(rng).unwrap()
+        };
         self.0.insert(language);
     }
 
@@ -205,11 +216,9 @@ impl Languages {
         amount: usize,
         likely_languages: &[Language],
     ) {
-        let choices = self.remaining_languages();
-        let languages = choices
-            .choose_multiple_exp_weighted(rng, amount, |l| l.weight(likely_languages))
-            .unwrap();
-        self.0.extend(languages);
+        for _ in 0..amount {
+            self.choose(rng, likely_languages);
+        }
     }
 }
 
