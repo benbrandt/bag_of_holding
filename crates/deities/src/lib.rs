@@ -408,6 +408,7 @@ impl Pantheon {
         morality_influences: &[Morality],
     ) -> i32 {
         Pantheon::iter()
+            .filter(|p| !p.deities(domain).is_empty())
             .map(|p| p.weight(domain, attitude_influences, morality_influences))
             .max()
             .unwrap_or_default()
