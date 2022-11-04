@@ -29,7 +29,7 @@ axum-extra = { version = "0.3.7", features = [
     "typed-routing",
 ] }
 axum-macros = "0.2.3"
-axum-server = { version = "0.4.2", features = ["tls-rustls"] }
+axum-server = { version = "0.4.3", features = ["tls-rustls"] }
 characters = { path = "./crates/characters" }
 clap = { version = "4.0.18", features = ["derive", "env"] }
 damage = { path = "./crates/damage" }
