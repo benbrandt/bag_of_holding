@@ -18,7 +18,6 @@ use std::borrow::Cow;
 
 use abilities::AbilityScores;
 use alignments::{Alignment, AlignmentInfluences};
-use damage::{DamageType, Resistances};
 use deities::{Deities, Deity, Pantheon};
 use features::{Feature, Features};
 use languages::{Language, LanguageOptions, Languages};
@@ -390,8 +389,6 @@ struct CharacterSheet {
     pub name: String,
     /// Chosen race of the character
     pub race: Option<String>,
-    /// Chosen resistances of the character
-    pub resistances: Vec<DamageType>,
     /// The character's size
     pub size: Option<Size>,
     /// The character's speeds
@@ -411,11 +408,6 @@ impl From<Character> for CharacterSheet {
             languages: character.languages,
             name: character.name,
             race: character.race.as_ref().map(Sources::citation),
-            resistances: character
-                .race
-                .as_ref()
-                .map(|r| r.resistances().to_vec())
-                .unwrap_or_default(),
             size: character.race.as_ref().map(RaceGenerator::size),
             speeds: character
                 .race

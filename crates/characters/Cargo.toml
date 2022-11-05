@@ -8,7 +8,6 @@ edition.workspace = true
 [dependencies]
 abilities.workspace = true
 alignments.workspace = true
-damage.workspace = true
 deities.workspace = true
 features.workspace = true
 languages.workspace = true

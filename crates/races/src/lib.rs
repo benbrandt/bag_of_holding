@@ -15,7 +15,6 @@
 
 use std::{borrow::Cow, fmt, ops::RangeInclusive};
 
-use damage::{DamageType, Resistances};
 use deities::{Deities, Pantheon};
 use enum_dispatch::enum_dispatch;
 use features::{Feature, Features};
@@ -40,16 +39,7 @@ mod dragonborn;
 /// decisions made for features of that race.
 #[enum_dispatch]
 pub trait RaceGenerator:
-    Clone
-    + Deities
-    + Features
-    + fmt::Debug
-    + fmt::Display
-    + LanguageOptions
-    + Resistances
-    + Sized
-    + Sources
-    + Speeds
+    Clone + Deities + Features + fmt::Debug + fmt::Display + LanguageOptions + Sized + Sources + Speeds
 where
     Standard: Distribution<Self>,
 {
@@ -159,14 +149,6 @@ impl LanguageOptions for Race {
     fn likely_languages(&self) -> Cow<'_, [languages::Language]> {
         match self {
             Self::Dragonborn(d) => d.likely_languages(),
-        }
-    }
-}
-
-impl Resistances for Race {
-    fn resistances(&self) -> Cow<'_, [DamageType]> {
-        match self {
-            Self::Dragonborn(d) => d.resistances(),
         }
     }
 }

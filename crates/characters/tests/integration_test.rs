@@ -12,7 +12,6 @@
 
 use abilities::Ability;
 use characters::{Character, CharacterBuildError};
-use damage::Resistances;
 use features::Features;
 use languages::Language;
 use races::RaceGenerator;
@@ -163,11 +162,6 @@ fn serialize_to_character_sheet() {
     assert_eq!(
         json!(character.race.as_ref().unwrap().speeds()),
         serialized["speeds"]
-    );
-
-    assert_eq!(
-        json!(character.race.as_ref().unwrap().resistances().to_vec()),
-        serialized["resistances"]
     );
 
     assert_eq!(

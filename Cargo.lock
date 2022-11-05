@@ -428,7 +428,6 @@ version = "0.1.0"
 dependencies = [
  "abilities",
  "alignments",
- "damage",
  "deities",
  "features",
  "languages",
@@ -574,14 +573,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0369ee1ad671834580515889b80f2ea915f23b8be8d0daa4bbaf2ac5c7590835"
 dependencies = [
  "cipher",
-]
-
-[[package]]
-name = "damage"
-version = "0.1.0"
-dependencies = [
- "serde",
- "strum",
 ]
 
 [[package]]
@@ -1609,7 +1600,6 @@ dependencies = [
 name = "races"
 version = "0.1.0"
 dependencies = [
- "damage",
  "deities",
  "enum_dispatch",
  "features",
