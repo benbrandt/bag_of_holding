@@ -10,8 +10,11 @@
     unused
 )]
 
+use std::collections::HashSet;
+
 use abilities::Ability;
 use characters::{Character, CharacterBuildError};
+use descriptions::{Appearance, Backstory};
 use languages::Language;
 use races::RaceGenerator;
 use rand::Rng;
@@ -129,6 +132,17 @@ fn generate_full_character() {
     assert!(character.height_and_weight.is_some());
     assert!(character.languages.len() > 1);
     assert!(character.alignment.is_some());
+
+    let race_appearance = character.race.as_ref().unwrap().appearance();
+    let race_appearance = race_appearance.iter().collect::<HashSet<_>>();
+    let character_appearance = character.appearance();
+    let character_appearance = character_appearance.iter().collect::<HashSet<_>>();
+    assert!(race_appearance.is_subset(&character_appearance));
+    let race_backstory = character.race.as_ref().unwrap().backstory();
+    let race_backstory = race_backstory.iter().collect::<HashSet<_>>();
+    let character_backstory = character.backstory();
+    let character_backstory = character_backstory.iter().collect::<HashSet<_>>();
+    assert!(race_backstory.is_subset(&character_backstory));
 }
 
 #[test]

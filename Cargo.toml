@@ -34,6 +34,7 @@ characters = { path = "./crates/characters" }
 clap = { version = "4.0.18", features = ["derive", "env"] }
 deities = { path = "./crates/deities" }
 derive_more = "0.99.17"
+descriptions = { path = "./crates/descriptions" }
 dice = { path = "./crates/dice" }
 enum_dispatch = "0.3.8"
 futures = "0.3.25"
@@ -85,6 +86,7 @@ axum-server.workspace = true
 characters.workspace = true
 clap.workspace = true
 deities.workspace = true
+descriptions.workspace = true
 dice.workspace = true
 futures.workspace = true
 hyper.workspace = true

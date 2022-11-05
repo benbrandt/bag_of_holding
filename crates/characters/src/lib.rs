@@ -19,6 +19,7 @@ use std::borrow::Cow;
 use abilities::AbilityScores;
 use alignments::{Alignment, AlignmentInfluences};
 use deities::{Deities, Deity, Pantheon};
+use descriptions::{Appearance, Backstory};
 use languages::{Language, LanguageOptions, Languages};
 use races::{Race, RaceGenerator};
 use rand::{distributions::Standard, prelude::Distribution, Rng};
@@ -332,6 +333,24 @@ impl AlignmentInfluences for Character {
         self.deity
             .as_ref()
             .map(alignments::AlignmentInfluences::morality)
+            .unwrap_or_default()
+    }
+}
+
+impl Appearance for Character {
+    fn appearance(&self) -> Cow<'_, [&'_ str]> {
+        self.race
+            .as_ref()
+            .map(Appearance::appearance)
+            .unwrap_or_default()
+    }
+}
+
+impl Backstory for Character {
+    fn backstory(&self) -> Cow<'_, [&'_ str]> {
+        self.race
+            .as_ref()
+            .map(Backstory::backstory)
             .unwrap_or_default()
     }
 }

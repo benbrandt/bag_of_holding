@@ -7,6 +7,7 @@ edition.workspace = true
 
 [dependencies]
 deities.workspace = true
+descriptions.workspace = true
 enum_dispatch.workspace = true
 languages.workspace = true
 names.workspace = true

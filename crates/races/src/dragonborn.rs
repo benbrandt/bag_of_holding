@@ -1,6 +1,7 @@
 use std::{borrow::Cow, fmt, ops::RangeInclusive};
 
 use deities::{Deities, Pantheon};
+use descriptions::{Appearance, Backstory};
 use languages::{Language, LanguageOptions};
 use names::Name;
 use rand::{
@@ -43,6 +44,10 @@ enum DraconicAncestry {
     Silver,
     White,
 }
+
+impl Appearance for Dragonborn {}
+
+impl Backstory for Dragonborn {}
 
 impl Deities for Dragonborn {
     fn pantheons(&self) -> Cow<'_, [Pantheon]> {

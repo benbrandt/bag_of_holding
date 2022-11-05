@@ -319,6 +319,7 @@ dependencies = [
  "characters",
  "clap",
  "deities",
+ "descriptions",
  "dice",
  "futures",
  "hyper",
@@ -429,6 +430,7 @@ dependencies = [
  "abilities",
  "alignments",
  "deities",
+ "descriptions",
  "languages",
  "metrics",
  "races",
@@ -609,6 +611,10 @@ dependencies = [
  "rustc_version",
  "syn",
 ]
+
+[[package]]
+name = "descriptions"
+version = "0.1.0"
 
 [[package]]
 name = "dice"
@@ -1592,6 +1598,7 @@ name = "races"
 version = "0.1.0"
 dependencies = [
  "deities",
+ "descriptions",
  "enum_dispatch",
  "itertools",
  "languages",
