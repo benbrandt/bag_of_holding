@@ -36,7 +36,6 @@ deities = { path = "./crates/deities" }
 derive_more = "0.99.17"
 dice = { path = "./crates/dice" }
 enum_dispatch = "0.3.8"
-features = { path = "./crates/features" }
 futures = "0.3.25"
 hyper = { version = "0.14.22", features = ["full"] }
 itertools = "0.10.5"

@@ -1,7 +1,6 @@
 use std::{borrow::Cow, fmt, ops::RangeInclusive};
 
 use deities::{Deities, Pantheon};
-use features::{Feature, Features};
 use languages::{Language, LanguageOptions};
 use names::Name;
 use rand::{
@@ -48,14 +47,6 @@ enum DraconicAncestry {
 impl Deities for Dragonborn {
     fn pantheons(&self) -> Cow<'_, [Pantheon]> {
         Cow::Borrowed(&[Pantheon::Dragon])
-    }
-}
-
-const FEATURES: &[Feature] = &[Feature::new("Breath Weapon", Book::Phb)];
-
-impl Features for Dragonborn {
-    fn features(&self) -> &[Feature] {
-        FEATURES
     }
 }
 

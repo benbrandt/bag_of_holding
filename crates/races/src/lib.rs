@@ -17,7 +17,6 @@ use std::{borrow::Cow, fmt, ops::RangeInclusive};
 
 use deities::{Deities, Pantheon};
 use enum_dispatch::enum_dispatch;
-use features::{Feature, Features};
 use languages::LanguageOptions;
 use names::Name;
 use rand::{
@@ -38,7 +37,7 @@ mod dragonborn;
 /// decisions made for features of that race.
 #[enum_dispatch]
 pub trait RaceGenerator:
-    Clone + Deities + Features + fmt::Debug + fmt::Display + LanguageOptions + Sized + Sources
+    Clone + Deities + fmt::Debug + fmt::Display + LanguageOptions + Sized + Sources
 where
     Standard: Distribution<Self>,
 {
@@ -126,14 +125,6 @@ impl Deities for Race {
     fn deity_required(&self) -> bool {
         match self {
             Self::Dragonborn(d) => d.deity_required(),
-        }
-    }
-}
-
-impl Features for Race {
-    fn features(&self) -> &[Feature] {
-        match self {
-            Self::Dragonborn(d) => d.features(),
         }
     }
 }

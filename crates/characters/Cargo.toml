@@ -9,7 +9,6 @@ edition.workspace = true
 abilities.workspace = true
 alignments.workspace = true
 deities.workspace = true
-features.workspace = true
 languages.workspace = true
 metrics.workspace = true
 races.workspace = true
