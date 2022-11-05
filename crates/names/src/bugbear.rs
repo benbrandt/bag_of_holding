@@ -27,7 +27,7 @@ impl Distribution<Bugbear> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Bugbear {
         Bugbear {
-            name: *NAMES.choose(rng).unwrap(),
+            name: NAMES.choose(rng).unwrap(),
         }
     }
 }

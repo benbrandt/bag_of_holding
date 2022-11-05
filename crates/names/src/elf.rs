@@ -47,9 +47,9 @@ impl Distribution<Elf> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Elf {
         Elf {
-            adult_name: *[FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
-            child_name: *CHILD.choose(rng).unwrap(),
-            family_name: *FAMILY.choose(rng).unwrap(),
+            adult_name: [FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
+            child_name: CHILD.choose(rng).unwrap(),
+            family_name: FAMILY.choose(rng).unwrap(),
         }
     }
 }

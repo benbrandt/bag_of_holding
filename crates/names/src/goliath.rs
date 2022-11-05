@@ -53,9 +53,9 @@ impl Distribution<Goliath> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Goliath {
         Goliath {
-            birth_name: *BIRTH_NAMES.choose(rng).unwrap(),
-            nickname: *NICKNAMES.choose(rng).unwrap(),
-            clan_name: *CLANS.choose(rng).unwrap(),
+            birth_name: BIRTH_NAMES.choose(rng).unwrap(),
+            nickname: NICKNAMES.choose(rng).unwrap(),
+            clan_name: CLANS.choose(rng).unwrap(),
         }
     }
 }

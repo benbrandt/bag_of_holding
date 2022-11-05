@@ -32,8 +32,8 @@ impl Distribution<Triton> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Triton {
         Triton {
-            first_name: *[FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
-            surname: *SURNAMES.choose(rng).unwrap(),
+            first_name: [FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
+            surname: SURNAMES.choose(rng).unwrap(),
         }
     }
 }

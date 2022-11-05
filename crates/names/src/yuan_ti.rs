@@ -36,7 +36,7 @@ impl Distribution<YuanTi> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> YuanTi {
         YuanTi {
-            name: *NAMES.choose(rng).unwrap(),
+            name: NAMES.choose(rng).unwrap(),
         }
     }
 }

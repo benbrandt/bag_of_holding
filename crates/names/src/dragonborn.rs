@@ -38,9 +38,9 @@ impl Distribution<Dragonborn> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Dragonborn {
         Dragonborn {
-            first_name: *[FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
-            child_name: *CHILD.choose(rng).unwrap(),
-            clan_name: *CLAN.choose(rng).unwrap(),
+            first_name: [FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
+            child_name: CHILD.choose(rng).unwrap(),
+            clan_name: CLAN.choose(rng).unwrap(),
         }
     }
 }

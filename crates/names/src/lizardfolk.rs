@@ -36,7 +36,7 @@ impl Distribution<Lizardfolk> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Lizardfolk {
         Lizardfolk {
-            name: *NAMES.choose(rng).unwrap(),
+            name: NAMES.choose(rng).unwrap(),
         }
     }
 }

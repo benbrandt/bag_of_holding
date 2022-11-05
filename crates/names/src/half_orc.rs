@@ -39,7 +39,7 @@ impl Distribution<HalfOrc> for Standard {
         let orc = rng.gen::<Orc>();
 
         HalfOrc {
-            first_name: *[human.first_name, orc.name].choose(rng).unwrap(),
+            first_name: [human.first_name, orc.name].choose(rng).unwrap(),
             surname: *[human.surname, Some(orc.epithet)].choose(rng).unwrap(),
         }
     }

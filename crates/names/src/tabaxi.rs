@@ -37,8 +37,8 @@ impl Distribution<Tabaxi> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Tabaxi {
         Tabaxi {
-            name: *NAMES.choose(rng).unwrap(),
-            clan_name: *CLANS.choose(rng).unwrap(),
+            name: NAMES.choose(rng).unwrap(),
+            clan_name: CLANS.choose(rng).unwrap(),
         }
     }
 }

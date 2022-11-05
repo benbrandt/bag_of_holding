@@ -27,7 +27,7 @@ impl Distribution<Githyanki> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Githyanki {
         Githyanki {
-            name: *[FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
+            name: [FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
         }
     }
 }

@@ -42,9 +42,9 @@ impl Distribution<Gnome> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Gnome {
         Gnome {
-            personal_name: *[FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
-            nickname: *NICKNAMES.choose(rng).unwrap(),
-            clan_name: *CLAN.choose(rng).unwrap(),
+            personal_name: [FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
+            nickname: NICKNAMES.choose(rng).unwrap(),
+            clan_name: CLAN.choose(rng).unwrap(),
         }
     }
 }

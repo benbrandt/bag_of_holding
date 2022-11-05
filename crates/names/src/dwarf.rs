@@ -31,8 +31,8 @@ impl Distribution<Dwarf> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Dwarf {
         Dwarf {
-            first_name: *[FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
-            clan_name: *CLAN.choose(rng).unwrap(),
+            first_name: [FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
+            clan_name: CLAN.choose(rng).unwrap(),
         }
     }
 }

@@ -30,7 +30,7 @@ impl Distribution<Duergar> for Standard {
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Duergar {
         Duergar {
             first_name: rng.gen::<Dwarf>().first_name,
-            clan_name: *CLAN.choose(rng).unwrap(),
+            clan_name: CLAN.choose(rng).unwrap(),
         }
     }
 }

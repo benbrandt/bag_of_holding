@@ -31,8 +31,8 @@ impl Distribution<Halfling> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Halfling {
         Halfling {
-            given_name: *[FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
-            family_name: *FAMILY.choose(rng).unwrap(),
+            given_name: [FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
+            family_name: FAMILY.choose(rng).unwrap(),
         }
     }
 }

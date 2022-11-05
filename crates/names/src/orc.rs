@@ -30,8 +30,8 @@ impl Distribution<Orc> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Orc {
         Orc {
-            name: *[FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
-            epithet: *EPITHET.choose(rng).unwrap(),
+            name: [FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
+            epithet: EPITHET.choose(rng).unwrap(),
         }
     }
 }

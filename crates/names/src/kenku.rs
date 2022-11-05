@@ -47,7 +47,7 @@ impl Distribution<Kenku> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Kenku {
         Kenku {
-            name: *NAMES.choose(rng).unwrap(),
+            name: NAMES.choose(rng).unwrap(),
         }
     }
 }

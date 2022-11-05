@@ -27,7 +27,7 @@ impl Distribution<Hobgoblin> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Hobgoblin {
         Hobgoblin {
-            name: *NAMES.choose(rng).unwrap(),
+            name: NAMES.choose(rng).unwrap(),
         }
     }
 }

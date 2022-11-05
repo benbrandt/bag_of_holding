@@ -110,7 +110,7 @@ impl Ethnicity {
     fn name<R: Rng + ?Sized>(self, rng: &mut R) -> Human {
         let names = self.names();
         Human {
-            first_name: *[names.female, names.male]
+            first_name: [names.female, names.male]
                 .choose(rng)
                 .unwrap()
                 .choose(rng)

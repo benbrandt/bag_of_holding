@@ -39,7 +39,7 @@ impl Distribution<HalfElf> for Standard {
         let elf = rng.gen::<Elf>();
 
         HalfElf {
-            first_name: *[human.first_name, elf.adult_name].choose(rng).unwrap(),
+            first_name: [human.first_name, elf.adult_name].choose(rng).unwrap(),
             surname: *[human.surname, Some(elf.family_name)].choose(rng).unwrap(),
         }
     }

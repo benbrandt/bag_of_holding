@@ -27,7 +27,7 @@ impl Distribution<Githzerai> for Standard {
     #[tracing::instrument(skip(rng))]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Githzerai {
         Githzerai {
-            name: *[FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
+            name: [FEMALE, MALE].choose(rng).unwrap().choose(rng).unwrap(),
         }
     }
 }
