@@ -588,6 +588,7 @@ name = "deities"
 version = "0.1.0"
 dependencies = [
  "alignments",
+ "dice",
  "metrics",
  "rand",
  "rand_utils",
@@ -659,15 +660,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "features"
-version = "0.1.0"
-dependencies = [
- "serde",
- "serde_json",
- "sources",
 ]
 
 [[package]]
@@ -1076,6 +1068,7 @@ version = "0.1.0"
 dependencies = [
  "deities",
  "derive_more",
+ "dice",
  "rand",
  "rand_utils",
  "serde",

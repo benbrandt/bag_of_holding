@@ -17,6 +17,7 @@
 use std::borrow::Cow;
 
 use alignments::{Alignment, AlignmentInfluences, Attitude, Morality};
+use dice::Die;
 use rand::{
     distributions::Standard,
     prelude::Distribution,
@@ -435,7 +436,7 @@ impl Pantheon {
             .collect::<Vec<_>>();
 
         // 10% chance you'll end up with an unlikely pantheon
-        if remaining_likely.is_empty() || (1..=10).choose(rng).unwrap() == 10 {
+        if remaining_likely.is_empty() || Die::D10.roll(rng) == 10 {
             *pantheons.choose_exp_weighted(rng, |p| p.weight()).unwrap()
         } else {
             **remaining_likely.choose(rng).unwrap()

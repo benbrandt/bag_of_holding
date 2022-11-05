@@ -8,6 +8,7 @@ edition.workspace = true
 [dependencies]
 deities.workspace = true
 derive_more.workspace = true
+dice.workspace = true
 rand.workspace = true
 rand_utils.workspace = true
 serde.workspace = true

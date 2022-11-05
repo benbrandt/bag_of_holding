@@ -17,10 +17,8 @@ use std::{borrow::Cow, collections::HashSet};
 
 use deities::{Deities, Pantheon};
 use derive_more::Deref;
-use rand::{
-    seq::{IteratorRandom, SliceRandom},
-    Rng,
-};
+use dice::Die;
+use rand::{seq::SliceRandom, Rng};
 use rand_utils::SliceExpRandom;
 use serde::{Deserialize, Serialize};
 use strum::{EnumIter, IntoEnumIterator};
@@ -197,7 +195,7 @@ impl Languages {
             .filter(|&l| remaining.contains(l))
             .collect::<Vec<_>>();
         // 10% chance we ignore the likely languages
-        let language = if remaining_likely.is_empty() || (1..=10).choose(rng).unwrap() == 10 {
+        let language = if remaining_likely.is_empty() || Die::D10.roll(rng) == 10 {
             *remaining.choose_exp_weighted(rng, |l| l.weight()).unwrap()
         } else {
             **remaining_likely.choose(rng).unwrap()
