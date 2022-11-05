@@ -19,7 +19,6 @@ use rand::Rng;
 use serde_json::json;
 use sizes::HeightAndWeight;
 use sources::Sources;
-use speeds::Speeds;
 use strum::IntoEnumIterator;
 
 #[test]
@@ -158,12 +157,6 @@ fn serialize_to_character_sheet() {
         json!(character.race.as_ref().unwrap().size()),
         serialized["size"]
     );
-
-    assert_eq!(
-        json!(character.race.as_ref().unwrap().speeds()),
-        serialized["speeds"]
-    );
-
     assert_eq!(
         character.alignment.unwrap().to_string(),
         serialized["alignment"]

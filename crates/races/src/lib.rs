@@ -28,7 +28,6 @@ use rand::{
 use serde::{Deserialize, Serialize};
 use sizes::{HeightAndWeight, HeightAndWeightTable, Size};
 use sources::{Book, Sources};
-use speeds::{Speed, Speeds};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
 use crate::dragonborn::Dragonborn;
@@ -39,7 +38,7 @@ mod dragonborn;
 /// decisions made for features of that race.
 #[enum_dispatch]
 pub trait RaceGenerator:
-    Clone + Deities + Features + fmt::Debug + fmt::Display + LanguageOptions + Sized + Sources + Speeds
+    Clone + Deities + Features + fmt::Debug + fmt::Display + LanguageOptions + Sized + Sources
 where
     Standard: Distribution<Self>,
 {
@@ -157,14 +156,6 @@ impl Sources for Race {
     fn sources(&self) -> Cow<'_, [Book]> {
         match self {
             Self::Dragonborn(d) => d.sources(),
-        }
-    }
-}
-
-impl Speeds for Race {
-    fn speeds(&self) -> &[Speed] {
-        match self {
-            Self::Dragonborn(d) => d.speeds(),
         }
     }
 }

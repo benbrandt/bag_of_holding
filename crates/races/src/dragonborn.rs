@@ -11,7 +11,6 @@ use rand::{
 };
 use sizes::{HeightAndWeightTable, Size};
 use sources::{Book, Sources};
-use speeds::{Speed, Speeds};
 use strum::{Display, EnumIter, IntoEnumIterator};
 
 use crate::RaceGenerator;
@@ -100,12 +99,6 @@ impl RaceGenerator for Dragonborn {
 impl Sources for Dragonborn {
     fn sources(&self) -> Cow<'_, [Book]> {
         Cow::Borrowed(&[Book::Phb])
-    }
-}
-
-impl Speeds for Dragonborn {
-    fn speeds(&self) -> &[Speed] {
-        &[Speed::Walking(30)]
     }
 }
 

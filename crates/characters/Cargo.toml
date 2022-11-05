@@ -17,7 +17,6 @@ rand.workspace = true
 serde.workspace = true
 sizes.workspace = true
 sources.workspace = true
-speeds.workspace = true
 strum.workspace = true
 thiserror.workspace = true
 tracing.workspace = true

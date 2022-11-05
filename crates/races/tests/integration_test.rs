@@ -14,7 +14,6 @@ use races::{Race, RaceGenerator, RaceOption};
 use rand::Rng;
 use sizes::HeightAndWeight;
 use sources::Sources;
-use speeds::{Speed, Speeds};
 use strum::IntoEnumIterator;
 
 #[test]
@@ -53,15 +52,5 @@ fn can_generate_all_races() {
         assert!(height > 0);
         assert!(weight > 0);
         assert!(weight > height.into());
-
-        let speeds = race.speeds();
-        assert!(!speeds.is_empty());
-        for speed in speeds {
-            match speed {
-                Speed::Climbing(s) | Speed::Flying(s) | Speed::Swimming(s) | Speed::Walking(s) => {
-                    assert!(s > &0);
-                }
-            };
-        }
     }
 }
