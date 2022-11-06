@@ -29,6 +29,8 @@ async fn main() {
     let _guard = sentry::init(ClientOptions {
         release: release_name!(),
         traces_sample_rate: 0.1,
+        enable_profiling: true,
+        profiles_sample_rate: 0.1,
         ..ClientOptions::default()
     });
 
