@@ -10,7 +10,6 @@ abilities.workspace = true
 alignments.workspace = true
 deities.workspace = true
 descriptions.workspace = true
-languages.workspace = true
 metrics.workspace = true
 races.workspace = true
 rand.workspace = true

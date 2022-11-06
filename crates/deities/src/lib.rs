@@ -382,34 +382,8 @@ impl Pantheon {
 
 impl Pantheon {
     /// Weight pantheon choice to be more likely based on number of deities
-    /// that align with character alignment. Also weights towards larger
-    /// pantheons
-    fn weight(self) -> i32 {
-        match self {
-            // Default
-            Self::ForgottenRealms => 3,
-            // Racial and other universes
-            Self::Bugbear
-            | Self::Dragon
-            | Self::Drow
-            | Self::Duergar
-            | Self::Dwarven
-            | Self::Elven
-            | Self::Giant
-            | Self::Gnomish
-            | Self::Goblin
-            | Self::Halfling
-            | Self::Kobold
-            | Self::Lizardfolk
-            | Self::Orc
-            | Self::Celtic
-            | Self::Dragonlance
-            | Self::Eberron
-            | Self::Egyptian
-            | Self::Greek
-            | Self::Greyhawk
-            | Self::Norse => 0,
-        }
+    fn weight(self, domain: Option<Domain>) -> usize {
+        self.deities(domain).len()
     }
 
     /// Choose a pantheon, based on cultural pantheon influences as well as
@@ -437,7 +411,9 @@ impl Pantheon {
 
         // 10% chance you'll end up with an unlikely pantheon
         if remaining_likely.is_empty() || Die::D10.roll(rng) == 10 {
-            *pantheons.choose_exp_weighted(rng, |p| p.weight()).unwrap()
+            *pantheons
+                .choose_weighted(rng, |p| p.weight(domain))
+                .unwrap()
         } else {
             **remaining_likely.choose(rng).unwrap()
         }

@@ -20,7 +20,6 @@ use abilities::AbilityScores;
 use alignments::{Alignment, AlignmentInfluences};
 use deities::{Deities, Deity, Pantheon};
 use descriptions::{Appearance, Backstory};
-use languages::{Language, LanguageOptions, Languages};
 use races::{Race, RaceGenerator};
 use rand::{distributions::Standard, prelude::Distribution, Rng};
 use serde::Serialize;
@@ -42,8 +41,6 @@ pub struct Character {
     pub deity: Option<Deity>,
     /// The character's height and weight
     pub height_and_weight: Option<HeightAndWeight>,
-    /// Languages the character knows
-    pub languages: Languages,
     /// The character's name
     pub name: String,
     /// Race of the character
@@ -190,67 +187,14 @@ impl Character {
         Ok(self)
     }
 
-    /// Helper method for getting all additional languages
-    ///
-    /// # Errors
-    ///
-    /// Will error if race isn't already chosen
-    fn additional_languages(&self) -> Result<usize, CharacterBuildError> {
-        let race = self.try_race()?;
-        Ok(race.additional_languages())
-    }
-
-    /// Helper method for getting all likely languages
-    ///
-    /// # Errors
-    ///
-    /// Will error if race isn't already chosen
-    fn likely_languages(&self) -> Result<Vec<Language>, CharacterBuildError> {
-        let race = self.try_race()?;
-        Ok(race.likely_languages().into())
-    }
-
-    /// Generate languages for your character.
-    ///
-    /// Requires a Race to be selected already.
-    ///
-    /// ```
-    /// use characters::Character;
-    /// use rand::Rng;
-    ///
-    /// let mut rng = rand::thread_rng();
-    /// let character = Character::new()
-    ///     .gen_ability_scores(&mut rng)
-    ///     .gen_race(&mut rng)?
-    ///     .gen_languages(&mut rng)?;
-    /// # Ok::<(), Box<dyn std::error::Error>>(())
-    /// ```
-    ///
-    /// # Errors
-    ///
-    /// Will error if race is not already chosen.
-    #[tracing::instrument(skip(rng))]
-    pub fn gen_languages<R: Rng + ?Sized>(
-        mut self,
-        rng: &mut R,
-    ) -> Result<Self, CharacterBuildError> {
-        self.languages.choose_multiple(
-            rng,
-            self.additional_languages()?,
-            &self.likely_languages()?,
-        );
-        Ok(self)
-    }
-
     /// Helper for getting all pantheons the character might choose
     ///
     /// # Errors
     ///
     /// Will error if race isn't already chosen
     fn pantheons(&self) -> Result<Vec<Pantheon>, CharacterBuildError> {
-        let mut pantheons = vec![];
+        let mut pantheons = vec![Pantheon::ForgottenRealms];
         pantheons.extend(self.try_race()?.pantheons().iter());
-        pantheons.extend(self.languages.pantheons().iter());
 
         Ok(pantheons)
     }
@@ -315,7 +259,6 @@ impl Character {
             .gen_name(rng)?
             .gen_age(rng)?
             .gen_height_and_weight(rng)?
-            .gen_languages(rng)?
             .gen_deity(rng)?
             .gen_alignment(rng))
     }
@@ -389,8 +332,6 @@ struct CharacterSheet {
     /// The character's height and weight
     #[serde(flatten)]
     pub height_and_weight: Option<HeightAndWeight>,
-    /// Languages the character knows
-    pub languages: Languages,
     /// Name of the character
     pub name: String,
     /// Chosen race of the character
@@ -407,7 +348,6 @@ impl From<Character> for CharacterSheet {
             alignment: character.alignment,
             deity: character.deity,
             height_and_weight: character.height_and_weight,
-            languages: character.languages,
             name: character.name,
             race: character.race.as_ref().map(Sources::citation),
             size: character.race.as_ref().map(RaceGenerator::size),
