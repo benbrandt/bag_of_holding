@@ -6,10 +6,8 @@ use strum::IntoEnumIterator;
 
 /// Routes related to names
 pub fn routes() -> Router {
-    let names = Resource::named("names")
-        .index(index)
-        .nest_collection(Router::new().merge(Resource::named(":name").create(create)));
-    Router::new().merge(names)
+    Router::from(Resource::named("names").index(index))
+        .merge(Router::from(Resource::named("names/:name").create(create)))
 }
 
 /// List name generator options

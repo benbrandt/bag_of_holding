@@ -4,8 +4,7 @@ use axum_extra::routing::Resource;
 
 /// Routes related to alignments
 pub fn routes() -> Router {
-    let alignments = Resource::named("alignments").create(create);
-    Router::new().merge(alignments)
+    Router::from(Resource::named("alignments").create(create))
 }
 
 /// Create new alignment

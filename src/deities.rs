@@ -7,16 +7,11 @@ use strum::IntoEnumIterator;
 
 /// Routes related to deities
 pub fn routes() -> Router {
-    let names = Resource::named("deities")
-        .create(create_deity)
-        .nest_collection(
-            Router::new().merge(
-                Resource::named("domains")
-                    .index(index_domain)
-                    .create(create_domain),
-            ),
-        );
-    Router::new().merge(names)
+    Router::from(Resource::named("deities").create(create_deity)).merge(Router::from(
+        Resource::named("deities/domains")
+            .index(index_domain)
+            .create(create_domain),
+    ))
 }
 
 #[derive(Debug, Deserialize)]

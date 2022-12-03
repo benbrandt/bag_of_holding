@@ -6,10 +6,9 @@ use strum::IntoEnumIterator;
 
 /// Routes related to height and weight tables
 pub fn routes() -> Router {
-    let height_and_weight = Resource::named("height-and-weight")
-        .index(index)
-        .nest_collection(Router::new().merge(Resource::named(":table").create(create)));
-    Router::new().merge(height_and_weight)
+    Router::from(Resource::named("height-and-weight").index(index)).merge(Router::from(
+        Resource::named("height-and-weight/:table").create(create),
+    ))
 }
 
 /// List height and weight table generator options

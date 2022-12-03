@@ -5,8 +5,7 @@ use rand::Rng;
 
 /// Routes related to characters
 pub fn routes() -> Router {
-    let characters = Resource::named("characters").create(create);
-    Router::new().merge(characters)
+    Router::from(Resource::named("characters").create(create))
 }
 
 /// Create new set of ability scores
