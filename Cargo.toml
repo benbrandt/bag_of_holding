@@ -44,7 +44,7 @@ metrics = "0.20.1"
 metrics-exporter-prometheus = "0.11.0"
 mime = "0.3.16"
 names = { path = "./crates/names" }
-once_cell = "1.17.0"
+once_cell = "1.17.1"
 races = { path = "./crates/races" }
 rand = "0.8.5"
 rand_pcg = "0.3.1"
