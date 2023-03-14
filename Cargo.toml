@@ -15,7 +15,7 @@ edition.workspace = true
 abilities = { path = "./crates/abilities" }
 alignments = { path = "./crates/alignments" }
 anyhow = { version = "1.0.69", features = ["backtrace"] }
-axum = { version = "0.6.10", features = [
+axum = { version = "0.6.11", features = [
     "headers",
     "http2",
     "macros",
