@@ -31,7 +31,7 @@ axum-extra = { version = "0.4.2", features = [
 ] }
 axum-server = { version = "0.4.7", features = ["tls-rustls"] }
 characters = { path = "./crates/characters" }
-clap = { version = "4.3.22", features = ["derive", "env"] }
+clap = { version = "4.3.23", features = ["derive", "env"] }
 deities = { path = "./crates/deities" }
 derive_more = "0.99.17"
 descriptions = { path = "./crates/descriptions" }
