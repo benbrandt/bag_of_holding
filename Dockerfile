@@ -14,7 +14,7 @@ RUN cargo chef cook --release --recipe-path recipe.json
 COPY . .
 RUN cargo build --release
 
-FROM gcr.io/distroless/cc as runtime
+FROM gcr.io/distroless/cc-debian12:nonroot as runtime
 WORKDIR /app
 COPY --from=builder /app/target/release/bag_of_holding ./
 EXPOSE 5000
