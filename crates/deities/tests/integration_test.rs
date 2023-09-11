@@ -17,7 +17,7 @@ use strum::IntoEnumIterator;
 #[test]
 fn all_deities_match_their_pantheon() {
     for pantheon in Pantheon::iter() {
-        for deity in pantheon.deities(None).iter() {
+        for deity in &*pantheon.deities(None) {
             assert_eq!(deity.pantheon, pantheon);
         }
     }

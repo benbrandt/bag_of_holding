@@ -26,7 +26,6 @@ fn roll() {
         let dist = Uniform::new(1.0, die.into()).unwrap();
 
         let rolls = (0..u32::from(die) * 10)
-            .into_iter()
             .map(|_| die.roll(&mut rng))
             .collect::<Vec<_>>();
 
@@ -43,7 +42,7 @@ fn roll_multiple() {
         // Roll a normal range of dice
         for i in 1..=12 {
             let rolls = die.roll_multiple(&mut rng, i).collect::<Vec<_>>();
-            assert_eq!(rolls.len(), i as usize);
+            assert_eq!(rolls.len(), i);
             assert!(rolls.iter().all(|d| (1..=die.into()).contains(d)));
         }
     }

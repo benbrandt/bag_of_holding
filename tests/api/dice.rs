@@ -18,7 +18,7 @@ async fn die_roll() {
     let server = TestServer::new();
 
     for sides in [4u32, 6, 8, 10, 12, 20, 100] {
-        let rolls = try_join_all((0..sides * 10).into_iter().map(|_| async {
+        let rolls = try_join_all((0..sides * 10).map(|_| async {
             server
                 .request(Method::POST, &format!("/dice/d{sides}/roll"), Body::empty())
                 .await

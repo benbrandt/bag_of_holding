@@ -58,7 +58,6 @@ static METRICS: Lazy<()> = Lazy::new(|| {
 });
 
 /// Top-level app. To be consumed by main.rs and
-#[must_use]
 fn app() -> Router {
     // In once_cells so they work in test threads
     Lazy::force(&TRACING);
@@ -155,6 +154,9 @@ impl Config {
 }
 
 /// Start the server with a given `TcpListener` and TLS Config
+///
+/// # Panics
+/// Will panic if the server can't start
 pub async fn start_server(Config { listener, tls }: Config) {
     if let Some(tls_config) = tls {
         axum_server::from_tcp_rustls(listener, tls_config)

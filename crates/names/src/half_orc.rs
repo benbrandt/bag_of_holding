@@ -25,7 +25,7 @@ impl fmt::Display for HalfOrc {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.first_name)?;
         if let Some(surname) = self.surname {
-            write!(f, " {}", surname)?;
+            write!(f, " {surname}")?;
         }
         Ok(())
     }
