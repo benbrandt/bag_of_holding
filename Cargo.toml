@@ -22,14 +22,13 @@ axum = { version = "0.6.20", features = [
     "multipart",
     "ws",
 ] }
-axum-extra = { version = "0.4.2", features = [
+axum-extra = { version = "0.7.7", features = [
     "erased-json",
     "form",
     "query",
-    "spa",
     "typed-routing",
 ] }
-axum-server = { version = "0.4.7", features = ["tls-rustls"] }
+axum-server = { version = "0.5.1", features = ["tls-rustls"] }
 characters = { path = "./crates/characters" }
 clap = { version = "4.4.2", features = ["derive", "env"] }
 deities = { path = "./crates/deities" }
@@ -39,9 +38,9 @@ dice = { path = "./crates/dice" }
 enum_dispatch = "0.3.12"
 futures = "0.3.28"
 hyper = { version = "0.14.27", features = ["full"] }
-itertools = "0.10.5"
-metrics = "0.20.1"
-metrics-exporter-prometheus = "0.11.0"
+itertools = "0.11.0"
+metrics = "0.21.1"
+metrics-exporter-prometheus = "0.12.1"
 mime = "0.3.17"
 names = { path = "./crates/names" }
 once_cell = "1.18.0"
@@ -49,12 +48,11 @@ races = { path = "./crates/races" }
 rand = "0.8.5"
 rand_pcg = "0.3.1"
 rand_utils = { path = "./crates/rand_utils" }
-sentry = { version = "0.29.3", default-features = false, features = [
+sentry = { version = "0.31.6", default-features = false, features = [
     "anyhow",
     "backtrace",
     "contexts",
     "panic",
-    "profiling",
     "reqwest",
     "rustls",
     "test",
@@ -67,12 +65,12 @@ serde_json = "1.0.106"
 sizes = { path = "./crates/sizes" }
 sources = { path = "./crates/sources" }
 statrs = "0.16.0"
-strum = { version = "0.24.1", features = ["derive"] }
+strum = { version = "0.25.0", features = ["derive"] }
 thiserror = "1.0.48"
 tokio = { version = "1.32.0", features = ["full"] }
 tower = { version = "0.4.13", features = ["full"] }
 tower-http = { version = "0.4.4", features = ["full"] }
-tracing = "0.1.38"
+tracing = "0.1.37"
 tracing-subscriber = { version = "0.3.17", features = ["env-filter"] }
 
 [dependencies]
