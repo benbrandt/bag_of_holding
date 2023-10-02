@@ -1,46 +1,43 @@
-# fly.toml file generated for bag-of-holding on 2022-02-08T22:10:44+01:00
+# fly.toml app configuration file generated for bag-of-holding on 2023-10-02T15:58:27+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
 app = "bag-of-holding"
-
+primary_region = "ams"
 kill_signal = "SIGTERM"
-kill_timeout = 5
-processes = []
-
-[env]
-RUST_LOG = "info"
-SENTRY_DSN = "https://c21aaae10ee74c71aa81a04f03203f59@o251876.ingest.sentry.io/6243981"
+kill_timeout = "5s"
 
 [experimental]
-allowed_public_ports = []
-auto_rollback = true
+  auto_rollback = true
 
-[metrics]
-port = 9000
-path = "/metrics"
+[env]
+  RUST_LOG = "info"
+  SENTRY_DSN = "https://c21aaae10ee74c71aa81a04f03203f59@o251876.ingest.sentry.io/6243981"
+
+[processes]
+  app = ""
 
 [[services]]
-http_checks = []
-internal_port = 5000
-processes = ["app"]
-protocol = "tcp"
-script_checks = []
+  protocol = "tcp"
+  internal_port = 5000
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
 
-[services.concurrency]
-hard_limit = 25
-soft_limit = 20
-type = "connections"
+  [[services.ports]]
+    port = 443
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
 
-# [[services.ports]]
-# handlers = ["http"]
-# port = 80
+  [[services.tcp_checks]]
+    interval = "15s"
+    timeout = "2s"
+    grace_period = "1s"
 
-[[services.ports]]
-# handlers = ["tls", "http"]
-handlers = []
-port = 443
-
-[[services.tcp_checks]]
-grace_period = "1s"
-interval = "15s"
-restart_limit = 0
-timeout = "2s"
+[[metrics]]
+  port = 9000
+  path = "/metrics"
