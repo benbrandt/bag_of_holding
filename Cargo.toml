@@ -37,7 +37,7 @@ descriptions = { path = "./crates/descriptions" }
 dice = { path = "./crates/dice" }
 enum_dispatch = "0.3.12"
 futures = "0.3.29"
-hyper = { version = "0.14.27", features = ["full"] }
+hyper = { version = "0.14.28", features = ["full"] }
 itertools = "0.11.0"
 metrics = "0.21.1"
 metrics-exporter-prometheus = "0.12.1"
