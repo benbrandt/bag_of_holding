@@ -15,12 +15,16 @@ use std::{
     net::{SocketAddr, TcpListener},
 };
 
-use axum::{http::{header, Method, Request, StatusCode}, body::Body};
-use bag_of_holding::{start_server, Config};
+use axum::{
+    body::Body,
+    http::{header, Method, Request, StatusCode},
+    routing::RouterIntoService,
+};
+use bag_of_holding::{app, start_server, Config};
 use http_body_util::BodyExt;
-use hyper_util::{ client::legacy::{Client, connect::HttpConnector}, rt::TokioExecutor};
 use serde_json::Value;
 use tokio::task::JoinHandle;
+use tower::{Service, ServiceExt};
 
 mod abilities;
 mod alignments;
@@ -33,7 +37,7 @@ mod sizes;
 /// Use the entire server for tests
 struct TestServer {
     addr: SocketAddr,
-    client: Client<HttpConnector, Body>,
+    app: RouterIntoService<Body>,
     _handle: JoinHandle<()>,
 }
 
@@ -45,28 +49,28 @@ impl TestServer {
 
         Self {
             addr,
-            client: Client::builder(TokioExecutor::new()).build_http(),
+            app: app().into_service(),
             _handle: tokio::spawn(start_server(Config::new(listener, None))),
         }
     }
 
     async fn request(
-        &self,
+        &mut self,
         method: Method,
         endpoint: &str,
         body: Body,
     ) -> Result<Value, Box<dyn Error>> {
-        let response = self
-            .client
-            .request(
-                Request::builder()
-                    .method(method)
-                    .uri(format!("http://{}{endpoint}", self.addr))
-                    .header(header::CONTENT_TYPE, mime::APPLICATION_JSON.as_ref())
-                    .body(body)?,
-            )
-            .await?;
-
+        let request = Request::builder()
+            .method(method)
+            .uri(format!("http://{}{endpoint}", self.addr))
+            .header(header::CONTENT_TYPE, mime::APPLICATION_JSON.as_ref())
+            .body(body)?;
+        let response = ServiceExt::<Request<Body>>::ready(&mut self.app)
+            .await
+            .unwrap()
+            .call(request)
+            .await
+            .unwrap();
         assert_eq!(response.status(), StatusCode::OK);
 
         let body = response.into_body().collect().await.unwrap().to_bytes();

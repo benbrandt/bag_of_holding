@@ -117,7 +117,8 @@ impl Distribution<CombatRole> for Standard {
         metrics::counter!(
             "abilities_combat_role",
             &[("combat_role", combat_role.to_string())]
-        ).increment(1);
+        )
+        .increment(1);
 
         combat_role
     }
@@ -141,7 +142,8 @@ impl AbilityScore {
                 ("ability", ability.to_string()),
                 ("score", score.to_string())
             ]
-        ).increment(1);
+        )
+        .increment(1);
         Self { ability, score }
     }
 }

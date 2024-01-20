@@ -105,7 +105,8 @@ impl Distribution<Dragonborn> for Standard {
                 "dragonborn_draconic_ancestry",
                 draconic_ancestry.to_string()
             )]
-        ).increment(1);
+        )
+        .increment(1);
 
         Dragonborn { draconic_ancestry }
     }

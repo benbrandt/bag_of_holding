@@ -1,4 +1,4 @@
-use axum::{http::Method, body::Body};
+use axum::{body::Body, http::Method};
 use deities::Domain;
 use itertools::Itertools;
 use serde_json::json;
@@ -8,7 +8,7 @@ use crate::TestServer;
 
 #[tokio::test]
 async fn get_domain_options() {
-    let server = TestServer::new();
+    let mut server = TestServer::new();
 
     let options = server
         .request(Method::GET, "/deities/domains", Body::empty())
@@ -20,7 +20,7 @@ async fn get_domain_options() {
 
 #[tokio::test]
 async fn generate_domain() {
-    let server = TestServer::new();
+    let mut server = TestServer::new();
 
     let domain = server
         .request(Method::POST, "/deities/domains", Body::empty())
@@ -32,7 +32,7 @@ async fn generate_domain() {
 
 #[tokio::test]
 async fn generate_deity() {
-    let server = TestServer::new();
+    let mut server = TestServer::new();
 
     let deity = server
         .request(Method::POST, "/deities", Body::empty())
@@ -44,7 +44,7 @@ async fn generate_deity() {
 
 #[tokio::test]
 async fn generate_deity_with_domain_filter() {
-    let server = TestServer::new();
+    let mut server = TestServer::new();
 
     for _ in 0..10 {
         let deity = server
