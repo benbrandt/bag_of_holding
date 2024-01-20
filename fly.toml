@@ -15,9 +15,6 @@ kill_timeout = "5s"
   RUST_LOG = "info"
   SENTRY_DSN = "https://c21aaae10ee74c71aa81a04f03203f59@o251876.ingest.sentry.io/6243981"
 
-[processes]
-  app = ""
-
 [http_service]
   internal_port = 5000
   force_https = true
