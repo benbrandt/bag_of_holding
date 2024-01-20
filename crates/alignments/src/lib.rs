@@ -13,7 +13,7 @@
     unused
 )]
 
-use std::{borrow::Cow, fmt, str};
+use std::{borrow::Cow, fmt};
 
 use rand::Rng;
 use rand_utils::SliceExpRandom;
@@ -160,13 +160,14 @@ impl Alignment {
             .choose_exp_weighted(rng, |a| a.weight(morality_influences))
             .unwrap();
 
-        metrics::increment_counter!(
+        metrics::counter!(
             "alignments",
             &[
                 ("attitude", attitude.to_string()),
                 ("morality", morality.to_string())
             ]
-        );
+        )
+        .increment(1);
 
         Self { attitude, morality }
     }

@@ -1,9 +1,8 @@
 use std::collections::HashMap;
 
-use axum::http::Method;
+use axum::{http::Method, body::Body};
 use dice::Die;
 use futures::future::try_join_all;
-use hyper::Body;
 use serde_json::json;
 use statrs::{
     distribution::Uniform,

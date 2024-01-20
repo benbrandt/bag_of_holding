@@ -1,5 +1,4 @@
-use axum::http::Method;
-use hyper::Body;
+use axum::{http::Method, body::Body};
 
 use crate::TestServer;
 

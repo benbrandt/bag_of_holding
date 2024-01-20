@@ -114,10 +114,10 @@ impl Distribution<CombatRole> for Standard {
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> CombatRole {
         let combat_role = CombatRole::iter().choose(rng).unwrap();
 
-        metrics::increment_counter!(
+        metrics::counter!(
             "abilities_combat_role",
             &[("combat_role", combat_role.to_string())]
-        );
+        ).increment(1);
 
         combat_role
     }
@@ -135,13 +135,13 @@ pub struct AbilityScore {
 impl AbilityScore {
     /// Create a new ability score
     fn new(ability: Ability, score: u8) -> Self {
-        metrics::increment_counter!(
+        metrics::counter!(
             "abilities_score",
             &[
                 ("ability", ability.to_string()),
                 ("score", score.to_string())
             ]
-        );
+        ).increment(1);
         Self { ability, score }
     }
 }

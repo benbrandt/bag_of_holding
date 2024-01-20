@@ -241,7 +241,7 @@ impl Name {
     /// ```
     #[tracing::instrument(skip(rng))]
     pub fn gen<R: Rng + ?Sized>(&self, rng: &mut R) -> String {
-        metrics::increment_counter!("names", &[("generator", self.to_string())]);
+        metrics::counter!("names", &[("generator", self.to_string())]).increment(1);
 
         match self {
             Self::Bugbear => rng.gen::<Bugbear>().to_string(),

@@ -15,9 +15,10 @@ use std::{
     net::{SocketAddr, TcpListener},
 };
 
-use axum::http::{header, Method, Request, StatusCode};
+use axum::{http::{header, Method, Request, StatusCode}, body::Body};
 use bag_of_holding::{start_server, Config};
-use hyper::{client::HttpConnector, Body, Client};
+use http_body_util::BodyExt;
+use hyper_util::{ client::legacy::{Client, connect::HttpConnector}, rt::TokioExecutor};
 use serde_json::Value;
 use tokio::task::JoinHandle;
 
@@ -32,7 +33,7 @@ mod sizes;
 /// Use the entire server for tests
 struct TestServer {
     addr: SocketAddr,
-    client: Client<HttpConnector>,
+    client: Client<HttpConnector, Body>,
     _handle: JoinHandle<()>,
 }
 
@@ -44,7 +45,7 @@ impl TestServer {
 
         Self {
             addr,
-            client: Client::new(),
+            client: Client::builder(TokioExecutor::new()).build_http(),
             _handle: tokio::spawn(start_server(Config::new(listener, None))),
         }
     }
@@ -68,7 +69,7 @@ impl TestServer {
 
         assert_eq!(response.status(), StatusCode::OK);
 
-        let body = hyper::body::to_bytes(response.into_body()).await?;
-        Ok(serde_json::from_slice(&body)?)
+        let body = response.into_body().collect().await.unwrap().to_bytes();
+        Ok(serde_json::from_slice(&body[..])?)
     }
 }
