@@ -58,7 +58,7 @@ static METRICS: Lazy<()> = Lazy::new(|| {
 });
 
 /// Top-level app. To be consumed by main.rs and
-fn app() -> Router {
+pub fn app() -> Router {
     // In once_cells so they work in test threads
     Lazy::force(&TRACING);
     Lazy::force(&METRICS);

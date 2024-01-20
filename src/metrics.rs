@@ -2,7 +2,9 @@
 //!
 //! Metrics-related tracking code
 
-use axum::{extract::MatchedPath, http::Request, middleware::Next, response::IntoResponse, body::Body};
+use axum::{
+    body::Body, extract::MatchedPath, http::Request, middleware::Next, response::IntoResponse,
+};
 
 /// Track path-related metrics
 pub async fn track_requests(req: Request<Body>, next: Next) -> impl IntoResponse {

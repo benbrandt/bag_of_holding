@@ -1,8 +1,7 @@
 use std::collections::HashMap;
 
-use axum::{http::Method, body::Body};
+use axum::{body::Body, http::Method};
 use dice::Die;
-use futures::future::try_join_all;
 use serde_json::json;
 use statrs::{
     distribution::Uniform,
@@ -14,16 +13,18 @@ use crate::TestServer;
 
 #[tokio::test]
 async fn die_roll() {
-    let server = TestServer::new();
+    let mut server = TestServer::new();
 
     for sides in [4u32, 6, 8, 10, 12, 20, 100] {
-        let rolls = try_join_all((0..sides * 10).map(|_| async {
-            server
-                .request(Method::POST, &format!("/dice/d{sides}/roll"), Body::empty())
-                .await
-        }))
-        .await
-        .unwrap();
+        let mut rolls = vec![];
+        for _ in 0..sides * 10 {
+            rolls.push(
+                server
+                    .request(Method::POST, &format!("/dice/d{sides}/roll"), Body::empty())
+                    .await
+                    .unwrap(),
+            );
+        }
 
         let dist = Uniform::new(1.0, f64::from(sides)).unwrap();
         assert!(rolls
@@ -36,7 +37,7 @@ async fn die_roll() {
 
 #[tokio::test]
 async fn roll_multiple_die_rolls() {
-    let server = TestServer::new();
+    let mut server = TestServer::new();
 
     let items = Die::iter().enumerate().map(|(i, d)| (d, i));
     let body: HashMap<Die, usize> = items.clone().collect();

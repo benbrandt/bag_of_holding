@@ -1,10 +1,10 @@
-use axum::{http::Method, body::Body};
+use axum::{body::Body, http::Method};
 
 use crate::TestServer;
 
 #[tokio::test]
 async fn generate_characters() {
-    let server = TestServer::new();
+    let mut server = TestServer::new();
 
     let character = server
         .request(Method::POST, "/characters", Body::empty())
