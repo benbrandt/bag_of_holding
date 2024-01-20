@@ -30,20 +30,18 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
 
-      - run: cargo test --all-features --workspace
+      - name: Install cargo-llvm-cov
+        uses: taiki-e/install-action@cargo-llvm-cov
 
-      # - name: Install cargo-llvm-cov
-      #   uses: taiki-e/install-action@cargo-llvm-cov
+      - name: Run tests and generate code coverage
+        run: cargo llvm-cov --all-features --workspace --lcov --output-path lcov.info
 
-      # - name: Run tests and generate code coverage
-      #   run: cargo llvm-cov --all-features --workspace --lcov --output-path lcov.info
-
-      # - name: Upload to codecov.io
-      #   uses: codecov/codecov-action@v3
-      #   with:
-      #     token: ${{secrets.CODECOV_TOKEN}}
-      #     files: lcov.info
-      #     fail_ci_if_error: true
+      - name: Upload to codecov.io
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}
+          files: lcov.info
+          fail_ci_if_error: true
 
   lints:
     name: Lints
