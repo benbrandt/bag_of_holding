@@ -92,7 +92,7 @@ impl RaceOption {
     /// Given a specified race option, generate a random race
     #[tracing::instrument(skip(rng))]
     pub fn gen<R: Rng + ?Sized>(&self, rng: &mut R) -> Race {
-        metrics::increment_counter!("races", &[("generator", self.to_string())]);
+        metrics::counter!("races", &[("generator", self.to_string())]).increment(1);
 
         match self {
             Self::Dragonborn => rng.gen::<Dragonborn>().into(),

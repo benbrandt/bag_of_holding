@@ -200,7 +200,7 @@ impl Distribution<Domain> for Standard {
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Domain {
         let domain = Domain::iter().choose(rng).unwrap();
 
-        metrics::increment_counter!("domains", &[("domain", domain.to_string())]);
+        metrics::counter!("domains", &[("domain", domain.to_string())]).increment(1);
 
         domain
     }

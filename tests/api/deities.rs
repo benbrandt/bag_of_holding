@@ -1,6 +1,5 @@
-use axum::http::Method;
+use axum::{http::Method, body::Body};
 use deities::Domain;
-use hyper::Body;
 use itertools::Itertools;
 use serde_json::json;
 use strum::IntoEnumIterator;

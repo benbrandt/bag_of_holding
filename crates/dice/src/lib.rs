@@ -53,10 +53,11 @@ impl Die {
     pub fn roll<R: Rng + ?Sized>(self, rng: &mut R) -> u8 {
         let roll = rng.gen_range(1u8..=self.into());
 
-        metrics::increment_counter!(
+        metrics::counter!(
             "dice_roll_total",
             &[("die", self.to_string()), ("roll", roll.to_string())]
-        );
+        )
+        .increment(1);
 
         roll
     }

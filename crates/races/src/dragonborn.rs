@@ -99,13 +99,13 @@ impl Distribution<Dragonborn> for Standard {
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Dragonborn {
         let draconic_ancestry = DraconicAncestry::iter().choose(rng).unwrap();
 
-        metrics::increment_counter!(
+        metrics::counter!(
             "races",
             &[(
                 "dragonborn_draconic_ancestry",
                 draconic_ancestry.to_string()
             )]
-        );
+        ).increment(1);
 
         Dragonborn { draconic_ancestry }
     }
