@@ -49,7 +49,7 @@ races = { path = "./crates/races" }
 rand = "0.8.5"
 rand_pcg = "0.3.1"
 rand_utils = { path = "./crates/rand_utils" }
-sentry = { version = "0.32.1", default-features = false, features = [
+sentry = { version = "0.32.2", default-features = false, features = [
     "anyhow",
     "backtrace",
     "contexts",
