@@ -61,7 +61,7 @@ sentry = { version = "0.32.3", default-features = false, features = [
     "tower-http",
     "tracing",
 ] }
-serde = { version = "1.0.197", features = ["derive"] }
+serde = { version = "1.0.198", features = ["derive"] }
 serde_json = "1.0.115"
 sizes = { path = "./crates/sizes" }
 sources = { path = "./crates/sources" }
