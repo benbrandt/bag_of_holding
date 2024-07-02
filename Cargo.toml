@@ -36,7 +36,7 @@ descriptions = { path = "./crates/descriptions" }
 dice = { path = "./crates/dice" }
 enum_dispatch = "0.3.13"
 futures = "0.3.30"
-http-body-util = "0.1.1"
+http-body-util = "0.1.2"
 hyper = { version = "1.4.0", features = ["full"] }
 hyper-util = { version = "0.1.5", features = ["full"] }
 itertools = "0.12.1"
